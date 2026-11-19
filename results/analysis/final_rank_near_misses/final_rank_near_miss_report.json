@@ -1,0 +1,173 @@
+{
+  "analysis": "final_gold_rank_near_misses",
+  "interpretation": "Final ranks 11--30 are treated as near misses relative to the operational Target@10 threshold, not as a semantic-correctness category.",
+  "near_miss_definition": {
+    "rank_min": 11,
+    "rank_max": 30,
+    "final_target_at10_required_false": true
+  },
+  "trajectory_history_definition": {
+    "min_consecutive": 3,
+    "never_top10": "Gold target never belongs to actual Top-10 at any saved state.",
+    "transient_top10_no_sustained": "Gold enters Top-10 at least once but never begins a run of 3 consecutive Top-10 layers.",
+    "sustained_top10_then_lost": "Gold has a strict sustained Top-10 onset earlier but is outside Top-10 at the final layer."
+  },
+  "input_files": [
+    "data/logit_lens/full/qwen3_0_6b/logit_lens_by_layer.jsonl",
+    "data/logit_lens/full/qwen3_4b/logit_lens_by_layer.jsonl",
+    "data/logit_lens/full/qwen3_14b/logit_lens_by_layer.jsonl"
+  ],
+  "raw_rows_by_file": {
+    "data/logit_lens/full/qwen3_0_6b/logit_lens_by_layer.jsonl": 30160,
+    "data/logit_lens/full/qwen3_4b/logit_lens_by_layer.jsonl": 38480,
+    "data/logit_lens/full/qwen3_14b/logit_lens_by_layer.jsonl": 42640
+  },
+  "model_trajectory_counts": {
+    "qwen3_0_6b": 1040,
+    "qwen3_4b": 1040,
+    "qwen3_14b": 1040
+  },
+  "headline": {
+    "n_final_trajectories": 3120,
+    "target_at10_failure_count": 800,
+    "near_miss_rank_11_30_count": 470,
+    "near_miss_rate_all": 0.15064102564102563,
+    "near_miss_share_of_target_at10_failures": 0.5875,
+    "rank_bin_counts": {
+      "11-15": 181,
+      "16-20": 131,
+      "21-30": 158
+    },
+    "language_counts": {
+      "en": 247,
+      "zh": 223
+    },
+    "semantic_group_counts": {
+      "attribute": 96,
+      "location": 145,
+      "material": 176,
+      "category": 53
+    },
+    "history_counts": {
+      "never_top10": 212,
+      "transient_top10_no_sustained": 83,
+      "sustained_top10_then_lost": 175
+    }
+  },
+  "by_model": {
+    "qwen3_0_6b": {
+      "n_final_trajectories": 1040,
+      "target_at10_failure_count": 399,
+      "near_miss_rank_11_30_count": 222,
+      "near_miss_rate_all": 0.21346153846153845,
+      "near_miss_share_of_target_at10_failures": 0.556390977443609,
+      "rank_bin_counts": {
+        "11-15": 82,
+        "16-20": 64,
+        "21-30": 76
+      },
+      "language_counts": {
+        "en": 108,
+        "zh": 114
+      },
+      "semantic_group_counts": {
+        "attribute": 61,
+        "location": 59,
+        "material": 76,
+        "category": 26
+      },
+      "history_counts": {
+        "never_top10": 171,
+        "transient_top10_no_sustained": 23,
+        "sustained_top10_then_lost": 28
+      },
+      "ever_top10_count": 51,
+      "strict_sustained_top10_count": 28,
+      "never_top10_count": 171
+    },
+    "qwen3_4b": {
+      "n_final_trajectories": 1040,
+      "target_at10_failure_count": 225,
+      "near_miss_rank_11_30_count": 141,
+      "near_miss_rate_all": 0.13557692307692307,
+      "near_miss_share_of_target_at10_failures": 0.6266666666666667,
+      "rank_bin_counts": {
+        "11-15": 48,
+        "16-20": 34,
+        "21-30": 59
+      },
+      "language_counts": {
+        "en": 78,
+        "zh": 63
+      },
+      "semantic_group_counts": {
+        "attribute": 19,
+        "location": 54,
+        "material": 53,
+        "category": 15
+      },
+      "history_counts": {
+        "sustained_top10_then_lost": 65,
+        "transient_top10_no_sustained": 48,
+        "never_top10": 28
+      },
+      "ever_top10_count": 113,
+      "strict_sustained_top10_count": 65,
+      "never_top10_count": 28
+    },
+    "qwen3_14b": {
+      "n_final_trajectories": 1040,
+      "target_at10_failure_count": 176,
+      "near_miss_rank_11_30_count": 107,
+      "near_miss_rate_all": 0.10288461538461538,
+      "near_miss_share_of_target_at10_failures": 0.6079545454545454,
+      "rank_bin_counts": {
+        "11-15": 51,
+        "16-20": 33,
+        "21-30": 23
+      },
+      "language_counts": {
+        "en": 61,
+        "zh": 46
+      },
+      "semantic_group_counts": {
+        "attribute": 16,
+        "category": 12,
+        "location": 32,
+        "material": 47
+      },
+      "history_counts": {
+        "sustained_top10_then_lost": 82,
+        "transient_top10_no_sustained": 12,
+        "never_top10": 13
+      },
+      "ever_top10_count": 94,
+      "strict_sustained_top10_count": 82,
+      "never_top10_count": 13
+    }
+  },
+  "trajectory_merge": {
+    "used": true,
+    "path": "data/analysis/trajectory/all_models_layer_trajectory_examples.tsv",
+    "trajectory_rows": 3120,
+    "missing_case_keys": 0,
+    "missing_case_keys_preview": [],
+    "crosscheck_mismatch_counts": {}
+  },
+  "validation": {
+    "raw_required_fields_checked": true,
+    "complete_contiguous_layer_trajectories_checked": true,
+    "one_final_row_per_trajectory_checked": true,
+    "near_miss_target_at10_false_checked": true,
+    "trajectory_table_crosschecked_when_available": true
+  },
+  "outputs": {
+    "cases_tsv": "final_rank_near_miss_cases.tsv",
+    "cases_jsonl": "final_rank_near_miss_cases.jsonl",
+    "summary": "final_rank_near_miss_summary.tsv",
+    "rank_bins": "final_rank_near_miss_rank_bins.tsv",
+    "history_summary": "final_rank_near_miss_history_summary.tsv",
+    "representative_sample": "final_rank_near_miss_representative_sample.tsv",
+    "report": "final_rank_near_miss_report.json"
+  }
+}

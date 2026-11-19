@@ -1,0 +1,13 @@
+﻿model_key	semantic_group	total_eligible_trajectories	gold_before_final_n	gold_before_final_percent	annotated_gold_before_final_n	annotation_coverage_percent	not_evaluable_n	not_evaluable_percent_of_all_trajectories	not_evaluable_percent_within_annotated_gold_before_final	broadly_acceptable_n	broadly_acceptable_percent_of_all_trajectories	broadly_acceptable_percent_within_annotated_gold_before_final	incompatible_or_unrelated_n	incompatible_or_unrelated_percent_of_all_trajectories	incompatible_or_unrelated_percent_within_annotated_gold_before_final
+qwen3_0_6b	attribute	260	5	1.9231	5	100.0	2	0.7692	40.0	0	0.0	0.0	3	1.1538	60.0
+qwen3_0_6b	category	260	25	9.6154	25	100.0	18	6.9231	72.0	5	1.9231	20.0	2	0.7692	8.0
+qwen3_0_6b	material	260	4	1.5385	4	100.0	1	0.3846	25.0	3	1.1538	75.0	0	0.0	0.0
+qwen3_0_6b	location	260	1	0.3846	1	100.0	0	0.0	0.0	1	0.3846	100.0	0	0.0	0.0
+qwen3_4b	attribute	260	50	19.2308	50	100.0	36	13.8462	72.0	10	3.8462	20.0	4	1.5385	8.0
+qwen3_4b	category	260	32	12.3077	32	100.0	29	11.1538	90.625	3	1.1538	9.375	0	0.0	0.0
+qwen3_4b	material	260	45	17.3077	45	100.0	36	13.8462	80.0	8	3.0769	17.7778	1	0.3846	2.2222
+qwen3_4b	location	260	7	2.6923	7	100.0	5	1.9231	71.4286	2	0.7692	28.5714	0	0.0	0.0
+qwen3_14b	attribute	260	58	22.3077	58	100.0	47	18.0769	81.0345	9	3.4615	15.5172	2	0.7692	3.4483
+qwen3_14b	category	260	35	13.4615	35	100.0	30	11.5385	85.7143	5	1.9231	14.2857	0	0.0	0.0
+qwen3_14b	material	260	110	42.3077	110	100.0	92	35.3846	83.6364	13	5.0	11.8182	5	1.9231	4.5455
+qwen3_14b	location	260	61	23.4615	61	100.0	56	21.5385	91.8033	5	1.9231	8.1967	0	0.0	0.0

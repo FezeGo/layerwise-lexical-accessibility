@@ -1,0 +1,91 @@
+{
+  "valid": true,
+  "trajectory_files": [
+    "data/analysis/full/all_models_layer_trajectory_examples.tsv"
+  ],
+  "annotation_file": "data/analysis/annotation/gold_before_final_annotations_final.tsv",
+  "output_directory": "data/analysis/annotation/incidence_analysis",
+  "dimension_columns": {
+    "model": "model_key",
+    "language": "language",
+    "semantic_group": "semantic_group"
+  },
+  "eligibility": {
+    "filter_applied": false,
+    "input_rows": 3120,
+    "eligible_rows": 3120
+  },
+  "unit_validation": {
+    "checked": true,
+    "unit_keys": [
+      "model_key",
+      "language",
+      "id"
+    ],
+    "duplicate_rows": 0
+  },
+  "event_detection": {
+    "mode": "pattern",
+    "column": "strict_sustained_pattern_top10",
+    "requested_label": "gold_before_final",
+    "auto_selected_label": null,
+    "strict_rows": 433
+  },
+  "annotation_validation": {
+    "valid": true,
+    "errors": [],
+    "rows": 433,
+    "expected_rows": 433
+  },
+  "annotation_coverage": {
+    "join_keys": [
+      "model_key",
+      "language",
+      "id"
+    ],
+    "strict_rows": 433,
+    "annotation_rows": 433,
+    "matched_rows": 433,
+    "strict_rows_without_annotation": 0,
+    "annotations_without_strict_row": 0,
+    "coverage_percent": 100.0,
+    "complete_coverage": true
+  },
+  "overall": {
+    "total_eligible_trajectories": 3120,
+    "gold_before_final_n": 433,
+    "gold_before_final_percent": 13.8782,
+    "not_evaluable_n": 352,
+    "broadly_acceptable_n": 64,
+    "incompatible_or_unrelated_n": 17
+  },
+  "interpretation_scope": "GBF incidence uses all eligible trajectories as denominator. Outcome incidence divides annotated GBF outcomes by the same full denominator.",
+  "partial_coverage_allowed": false,
+  "latex_requirements": [
+    "booktabs",
+    "graphicx"
+  ],
+  "outputs": {
+    "incidence_overall": "data/analysis/annotation/incidence_analysis/gold_before_final_incidence_overall.tsv",
+    "outcome_incidence_overall": "data/analysis/annotation/incidence_analysis/gold_before_final_outcome_incidence_overall.tsv",
+    "incidence_by_model": "data/analysis/annotation/incidence_analysis/gold_before_final_incidence_by_model.tsv",
+    "outcome_incidence_by_model": "data/analysis/annotation/incidence_analysis/gold_before_final_outcome_incidence_by_model.tsv",
+    "incidence_by_language": "data/analysis/annotation/incidence_analysis/gold_before_final_incidence_by_language.tsv",
+    "outcome_incidence_by_language": "data/analysis/annotation/incidence_analysis/gold_before_final_outcome_incidence_by_language.tsv",
+    "incidence_by_semantic_group": "data/analysis/annotation/incidence_analysis/gold_before_final_incidence_by_semantic_group.tsv",
+    "outcome_incidence_by_semantic_group": "data/analysis/annotation/incidence_analysis/gold_before_final_outcome_incidence_by_semantic_group.tsv",
+    "incidence_by_model_language": "data/analysis/annotation/incidence_analysis/gold_before_final_incidence_by_model_language.tsv",
+    "outcome_incidence_by_model_language": "data/analysis/annotation/incidence_analysis/gold_before_final_outcome_incidence_by_model_language.tsv",
+    "incidence_by_model_semantic_group": "data/analysis/annotation/incidence_analysis/gold_before_final_incidence_by_model_semantic_group.tsv",
+    "outcome_incidence_by_model_semantic_group": "data/analysis/annotation/incidence_analysis/gold_before_final_outcome_incidence_by_model_semantic_group.tsv",
+    "incidence_by_language_semantic_group": "data/analysis/annotation/incidence_analysis/gold_before_final_incidence_by_language_semantic_group.tsv",
+    "outcome_incidence_by_language_semantic_group": "data/analysis/annotation/incidence_analysis/gold_before_final_outcome_incidence_by_language_semantic_group.tsv",
+    "incidence_by_model_language_semantic_group": "data/analysis/annotation/incidence_analysis/gold_before_final_incidence_by_model_language_semantic_group.tsv",
+    "outcome_incidence_by_model_language_semantic_group": "data/analysis/annotation/incidence_analysis/gold_before_final_outcome_incidence_by_model_language_semantic_group.tsv",
+    "table5_tsv": "data/analysis/annotation/incidence_analysis/table5_gold_before_final_incidence.tsv",
+    "table6_tsv": "data/analysis/annotation/incidence_analysis/table6_gold_before_final_outcome_incidence.tsv",
+    "matched_strict_rows": "data/analysis/annotation/incidence_analysis/strict_gold_before_final_with_annotations.tsv",
+    "table5_tex": "data/analysis/annotation/incidence_analysis/table5_gold_before_final_incidence.tex",
+    "table6_tex": "data/analysis/annotation/incidence_analysis/table6_gold_before_final_outcome_incidence.tex"
+  }
+}

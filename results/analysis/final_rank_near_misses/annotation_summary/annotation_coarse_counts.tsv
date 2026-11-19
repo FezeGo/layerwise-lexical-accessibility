@@ -1,0 +1,4 @@
+﻿label	count	total_annotated	proportion
+strong_semantic_support	26	62	0.41935483870967744
+partial_semantic_support	26	62	0.41935483870967744
+no_clear_semantic_support	10	62	0.16129032258064516

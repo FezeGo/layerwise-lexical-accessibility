@@ -1,0 +1,5 @@
+﻿semantic_group	total_eligible_trajectories	gold_before_final_n	gold_before_final_percent	annotated_gold_before_final_n	annotation_coverage_percent	not_evaluable_n	not_evaluable_percent_of_all_trajectories	not_evaluable_percent_within_annotated_gold_before_final	broadly_acceptable_n	broadly_acceptable_percent_of_all_trajectories	broadly_acceptable_percent_within_annotated_gold_before_final	incompatible_or_unrelated_n	incompatible_or_unrelated_percent_of_all_trajectories	incompatible_or_unrelated_percent_within_annotated_gold_before_final
+attribute	780	113	14.4872	113	100.0	85	10.8974	75.2212	19	2.4359	16.8142	9	1.1538	7.9646
+category	780	92	11.7949	92	100.0	77	9.8718	83.6957	13	1.6667	14.1304	2	0.2564	2.1739
+material	780	159	20.3846	159	100.0	129	16.5385	81.1321	24	3.0769	15.0943	6	0.7692	3.7736
+location	780	69	8.8462	69	100.0	61	7.8205	88.4058	8	1.0256	11.5942	0	0.0	0.0

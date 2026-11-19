@@ -1,0 +1,10 @@
+# Large intermediate Logit Lens outputs
+results/logit_lens/full/*/logit_lens_by_layer.jsonl
+results/logit_lens/translation_equivalent/*/translation_equivalent_by_layer.jsonl
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.DS_Store

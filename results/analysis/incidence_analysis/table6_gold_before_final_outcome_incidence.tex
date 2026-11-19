@@ -1,0 +1,43 @@
+\begin{table*}[t]
+    \centering
+    \caption{Absolute incidence of annotated strict \texttt{gold\_before\_final} outcomes.}
+    \label{tab:gold_before_final_outcome_incidence}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lllrrrrrrrr}
+        \toprule
+        Model & Lang. & Group & Eligible $n$ & GBF $n$ & \multicolumn{2}{c}{Not evaluable} & \multicolumn{2}{c}{Broadly acceptable} & \multicolumn{2}{c}{Incompatible} \\
+        \cmidrule(lr){6-7}\cmidrule(lr){8-9}\cmidrule(lr){10-11}
+        & & & & & $n$ & \% all & $n$ & \% all & $n$ & \% all \\
+        \midrule
+        Qwen3-0.6B & EN & Attribute & 130 & 2 & 2 & 1.5\% & 0 & 0.0\% & 0 & 0.0\% \\
+        Qwen3-0.6B & EN & Category & 130 & 15 & 9 & 6.9\% & 5 & 3.8\% & 1 & 0.8\% \\
+        Qwen3-0.6B & EN & Material & 130 & 2 & 1 & 0.8\% & 1 & 0.8\% & 0 & 0.0\% \\
+        Qwen3-0.6B & EN & Location & 130 & 1 & 0 & 0.0\% & 1 & 0.8\% & 0 & 0.0\% \\
+        Qwen3-0.6B & ZH & Attribute & 130 & 3 & 0 & 0.0\% & 0 & 0.0\% & 3 & 2.3\% \\
+        Qwen3-0.6B & ZH & Category & 130 & 10 & 9 & 6.9\% & 0 & 0.0\% & 1 & 0.8\% \\
+        Qwen3-0.6B & ZH & Material & 130 & 2 & 0 & 0.0\% & 2 & 1.5\% & 0 & 0.0\% \\
+        Qwen3-0.6B & ZH & Location & 130 & 0 & 0 & 0.0\% & 0 & 0.0\% & 0 & 0.0\% \\
+        \addlinespace
+        Qwen3-4B & EN & Attribute & 130 & 24 & 21 & 16.2\% & 3 & 2.3\% & 0 & 0.0\% \\
+        Qwen3-4B & EN & Category & 130 & 16 & 13 & 10.0\% & 3 & 2.3\% & 0 & 0.0\% \\
+        Qwen3-4B & EN & Material & 130 & 34 & 30 & 23.1\% & 4 & 3.1\% & 0 & 0.0\% \\
+        Qwen3-4B & EN & Location & 130 & 6 & 4 & 3.1\% & 2 & 1.5\% & 0 & 0.0\% \\
+        Qwen3-4B & ZH & Attribute & 130 & 26 & 15 & 11.5\% & 7 & 5.4\% & 4 & 3.1\% \\
+        Qwen3-4B & ZH & Category & 130 & 16 & 16 & 12.3\% & 0 & 0.0\% & 0 & 0.0\% \\
+        Qwen3-4B & ZH & Material & 130 & 11 & 6 & 4.6\% & 4 & 3.1\% & 1 & 0.8\% \\
+        Qwen3-4B & ZH & Location & 130 & 1 & 1 & 0.8\% & 0 & 0.0\% & 0 & 0.0\% \\
+        \addlinespace
+        Qwen3-14B & EN & Attribute & 130 & 38 & 34 & 26.2\% & 3 & 2.3\% & 1 & 0.8\% \\
+        Qwen3-14B & EN & Category & 130 & 14 & 9 & 6.9\% & 5 & 3.8\% & 0 & 0.0\% \\
+        Qwen3-14B & EN & Material & 130 & 51 & 44 & 33.8\% & 7 & 5.4\% & 0 & 0.0\% \\
+        Qwen3-14B & EN & Location & 130 & 31 & 26 & 20.0\% & 5 & 3.8\% & 0 & 0.0\% \\
+        Qwen3-14B & ZH & Attribute & 130 & 20 & 13 & 10.0\% & 6 & 4.6\% & 1 & 0.8\% \\
+        Qwen3-14B & ZH & Category & 130 & 21 & 21 & 16.2\% & 0 & 0.0\% & 0 & 0.0\% \\
+        Qwen3-14B & ZH & Material & 130 & 59 & 48 & 36.9\% & 6 & 4.6\% & 5 & 3.8\% \\
+        Qwen3-14B & ZH & Location & 130 & 30 & 30 & 23.1\% & 0 & 0.0\% & 0 & 0.0\% \\
+        \bottomrule
+    \end{tabular}%
+    }
+    \vspace{0.5em}
+    \parbox{0.98\textwidth}{\footnotesize Percentages use all eligible trajectories in the same cell. Broadly acceptable combines translation equivalents, direct hypernyms, direct hyponyms, synonyms, surface or morphological variants, and other plausible alternatives.}
+\end{table*}

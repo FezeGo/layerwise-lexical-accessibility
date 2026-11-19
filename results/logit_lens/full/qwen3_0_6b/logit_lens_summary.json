@@ -1,0 +1,30 @@
+{
+  "model_key": "qwen3_0_6b",
+  "model_name": "Qwen/Qwen3-0.6B",
+  "alignment_path": "/content/drive/MyDrive/thesis/data/alignment/full/qwen3_0_6b/token_alignment.jsonl",
+  "output_dir": "/content/drive/MyDrive/thesis/data/logit_lens/full/qwen3_0_6b",
+  "num_alignment_rows": 1040,
+  "num_logit_lens_rows": 30160,
+  "num_rejected": 0,
+  "apply_final_norm": true,
+  "top_k": 10,
+  "compute_prob": true,
+  "store_topk": true,
+  "jaccard_top_k": 10,
+  "jaccard_definition": "set Jaccard between each layer's top-k token IDs and the final layer's top-k token IDs",
+  "counts_by_language": {
+    "en": 520,
+    "zh": 520
+  },
+  "counts_by_semantic_group": {
+    "attribute": 260,
+    "category": 260,
+    "location": 260,
+    "material": 260
+  },
+  "num_layers_detected": 28,
+  "raw_jsonl": "/content/drive/MyDrive/thesis/data/logit_lens/full/qwen3_0_6b/logit_lens_by_layer.jsonl",
+  "compact_tsv": "/content/drive/MyDrive/thesis/data/logit_lens/full/qwen3_0_6b/logit_lens_by_layer_compact.tsv",
+  "summary_tsv": "/content/drive/MyDrive/thesis/data/logit_lens/full/qwen3_0_6b/logit_lens_summary_by_layer.tsv",
+  "rejected_jsonl": "/content/drive/MyDrive/thesis/data/logit_lens/full/qwen3_0_6b/logit_lens.rejected.jsonl"
+}

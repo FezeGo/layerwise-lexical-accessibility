@@ -1,0 +1,327 @@
+{
+  "analysis": "final_rank_near_miss_manual_annotations",
+  "input": "data/analysis/final_rank_near_misses/final_rank_near_miss_review.tsv",
+  "sample_design_note": "The reviewed cases form a stratified representative sample (model x language x semantic group x rank bin), so percentages are descriptive of the reviewed sample and should not be treated as simple-random-sample estimates for all rank-11--30 cases.",
+  "interpretation_note": "Manual labels describe semantic support in the final Top-10. They are not correctness labels and do not replace exact-token Target@10 or full-vocabulary rank.",
+  "n_input_rows": 62,
+  "n_annotated_rows": 62,
+  "n_unlabeled_rows": 0,
+  "fine_label_schema": [
+    "equivalent_in_top10",
+    "equivalent_variant_in_top10",
+    "near_equivalent_in_top10",
+    "plausible_alternative_in_top10",
+    "same_domain_alternative_in_top10",
+    "generic_related_candidate_in_top10",
+    "weak_related_candidate_in_top10",
+    "no_clear_semantic_support_in_top10"
+  ],
+  "coarse_mapping": {
+    "equivalent_in_top10": "strong_semantic_support",
+    "equivalent_variant_in_top10": "strong_semantic_support",
+    "near_equivalent_in_top10": "strong_semantic_support",
+    "plausible_alternative_in_top10": "strong_semantic_support",
+    "same_domain_alternative_in_top10": "partial_semantic_support",
+    "generic_related_candidate_in_top10": "partial_semantic_support",
+    "weak_related_candidate_in_top10": "partial_semantic_support",
+    "no_clear_semantic_support_in_top10": "no_clear_semantic_support"
+  },
+  "headline": {
+    "fine_counts": {
+      "near_equivalent_in_top10": 10,
+      "same_domain_alternative_in_top10": 11,
+      "equivalent_in_top10": 1,
+      "no_clear_semantic_support_in_top10": 10,
+      "generic_related_candidate_in_top10": 3,
+      "weak_related_candidate_in_top10": 12,
+      "plausible_alternative_in_top10": 13,
+      "equivalent_variant_in_top10": 2
+    },
+    "fine_proportions": {
+      "near_equivalent_in_top10": 0.16129032258064516,
+      "same_domain_alternative_in_top10": 0.1774193548387097,
+      "equivalent_in_top10": 0.016129032258064516,
+      "no_clear_semantic_support_in_top10": 0.16129032258064516,
+      "generic_related_candidate_in_top10": 0.04838709677419355,
+      "weak_related_candidate_in_top10": 0.1935483870967742,
+      "plausible_alternative_in_top10": 0.20967741935483872,
+      "equivalent_variant_in_top10": 0.03225806451612903
+    },
+    "coarse_counts": {
+      "strong_semantic_support": 26,
+      "partial_semantic_support": 26,
+      "no_clear_semantic_support": 10
+    },
+    "coarse_proportions": {
+      "strong_semantic_support": 0.41935483870967744,
+      "partial_semantic_support": 0.41935483870967744,
+      "no_clear_semantic_support": 0.16129032258064516
+    }
+  },
+  "by_model": {
+    "qwen3_0_6b": {
+      "n": 21,
+      "fine_counts": {
+        "near_equivalent_in_top10": 3,
+        "same_domain_alternative_in_top10": 5,
+        "equivalent_in_top10": 1,
+        "no_clear_semantic_support_in_top10": 2,
+        "generic_related_candidate_in_top10": 2,
+        "weak_related_candidate_in_top10": 3,
+        "plausible_alternative_in_top10": 4,
+        "equivalent_variant_in_top10": 1
+      },
+      "coarse_counts": {
+        "strong_semantic_support": 9,
+        "partial_semantic_support": 10,
+        "no_clear_semantic_support": 2
+      }
+    },
+    "qwen3_14b": {
+      "n": 20,
+      "fine_counts": {
+        "near_equivalent_in_top10": 4,
+        "no_clear_semantic_support_in_top10": 5,
+        "same_domain_alternative_in_top10": 4,
+        "weak_related_candidate_in_top10": 3,
+        "plausible_alternative_in_top10": 4
+      },
+      "coarse_counts": {
+        "strong_semantic_support": 8,
+        "no_clear_semantic_support": 5,
+        "partial_semantic_support": 7
+      }
+    },
+    "qwen3_4b": {
+      "n": 21,
+      "fine_counts": {
+        "same_domain_alternative_in_top10": 2,
+        "no_clear_semantic_support_in_top10": 3,
+        "near_equivalent_in_top10": 3,
+        "plausible_alternative_in_top10": 5,
+        "weak_related_candidate_in_top10": 6,
+        "equivalent_variant_in_top10": 1,
+        "generic_related_candidate_in_top10": 1
+      },
+      "coarse_counts": {
+        "partial_semantic_support": 9,
+        "no_clear_semantic_support": 3,
+        "strong_semantic_support": 9
+      }
+    }
+  },
+  "by_language": {
+    "en": {
+      "n": 28,
+      "fine_counts": {
+        "near_equivalent_in_top10": 4,
+        "same_domain_alternative_in_top10": 6,
+        "equivalent_in_top10": 1,
+        "no_clear_semantic_support_in_top10": 9,
+        "generic_related_candidate_in_top10": 1,
+        "weak_related_candidate_in_top10": 3,
+        "plausible_alternative_in_top10": 4
+      },
+      "coarse_counts": {
+        "strong_semantic_support": 9,
+        "partial_semantic_support": 10,
+        "no_clear_semantic_support": 9
+      }
+    },
+    "zh": {
+      "n": 34,
+      "fine_counts": {
+        "equivalent_variant_in_top10": 2,
+        "no_clear_semantic_support_in_top10": 1,
+        "near_equivalent_in_top10": 6,
+        "plausible_alternative_in_top10": 9,
+        "same_domain_alternative_in_top10": 5,
+        "weak_related_candidate_in_top10": 9,
+        "generic_related_candidate_in_top10": 2
+      },
+      "coarse_counts": {
+        "strong_semantic_support": 17,
+        "no_clear_semantic_support": 1,
+        "partial_semantic_support": 16
+      }
+    }
+  },
+  "by_semantic_group": {
+    "attribute": {
+      "n": 17,
+      "fine_counts": {
+        "near_equivalent_in_top10": 6,
+        "same_domain_alternative_in_top10": 6,
+        "equivalent_variant_in_top10": 2,
+        "no_clear_semantic_support_in_top10": 3
+      },
+      "coarse_counts": {
+        "strong_semantic_support": 8,
+        "partial_semantic_support": 6,
+        "no_clear_semantic_support": 3
+      }
+    },
+    "category": {
+      "n": 10,
+      "fine_counts": {
+        "plausible_alternative_in_top10": 3,
+        "near_equivalent_in_top10": 4,
+        "same_domain_alternative_in_top10": 1,
+        "weak_related_candidate_in_top10": 2
+      },
+      "coarse_counts": {
+        "strong_semantic_support": 7,
+        "partial_semantic_support": 3
+      }
+    },
+    "location": {
+      "n": 17,
+      "fine_counts": {
+        "equivalent_in_top10": 1,
+        "no_clear_semantic_support_in_top10": 6,
+        "generic_related_candidate_in_top10": 3,
+        "same_domain_alternative_in_top10": 1,
+        "weak_related_candidate_in_top10": 2,
+        "plausible_alternative_in_top10": 4
+      },
+      "coarse_counts": {
+        "strong_semantic_support": 5,
+        "no_clear_semantic_support": 6,
+        "partial_semantic_support": 6
+      }
+    },
+    "material": {
+      "n": 18,
+      "fine_counts": {
+        "weak_related_candidate_in_top10": 8,
+        "same_domain_alternative_in_top10": 3,
+        "plausible_alternative_in_top10": 6,
+        "no_clear_semantic_support_in_top10": 1
+      },
+      "coarse_counts": {
+        "partial_semantic_support": 11,
+        "strong_semantic_support": 6,
+        "no_clear_semantic_support": 1
+      }
+    }
+  },
+  "by_rank_bin": {
+    "11-15": {
+      "n": 21,
+      "fine_counts": {
+        "near_equivalent_in_top10": 3,
+        "equivalent_in_top10": 1,
+        "weak_related_candidate_in_top10": 6,
+        "equivalent_variant_in_top10": 2,
+        "plausible_alternative_in_top10": 4,
+        "same_domain_alternative_in_top10": 3,
+        "no_clear_semantic_support_in_top10": 2
+      },
+      "coarse_counts": {
+        "strong_semantic_support": 10,
+        "partial_semantic_support": 9,
+        "no_clear_semantic_support": 2
+      }
+    },
+    "16-20": {
+      "n": 22,
+      "fine_counts": {
+        "same_domain_alternative_in_top10": 6,
+        "no_clear_semantic_support_in_top10": 6,
+        "plausible_alternative_in_top10": 4,
+        "weak_related_candidate_in_top10": 3,
+        "near_equivalent_in_top10": 2,
+        "generic_related_candidate_in_top10": 1
+      },
+      "coarse_counts": {
+        "partial_semantic_support": 10,
+        "no_clear_semantic_support": 6,
+        "strong_semantic_support": 6
+      }
+    },
+    "21-30": {
+      "n": 19,
+      "fine_counts": {
+        "same_domain_alternative_in_top10": 2,
+        "generic_related_candidate_in_top10": 2,
+        "plausible_alternative_in_top10": 5,
+        "near_equivalent_in_top10": 5,
+        "no_clear_semantic_support_in_top10": 2,
+        "weak_related_candidate_in_top10": 3
+      },
+      "coarse_counts": {
+        "partial_semantic_support": 7,
+        "strong_semantic_support": 10,
+        "no_clear_semantic_support": 2
+      }
+    }
+  },
+  "by_history_category": {
+    "never_top10": {
+      "n": 26,
+      "fine_counts": {
+        "near_equivalent_in_top10": 8,
+        "equivalent_in_top10": 1,
+        "no_clear_semantic_support_in_top10": 3,
+        "generic_related_candidate_in_top10": 3,
+        "weak_related_candidate_in_top10": 4,
+        "same_domain_alternative_in_top10": 2,
+        "plausible_alternative_in_top10": 4,
+        "equivalent_variant_in_top10": 1
+      },
+      "coarse_counts": {
+        "strong_semantic_support": 14,
+        "no_clear_semantic_support": 3,
+        "partial_semantic_support": 9
+      }
+    },
+    "sustained_top10_then_lost": {
+      "n": 29,
+      "fine_counts": {
+        "same_domain_alternative_in_top10": 6,
+        "plausible_alternative_in_top10": 8,
+        "no_clear_semantic_support_in_top10": 6,
+        "weak_related_candidate_in_top10": 6,
+        "near_equivalent_in_top10": 2,
+        "equivalent_variant_in_top10": 1
+      },
+      "coarse_counts": {
+        "partial_semantic_support": 12,
+        "strong_semantic_support": 11,
+        "no_clear_semantic_support": 6
+      }
+    },
+    "transient_top10_no_sustained": {
+      "n": 7,
+      "fine_counts": {
+        "same_domain_alternative_in_top10": 3,
+        "weak_related_candidate_in_top10": 2,
+        "no_clear_semantic_support_in_top10": 1,
+        "plausible_alternative_in_top10": 1
+      },
+      "coarse_counts": {
+        "partial_semantic_support": 5,
+        "no_clear_semantic_support": 1,
+        "strong_semantic_support": 1
+      }
+    }
+  },
+  "validation": {
+    "required_columns_present": true,
+    "unique_model_id_language_keys": true,
+    "manual_labels_nonblank_for_analyzed_rows": true,
+    "manual_notes_nonblank_for_analyzed_rows": true,
+    "labels_match_schema_unless_overridden": true
+  },
+  "outputs": {
+    "fine_counts": "annotation_label_counts.tsv",
+    "coarse_counts": "annotation_coarse_counts.tsv",
+    "by_model": "annotation_by_model.tsv",
+    "by_language": "annotation_by_language.tsv",
+    "by_semantic_group": "annotation_by_semantic_group.tsv",
+    "by_rank_bin": "annotation_by_rank_bin.tsv",
+    "by_history": "annotation_by_history.tsv",
+    "examples": "annotation_examples.tsv",
+    "summary": "annotation_summary.json"
+  }
+}

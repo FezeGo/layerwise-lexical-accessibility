@@ -1,0 +1,40 @@
+﻿model_key	language	strict_sustained_pattern_top10	count	group_total	rate	pattern_label
+qwen3_0_6b	en	exact_gold_convergence	142	520	0.27307692307692305	Exact-gold convergence
+qwen3_0_6b	en	final_sustained_gold_not_sustained	262	520	0.5038461538461538	Final sustained; gold not sustained
+qwen3_0_6b	en	final_before_gold	79	520	0.1519230769230769	Final before gold
+qwen3_0_6b	en	gold_before_final	20	520	0.038461538461538464	Gold before final
+qwen3_0_6b	en	same_onset	12	520	0.023076923076923078	Same sustained onset
+qwen3_0_6b	en	neither_sustained	5	520	0.009615384615384616	Neither sustained
+qwen3_0_6b	zh	exact_gold_convergence	89	520	0.17115384615384616	Exact-gold convergence
+qwen3_0_6b	zh	final_sustained_gold_not_sustained	274	520	0.5269230769230769	Final sustained; gold not sustained
+qwen3_0_6b	zh	final_before_gold	89	520	0.17115384615384616	Final before gold
+qwen3_0_6b	zh	gold_before_final	15	520	0.028846153846153848	Gold before final
+qwen3_0_6b	zh	gold_sustained_final_not_sustained	31	520	0.05961538461538462	Gold sustained; final not sustained
+qwen3_0_6b	zh	same_onset	8	520	0.015384615384615385	Same sustained onset
+qwen3_0_6b	zh	neither_sustained	14	520	0.026923076923076925	Neither sustained
+qwen3_14b	en	exact_gold_convergence	231	520	0.4442307692307692	Exact-gold convergence
+qwen3_14b	en	final_sustained_gold_not_sustained	38	520	0.07307692307692308	Final sustained; gold not sustained
+qwen3_14b	en	final_before_gold	90	520	0.17307692307692307	Final before gold
+qwen3_14b	en	gold_before_final	134	520	0.25769230769230766	Gold before final
+qwen3_14b	en	gold_sustained_final_not_sustained	8	520	0.015384615384615385	Gold sustained; final not sustained
+qwen3_14b	en	same_onset	19	520	0.03653846153846154	Same sustained onset
+qwen3_14b	zh	exact_gold_convergence	210	520	0.40384615384615385	Exact-gold convergence
+qwen3_14b	zh	final_sustained_gold_not_sustained	46	520	0.08846153846153847	Final sustained; gold not sustained
+qwen3_14b	zh	final_before_gold	85	520	0.16346153846153846	Final before gold
+qwen3_14b	zh	gold_before_final	130	520	0.25	Gold before final
+qwen3_14b	zh	gold_sustained_final_not_sustained	31	520	0.05961538461538462	Gold sustained; final not sustained
+qwen3_14b	zh	same_onset	10	520	0.019230769230769232	Same sustained onset
+qwen3_14b	zh	neither_sustained	8	520	0.015384615384615385	Neither sustained
+qwen3_4b	en	exact_gold_convergence	210	520	0.40384615384615385	Exact-gold convergence
+qwen3_4b	en	final_sustained_gold_not_sustained	89	520	0.17115384615384616	Final sustained; gold not sustained
+qwen3_4b	en	final_before_gold	88	520	0.16923076923076924	Final before gold
+qwen3_4b	en	gold_before_final	80	520	0.15384615384615385	Gold before final
+qwen3_4b	en	gold_sustained_final_not_sustained	30	520	0.057692307692307696	Gold sustained; final not sustained
+qwen3_4b	en	same_onset	12	520	0.023076923076923078	Same sustained onset
+qwen3_4b	en	neither_sustained	11	520	0.021153846153846155	Neither sustained
+qwen3_4b	zh	exact_gold_convergence	197	520	0.37884615384615383	Exact-gold convergence
+qwen3_4b	zh	final_sustained_gold_not_sustained	51	520	0.09807692307692308	Final sustained; gold not sustained
+qwen3_4b	zh	final_before_gold	200	520	0.38461538461538464	Final before gold
+qwen3_4b	zh	gold_before_final	54	520	0.10384615384615385	Gold before final
+qwen3_4b	zh	gold_sustained_final_not_sustained	4	520	0.007692307692307693	Gold sustained; final not sustained
+qwen3_4b	zh	same_onset	14	520	0.026923076923076925	Same sustained onset

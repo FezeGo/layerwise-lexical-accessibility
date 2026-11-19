@@ -1,0 +1,39 @@
+\begin{table*}[t]
+    \centering
+    \caption{Incidence of strict \texttt{gold\_before\_final} trajectories by model, language, and semantic group.}
+    \label{tab:gold_before_final_incidence}
+    \begin{tabular}{lllrrrr}
+        \toprule
+        Model & Lang. & Group & Eligible $n$ & GBF $n$ & GBF rate & Coverage \\
+        \midrule
+        Qwen3-0.6B & EN & Attribute & 130 & 2 & 1.5\% & 100.0\% \\
+        Qwen3-0.6B & EN & Category & 130 & 15 & 11.5\% & 100.0\% \\
+        Qwen3-0.6B & EN & Material & 130 & 2 & 1.5\% & 100.0\% \\
+        Qwen3-0.6B & EN & Location & 130 & 1 & 0.8\% & 100.0\% \\
+        Qwen3-0.6B & ZH & Attribute & 130 & 3 & 2.3\% & 100.0\% \\
+        Qwen3-0.6B & ZH & Category & 130 & 10 & 7.7\% & 100.0\% \\
+        Qwen3-0.6B & ZH & Material & 130 & 2 & 1.5\% & 100.0\% \\
+        Qwen3-0.6B & ZH & Location & 130 & 0 & 0.0\% & -- \\
+        \addlinespace
+        Qwen3-4B & EN & Attribute & 130 & 24 & 18.5\% & 100.0\% \\
+        Qwen3-4B & EN & Category & 130 & 16 & 12.3\% & 100.0\% \\
+        Qwen3-4B & EN & Material & 130 & 34 & 26.2\% & 100.0\% \\
+        Qwen3-4B & EN & Location & 130 & 6 & 4.6\% & 100.0\% \\
+        Qwen3-4B & ZH & Attribute & 130 & 26 & 20.0\% & 100.0\% \\
+        Qwen3-4B & ZH & Category & 130 & 16 & 12.3\% & 100.0\% \\
+        Qwen3-4B & ZH & Material & 130 & 11 & 8.5\% & 100.0\% \\
+        Qwen3-4B & ZH & Location & 130 & 1 & 0.8\% & 100.0\% \\
+        \addlinespace
+        Qwen3-14B & EN & Attribute & 130 & 38 & 29.2\% & 100.0\% \\
+        Qwen3-14B & EN & Category & 130 & 14 & 10.8\% & 100.0\% \\
+        Qwen3-14B & EN & Material & 130 & 51 & 39.2\% & 100.0\% \\
+        Qwen3-14B & EN & Location & 130 & 31 & 23.8\% & 100.0\% \\
+        Qwen3-14B & ZH & Attribute & 130 & 20 & 15.4\% & 100.0\% \\
+        Qwen3-14B & ZH & Category & 130 & 21 & 16.2\% & 100.0\% \\
+        Qwen3-14B & ZH & Material & 130 & 59 & 45.4\% & 100.0\% \\
+        Qwen3-14B & ZH & Location & 130 & 30 & 23.1\% & 100.0\% \\
+        \bottomrule
+    \end{tabular}
+    \vspace{0.5em}
+    \parbox{0.98\textwidth}{\footnotesize GBF rate uses all eligible trajectories in the same cell as the denominator. Coverage is the percentage of strict GBF rows matched to the finalized annotation file.}
+\end{table*}

@@ -1,0 +1,104 @@
+{
+  "analysis": "eq1_translation_equivalent_plotting_polished",
+  "design_notes": {
+    "main_top10_figure": "three panels with shared axes and a shared legend",
+    "main_rank_figure": "three panels with a shared log-rank axis; rank 1 at top",
+    "pattern_labels": "percentages shown only for segments >= 8%",
+    "final_rank_plot": "paired point/dumbbell plot rather than bars on a log axis",
+    "sensitivity_reversal_labels": "direction-reversal counts placed in x-axis labels"
+  },
+  "primary_model_counts": {
+    "qwen3_0_6b": 520,
+    "qwen3_4b": 520,
+    "qwen3_14b": 520
+  },
+  "layerwise_rows": 55640,
+  "trajectory_rows": 1560,
+  "sensitivity_rows": 1050,
+  "top10_pattern_counts": {
+    "qwen3_0_6b": {
+      "english_before_chinese": 0,
+      "same_onset": 2,
+      "chinese_before_english": 22,
+      "english_only_sustained": 0,
+      "chinese_only_sustained": 207,
+      "neither_sustained": 289
+    },
+    "qwen3_4b": {
+      "english_before_chinese": 15,
+      "same_onset": 76,
+      "chinese_before_english": 199,
+      "english_only_sustained": 3,
+      "chinese_only_sustained": 178,
+      "neither_sustained": 49
+    },
+    "qwen3_14b": {
+      "english_before_chinese": 18,
+      "same_onset": 76,
+      "chinese_before_english": 248,
+      "english_only_sustained": 0,
+      "chinese_only_sustained": 124,
+      "neither_sustained": 54
+    }
+  },
+  "final_layer_summary": {
+    "qwen3_0_6b": {
+      "n": 520,
+      "zh_final_top10_rate": 0.6596153846153846,
+      "en_final_top10_rate": 0.0,
+      "zh_final_median_rank": 6.0,
+      "en_final_median_rank": 946.0
+    },
+    "qwen3_4b": {
+      "n": 520,
+      "zh_final_top10_rate": 0.8096153846153846,
+      "en_final_top10_rate": 0.03076923076923077,
+      "zh_final_median_rank": 2.0,
+      "en_final_median_rank": 218.5
+    },
+    "qwen3_14b": {
+      "n": 520,
+      "zh_final_top10_rate": 0.8269230769230769,
+      "en_final_top10_rate": 0.0038461538461538464,
+      "zh_final_median_rank": 2.0,
+      "en_final_median_rank": 405.0
+    }
+  },
+  "sensitivity_summary": [
+    {
+      "model_key": "qwen3_0_6b",
+      "n": 350,
+      "zh_rate": 0.5085714285714286,
+      "leading_rate": 0.06571428571428571,
+      "no_space_rate": 0.002857142857142857,
+      "direction_reversal_count": 0,
+      "direction_reversal_rate": 0.0
+    },
+    {
+      "model_key": "qwen3_4b",
+      "n": 350,
+      "zh_rate": 0.9228571428571428,
+      "leading_rate": 0.6085714285714285,
+      "no_space_rate": 0.2714285714285714,
+      "direction_reversal_count": 1,
+      "direction_reversal_rate": 0.002857142857142857
+    },
+    {
+      "model_key": "qwen3_14b",
+      "n": 350,
+      "zh_rate": 0.9057142857142857,
+      "leading_rate": 0.6342857142857142,
+      "no_space_rate": 0.3342857142857143,
+      "direction_reversal_count": 1,
+      "direction_reversal_rate": 0.002857142857142857
+    }
+  ],
+  "output_files": [
+    "data/figures_update/eq1_translation_equivalent/01_top10_accessibility_panels.pdf",
+    "data/figures_update/eq1_translation_equivalent/02_sustained_top10_patterns.pdf",
+    "data/figures_update/eq1_translation_equivalent/03_median_rank_panels.pdf",
+    "data/figures_update/eq1_translation_equivalent/04_final_layer_top10.pdf",
+    "data/figures_update/eq1_translation_equivalent/05_final_layer_median_rank_dumbbell.pdf",
+    "data/figures_update/eq1_translation_equivalent/06_token_variant_sensitivity.pdf"
+  ]
+}

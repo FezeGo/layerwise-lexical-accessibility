@@ -1,0 +1,112 @@
+{
+  "analysis": "no_space_translation_equivalent_sensitivity",
+  "purpose": "Test whether the primary EQ1 sustained Top-k conclusions depend on tracking the paired-English leading-space token by instead using the distinct no-space single-token alternative where it exists.",
+  "input_files": [
+    "data/logit_lens/translation_equivalent/qwen3_0_6b/translation_equivalent_by_layer.jsonl",
+    "data/logit_lens/translation_equivalent/qwen3_4b/translation_equivalent_by_layer.jsonl",
+    "data/logit_lens/translation_equivalent/qwen3_14b/translation_equivalent_by_layer.jsonl"
+  ],
+  "validation_tsv": "data/analysis/full/translation_equivalent/token_variant_validation/translation_equivalent_token_variant_validation.tsv",
+  "models": [
+    "qwen3_0_6b",
+    "qwen3_4b",
+    "qwen3_14b"
+  ],
+  "min_consecutive": 3,
+  "subset_definition": "Examples where the no-space English equivalent is a clean single token and has a token ID distinct from the primary leading-space token.",
+  "subset_counts_by_model": {
+    "qwen3_0_6b": 350,
+    "qwen3_4b": 350,
+    "qwen3_14b": 350
+  },
+  "trajectory_units": 1050,
+  "rank_limitation": "No-space exact full-vocabulary ranks are unavailable because only saved Top-10 token IDs are reused. This sensitivity analysis therefore evaluates Top-1/5/10 membership and onset only.",
+  "top10_by_model": {
+    "qwen3_0_6b": {
+      "n": 350,
+      "leading_space_pattern_counts": {
+        "neither_sustained": 172,
+        "chinese_only_sustained": 155,
+        "chinese_before_english": 22,
+        "same_onset": 1
+      },
+      "no_space_pattern_counts": {
+        "neither_sustained": 172,
+        "chinese_only_sustained": 177,
+        "chinese_before_english": 1
+      },
+      "pattern_change_counts": {
+        "unchanged": 328,
+        "changed": 22
+      },
+      "leading_space_english_sustained_count": 23,
+      "no_space_english_sustained_count": 1,
+      "chinese_sustained_count": 178
+    },
+    "qwen3_4b": {
+      "n": 350,
+      "leading_space_pattern_counts": {
+        "chinese_only_sustained": 111,
+        "neither_sustained": 26,
+        "same_onset": 49,
+        "chinese_before_english": 155,
+        "english_before_chinese": 8,
+        "english_only_sustained": 1
+      },
+      "no_space_pattern_counts": {
+        "chinese_only_sustained": 228,
+        "neither_sustained": 27,
+        "chinese_before_english": 92,
+        "same_onset": 3
+      },
+      "pattern_change_counts": {
+        "unchanged": 207,
+        "changed": 142,
+        "direction_reversal": 1
+      },
+      "leading_space_english_sustained_count": 213,
+      "no_space_english_sustained_count": 95,
+      "chinese_sustained_count": 323
+    },
+    "qwen3_14b": {
+      "n": 350,
+      "leading_space_pattern_counts": {
+        "chinese_only_sustained": 95,
+        "neither_sustained": 33,
+        "chinese_before_english": 176,
+        "same_onset": 34,
+        "english_before_chinese": 12
+      },
+      "no_space_pattern_counts": {
+        "chinese_only_sustained": 200,
+        "neither_sustained": 33,
+        "chinese_before_english": 106,
+        "english_before_chinese": 4,
+        "same_onset": 7
+      },
+      "pattern_change_counts": {
+        "unchanged": 223,
+        "changed": 126,
+        "direction_reversal": 1
+      },
+      "leading_space_english_sustained_count": 222,
+      "no_space_english_sustained_count": 117,
+      "chinese_sustained_count": 317
+    }
+  },
+  "changed_cases_any_k": 406,
+  "validation": {
+    "primary_token_matches_validation_leading_space_token": true,
+    "saved_primary_topk_membership_rechecked": true,
+    "saved_chinese_topk_membership_rechecked": true,
+    "all_subset_trajectories_complete_and_contiguous": true
+  },
+  "outputs": {
+    "layerwise": "no_space_sensitivity_layerwise.tsv",
+    "trajectories_tsv": "no_space_sensitivity_trajectories.tsv",
+    "trajectories_jsonl": "no_space_sensitivity_trajectories.jsonl",
+    "pattern_counts": "no_space_sensitivity_pattern_counts.tsv",
+    "variant_comparison": "no_space_sensitivity_variant_comparison.tsv",
+    "changed_cases": "no_space_sensitivity_changed_cases.tsv"
+  }
+}

@@ -1,0 +1,13 @@
+﻿model_key	semantic_group	total_eligible_trajectories	gold_before_final_n	gold_before_final_percent	annotated_gold_before_final_n	annotation_coverage_percent
+qwen3_0_6b	attribute	260	5	1.9231	5	100.0
+qwen3_0_6b	category	260	25	9.6154	25	100.0
+qwen3_0_6b	material	260	4	1.5385	4	100.0
+qwen3_0_6b	location	260	1	0.3846	1	100.0
+qwen3_4b	attribute	260	50	19.2308	50	100.0
+qwen3_4b	category	260	32	12.3077	32	100.0
+qwen3_4b	material	260	45	17.3077	45	100.0
+qwen3_4b	location	260	7	2.6923	7	100.0
+qwen3_14b	attribute	260	58	22.3077	58	100.0
+qwen3_14b	category	260	35	13.4615	35	100.0
+qwen3_14b	material	260	110	42.3077	110	100.0
+qwen3_14b	location	260	61	23.4615	61	100.0

@@ -1,0 +1,23 @@
+{
+  "analysis": "broader_category_logit_lens_extraction",
+  "model_key": "qwen3_14b",
+  "model_name": "Qwen/Qwen3-14B",
+  "revision_requested": "main",
+  "alignment_path": "/content/drive/MyDrive/thesis/data/broader_category/broader_category_alignment.jsonl",
+  "output_dir": "/content/drive/MyDrive/thesis/data/logit_lens/broader_category/qwen3_14b",
+  "dtype_requested": "auto",
+  "dtype_resolved": "torch.bfloat16",
+  "device_map": "auto",
+  "attn_implementation": null,
+  "apply_final_norm": true,
+  "embedding_applies_final_norm": false,
+  "intermediate_applies_final_norm": true,
+  "final_layer_uses_outputs_logits": true,
+  "top_k": 10,
+  "topk_membership_uses_actual_torch_topk": true,
+  "compute_prob": true,
+  "store_topk": true,
+  "rank_definition": "1 + number of vocabulary logits strictly greater than the tracked token logit",
+  "rank_difference_definition": "broader-category rank minus specific-gold rank; negative means broader ranks better",
+  "max_rows": null
+}

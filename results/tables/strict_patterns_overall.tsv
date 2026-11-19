@@ -1,0 +1,22 @@
+﻿model_key	strict_sustained_pattern_top10	count	group_total	rate	pattern_label	model
+qwen3_0_6b	exact_gold_convergence	231	1040	0.2221153846153846	Exact-gold convergence	Qwen3-0.6B
+qwen3_0_6b	final_sustained_gold_not_sustained	536	1040	0.5153846153846153	Final sustained; gold not sustained	Qwen3-0.6B
+qwen3_0_6b	final_before_gold	168	1040	0.16153846153846155	Final before gold	Qwen3-0.6B
+qwen3_0_6b	gold_before_final	35	1040	0.03365384615384615	Gold before final	Qwen3-0.6B
+qwen3_0_6b	gold_sustained_final_not_sustained	31	1040	0.02980769230769231	Gold sustained; final not sustained	Qwen3-0.6B
+qwen3_0_6b	same_onset	20	1040	0.019230769230769232	Same sustained onset	Qwen3-0.6B
+qwen3_0_6b	neither_sustained	19	1040	0.01826923076923077	Neither sustained	Qwen3-0.6B
+qwen3_4b	gold_sustained_final_not_sustained	34	1040	0.032692307692307694	Gold sustained; final not sustained	Qwen3-4B
+qwen3_4b	gold_before_final	134	1040	0.12884615384615383	Gold before final	Qwen3-4B
+qwen3_4b	final_before_gold	288	1040	0.27692307692307694	Final before gold	Qwen3-4B
+qwen3_4b	final_sustained_gold_not_sustained	140	1040	0.1346153846153846	Final sustained; gold not sustained	Qwen3-4B
+qwen3_4b	exact_gold_convergence	407	1040	0.39134615384615384	Exact-gold convergence	Qwen3-4B
+qwen3_4b	neither_sustained	11	1040	0.010576923076923078	Neither sustained	Qwen3-4B
+qwen3_4b	same_onset	26	1040	0.025	Same sustained onset	Qwen3-4B
+qwen3_14b	neither_sustained	8	1040	0.007692307692307693	Neither sustained	Qwen3-14B
+qwen3_14b	gold_sustained_final_not_sustained	39	1040	0.0375	Gold sustained; final not sustained	Qwen3-14B
+qwen3_14b	final_before_gold	175	1040	0.16826923076923078	Final before gold	Qwen3-14B
+qwen3_14b	final_sustained_gold_not_sustained	84	1040	0.08076923076923077	Final sustained; gold not sustained	Qwen3-14B
+qwen3_14b	exact_gold_convergence	441	1040	0.42403846153846153	Exact-gold convergence	Qwen3-14B
+qwen3_14b	same_onset	29	1040	0.027884615384615386	Same sustained onset	Qwen3-14B
+qwen3_14b	gold_before_final	264	1040	0.25384615384615383	Gold before final	Qwen3-14B

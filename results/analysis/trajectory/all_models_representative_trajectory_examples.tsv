@@ -1,0 +1,395 @@
+﻿model_key	id	language	semantic_group	subgroup	relation	target	final_prediction_text	final_match_status	first_onset_pattern_top10	strict_sustained_pattern_top10	first_target_top10_layer	first_final_top10_layer	first_target_top10_sustained_layer	first_final_top10_sustained_layer	first_final_top1_stable_to_end_layer	ever_coaccessible_top10	gold_top10_then_lost	gold_never_top10	sampling_seed
+qwen3_0_6b	20	en	attribute	physical	weight	light	 light	final_exact_gold	exact_gold_convergence	exact_gold_convergence	27	27			27	True	False	False	42
+qwen3_0_6b	21	en	attribute	physical	strength	strong	 strong	final_exact_gold	exact_gold_convergence	exact_gold_convergence	23	23	23	23	27	True	False	False	42
+qwen3_0_6b	87	en	attribute	visual	color	green	 green	final_exact_gold	exact_gold_convergence	exact_gold_convergence	23	23	23	23	24	True	False	False	42
+qwen3_0_6b	100	en	attribute	visual	color	white	 associated	final_non_gold	final_before_gold	final_before_gold	24	6	24	22	27	True	False	False	42
+qwen3_0_6b	108	en	attribute	visual	transparency	transparent	 a	final_non_gold	final_before_gold	final_before_gold	23	5	23	9	26	True	False	False	42
+qwen3_0_6b	109	en	attribute	visual	transparency	transparent	 a	final_non_gold	final_before_gold	final_before_gold	23	5	23	7	26	True	False	False	42
+qwen3_0_6b	33	en	attribute	sensory	taste	bitter	 often	final_non_gold	final_only	final_sustained_gold_not_sustained		1		1	27	False	False	True	42
+qwen3_0_6b	88	en	attribute	visual	color	green	 determined	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	28	23		23	24	True	False	False	42
+qwen3_0_6b	78	en	attribute	tactile	softness	soft	 characterized	final_non_gold	final_only	final_sustained_gold_not_sustained		8		20	28	False	False	True	42
+qwen3_0_6b	103	en	attribute	visual	color	yellow	 what	final_non_gold	final_before_gold	gold_before_final	24	22	24	26	28	True	True	False	42
+qwen3_0_6b	102	en	attribute	visual	color	yellow	 what	final_non_gold	final_before_gold	gold_before_final	24	22	24	26	28	True	True	False	42
+qwen3_0_6b	41	en	attribute	sensory	taste	sour	 acidic	final_non_gold	final_only	neither_sustained		24			28	False	False	True	42
+qwen3_0_6b	94	en	attribute	visual	color	red	 determined	final_non_gold	same_onset	same_onset	24	24	24	24	26	True	True	False	42
+qwen3_0_6b	144	en	category	animal_taxonomy	is_a	insect	 insect	final_exact_gold	exact_gold_convergence	exact_gold_convergence	21	21	21	21	23	True	False	False	42
+qwen3_0_6b	259	en	category	plant_taxonomy	is_a	flower	 flower	final_exact_gold	exact_gold_convergence	exact_gold_convergence	22	22	22	22	28	True	False	False	42
+qwen3_0_6b	177	en	category	crime_taxonomy	is_a	crime	 crime	final_exact_gold	exact_gold_convergence	exact_gold_convergence	21	21	21	21	22	True	False	False	42
+qwen3_0_6b	231	en	category	emotion_taxonomy	is_a	emotion	 emotional	final_non_gold	final_before_gold	final_before_gold	23	20	23	20	28	True	False	False	42
+qwen3_0_6b	185	en	category	crime_taxonomy	is_a	crime	 illegal	final_non_gold	final_before_gold	final_before_gold	22	20	22	20	28	True	False	False	42
+qwen3_0_6b	179	en	category	crime_taxonomy	is_a	crime	 fire	final_non_gold	final_before_gold	final_before_gold	22	21	22	21	22	True	False	False	42
+qwen3_0_6b	189	en	category	crime_taxonomy	is_a	crime	 business	final_non_gold	final_only	final_sustained_gold_not_sustained		22		22	27	False	False	True	42
+qwen3_0_6b	155	en	category	chemical_element_taxonomy	is_a	element	 compound	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	26	21		21	28	True	True	False	42
+qwen3_0_6b	183	en	category	crime_taxonomy	is_a	crime	 corruption	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	23	22		22	28	True	True	False	42
+qwen3_0_6b	210	en	category	disease_taxonomy	is_a	disease	 infection	final_non_gold	gold_before_final	gold_before_final	19	21	19	21	27	True	False	False	42
+qwen3_0_6b	223	en	category	disease_taxonomy	is_a	disease	 skin	final_non_gold	gold_before_final	gold_before_final	19	21	19	21	23	True	True	False	42
+qwen3_0_6b	219	en	category	disease_taxonomy	is_a	disease	 infectious	final_non_gold	gold_before_final	gold_before_final	19	22	19	22	28	True	False	False	42
+qwen3_0_6b	251	en	category	instrument_taxonomy	is_a	instrument	 musical	final_non_gold	same_onset	same_onset	22	22	22	22	28	True	False	False	42
+qwen3_0_6b	187	en	category	crime_taxonomy	is_a	crime	 deception	final_non_gold	same_onset	same_onset	23	23	23	23	28	True	True	False	42
+qwen3_0_6b	199	en	category	device_taxonomy	is_a	device	 tool	final_non_gold	same_onset	same_onset	21	21	21	21	23	True	False	False	42
+qwen3_0_6b	267	en	location	commonsense	found_in_place	office	 office	final_exact_gold	exact_gold_convergence	exact_gold_convergence	22	22	22	22	23	True	False	False	42
+qwen3_0_6b	279	en	location	commonsense	grows_in	river	 river	final_exact_gold	exact_gold_convergence	exact_gold_convergence	23	23	23	23	28	True	False	False	42
+qwen3_0_6b	317	en	location	commonsense	grows_in	farm	 farm	final_exact_gold	exact_gold_convergence	exact_gold_convergence	22	22	22	22	23	True	False	False	42
+qwen3_0_6b	352	en	location	factual	country_of_city	India	 a	final_non_gold	final_before_gold	final_before_gold	23	3	23	5	26	True	True	False	42
+qwen3_0_6b	321	en	location	commonsense	workplace	office	 important	final_non_gold	final_before_gold	final_before_gold	24	12	24	15	20	True	False	False	42
+qwen3_0_6b	324	en	location	commonsense	workplace	office	 important	final_non_gold	final_before_gold	final_before_gold	24	16	24	16	19	True	False	False	42
+qwen3_0_6b	338	en	location	factual	country_of_city	Australia	 the	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	27	7		19	26	True	False	False	42
+qwen3_0_6b	383	en	location	factual	place_of_land	Italy	 a	final_non_gold	final_only	final_sustained_gold_not_sustained		3		5	27	False	False	True	42
+qwen3_0_6b	260	en	location	commonsense	found_in_place	bedroom	 room	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	28	9		15	21	True	False	False	42
+qwen3_0_6b	318	en	location	commonsense	habitat	river	 lake	final_non_gold	gold_before_final	gold_before_final	23	24	23	24	28	True	False	False	42
+qwen3_0_6b	298	en	location	commonsense	stored_in	fridge	 cheese	final_non_gold	same_onset	neither_sustained	28	28			28	True	False	False	42
+qwen3_0_6b	300	en	location	commonsense	stored_in	cupboard	 drawer	final_non_gold	final_only	neither_sustained		24			28	False	False	True	42
+qwen3_0_6b	305	en	location	commonsense	stored_in	bedroom	 dry	final_non_gold	final_only	neither_sustained		28			28	False	False	True	42
+qwen3_0_6b	264	en	location	commonsense	found_in_place	kitchen	 microwave	final_non_gold	same_onset	same_onset	23	23	23	23	27	True	True	False	42
+qwen3_0_6b	289	en	location	commonsense	habitat	sea	 ocean	final_non_gold	same_onset	same_onset	21	21	21	21	28	True	False	False	42
+qwen3_0_6b	322	en	location	commonsense	workplace	kitchen	 small	final_non_gold	same_onset	same_onset	23	23	23	23	26	True	True	False	42
+qwen3_0_6b	508	en	material	traditional_material	traditionally_made_of	copper	 copper	final_exact_gold	exact_gold_convergence	exact_gold_convergence	21	21	21	21	24	True	False	False	42
+qwen3_0_6b	429	en	material	intrinsic_composition	main_component	iron	 iron	final_exact_gold	exact_gold_convergence	exact_gold_convergence	21	21	21	21	23	True	False	False	42
+qwen3_0_6b	422	en	material	ingredient	common_ingredient	salt	 salt	final_exact_gold	exact_gold_convergence	exact_gold_convergence	21	21	21	21	23	True	False	False	42
+qwen3_0_6b	420	en	material	ingredient	main_ingredient	flour	 a	final_non_gold	final_before_gold	final_before_gold	23	2	23	2	25	True	False	False	42
+qwen3_0_6b	466	en	material	manufacturing_material	commonly_made_of	aluminum	 a	final_non_gold	final_before_gold	final_before_gold	23	2	23	4	27	True	False	False	42
+qwen3_0_6b	417	en	material	ingredient	main_ingredient	flour	 a	final_non_gold	final_before_gold	final_before_gold	24	2	24	2	17	True	False	False	42
+qwen3_0_6b	499	en	material	physical_substance	substance_form	water	 called	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	28	3		12	22	True	False	False	42
+qwen3_0_6b	394	en	material	component_material	common_component	plastic	 made	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	26	22		22	24	True	True	False	42
+qwen3_0_6b	497	en	material	physical_substance	substance_identity	fat	.	final_non_gold	final_only	final_sustained_gold_not_sustained		18		18	28	False	False	True	42
+qwen3_0_6b	405	en	material	dissolved_component	contains	salt	 sodium	final_non_gold	gold_before_final	gold_before_final	22	23	22	23	27	True	False	False	42
+qwen3_0_6b	459	en	material	manufacturing_material	commonly_made_of	steel	 made	final_non_gold	gold_before_final	gold_before_final	23	24	23	24	28	True	True	False	42
+qwen3_0_6b	404	en	material	component_material	common_component	steel	 aluminum	final_non_gold	same_onset	same_onset	23	23	23	23	28	True	False	False	42
+qwen3_0_6b	54	zh	attribute	sensory	taste	甜	甜	final_exact_gold	exact_gold_convergence	exact_gold_convergence	26	26	26	26	27	True	False	False	42
+qwen3_0_6b	20	zh	attribute	physical	weight	轻	轻	final_exact_gold	exact_gold_convergence	exact_gold_convergence	19	19	19	19	20	True	False	False	42
+qwen3_0_6b	57	zh	attribute	sensory	taste	咸	咸	final_exact_gold	exact_gold_convergence	exact_gold_convergence	23	23	23	23	28	True	False	False	42
+qwen3_0_6b	18	zh	attribute	physical	hardness	硬	轻	final_non_gold	final_before_gold	final_before_gold	22	21	22	21	24	True	False	False	42
+qwen3_0_6b	16	zh	attribute	physical	hardness	硬	轻	final_non_gold	final_before_gold	final_before_gold	22	20	24	20	28	True	True	False	42
+qwen3_0_6b	95	zh	attribute	visual	color	白色	哪种	final_non_gold	final_before_gold	final_before_gold	23	20	23	20	28	True	False	False	42
+qwen3_0_6b	26	zh	attribute	physical	brittleness	脆	轻	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	28	20		20	28	True	False	False	42
+qwen3_0_6b	29	zh	attribute	physical	water_resistance	防水	能	final_non_gold	final_only	final_sustained_gold_not_sustained		22		22	23	False	False	True	42
+qwen3_0_6b	34	zh	attribute	sensory	taste	苦	怎	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	28	18		18	28	True	False	False	42
+qwen3_0_6b	113	zh	attribute	visual	color	白色	绿色	final_non_gold	same_onset	gold_before_final	23	23	23	25	28	True	False	False	42
+qwen3_0_6b	23	zh	attribute	physical	weight	重	坚固	final_non_gold	gold_before_final	gold_before_final	20	22	20	22	28	True	False	False	42
+qwen3_0_6b	31	zh	attribute	physical	weight	轻	柔软	final_non_gold	gold_before_final	gold_before_final	20	24	20	24	28	True	False	False	42
+qwen3_0_6b	85	zh	attribute	visual	color	灰色	怎	final_non_gold	final_before_gold	gold_sustained_final_not_sustained	24	20	24		28	True	False	False	42
+qwen3_0_6b	81	zh	attribute	visual	color	黑色	怎	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	23	28	23		28	True	True	False	42
+qwen3_0_6b	102	zh	attribute	visual	color	黄色	怎	final_non_gold	final_before_gold	gold_sustained_final_not_sustained	24	20	24		28	True	True	False	42
+qwen3_0_6b	86	zh	attribute	visual	color	绿色	怎	final_non_gold	final_only	neither_sustained		20			28	False	False	True	42
+qwen3_0_6b	45	zh	attribute	sensory	taste	甜	怎	final_non_gold	final_before_gold	neither_sustained	27	24			28	True	False	False	42
+qwen3_0_6b	104	zh	attribute	visual	color	蓝色	怎	final_non_gold	final_only	neither_sustained		20			28	False	False	True	42
+qwen3_0_6b	99	zh	attribute	visual	color	白色	蓝色	final_non_gold	same_onset	same_onset	22	22	22	22	28	True	False	False	42
+qwen3_0_6b	17	zh	attribute	physical	hardness	硬	坚硬	final_non_gold	same_onset	same_onset	21	21	21	21	28	True	False	False	42
+qwen3_0_6b	25	zh	attribute	physical	hardness	硬	坚硬	final_non_gold	same_onset	same_onset	21	21	21	21	28	True	False	False	42
+qwen3_0_6b	237	zh	category	food_taxonomy	is_a	水果	水果	final_exact_gold	exact_gold_convergence	exact_gold_convergence	24	24	24	24	28	True	True	False	42
+qwen3_0_6b	176	zh	category	crime_taxonomy	is_a	犯罪	犯罪	final_exact_gold	exact_gold_convergence	exact_gold_convergence	23	23	23	23	27	True	False	False	42
+qwen3_0_6b	196	zh	category	device_taxonomy	is_a	设备	设备	final_exact_gold	exact_gold_convergence	exact_gold_convergence	16	16	16	16	21	True	False	False	42
+qwen3_0_6b	185	zh	category	crime_taxonomy	is_a	犯罪	非法	final_non_gold	final_before_gold	final_before_gold	22	21	22	21	28	True	False	False	42
+qwen3_0_6b	231	zh	category	emotion_taxonomy	is_a	情绪	心理	final_non_gold	final_before_gold	final_before_gold	25	21	25	21	26	True	False	False	42
+qwen3_0_6b	216	zh	category	disease_taxonomy	is_a	疾病	常见的	final_non_gold	final_before_gold	final_before_gold	22	3	22	3	17	True	False	False	42
+qwen3_0_6b	229	zh	category	emotion_taxonomy	is_a	情绪	现象	final_non_gold	final_only	final_sustained_gold_not_sustained		23		26	28	False	False	True	42
+qwen3_0_6b	169	zh	category	color_taxonomy	is_a	颜色	植物	final_non_gold	final_only	final_sustained_gold_not_sustained		22		22	23	False	False	True	42
+qwen3_0_6b	235	zh	category	food_taxonomy	is_a	水果	常见的	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	28	8		8	27	True	False	False	42
+qwen3_0_6b	206	zh	category	disease_taxonomy	is_a	疾病	常见的	final_non_gold	gold_before_final	gold_before_final	12	19	18	19	21	True	True	False	42
+qwen3_0_6b	192	zh	category	device_taxonomy	is_a	设备	计算	final_non_gold	gold_before_final	gold_before_final	21	24	21	24	28	True	False	False	42
+qwen3_0_6b	215	zh	category	disease_taxonomy	is_a	疾病	慢性	final_non_gold	gold_before_final	gold_before_final	12	23	12	23	28	True	True	False	42
+qwen3_0_6b	141	zh	category	animal_taxonomy	is_a	鱼	神话	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	23	27	23		28	True	False	False	42
+qwen3_0_6b	168	zh	category	color_taxonomy	is_a	颜色	哺乳	final_non_gold	final_only	neither_sustained		25			28	False	False	True	42
+qwen3_0_6b	183	zh	category	crime_taxonomy	is_a	犯罪	非法	final_non_gold	final_only	neither_sustained		28			28	False	False	True	42
+qwen3_0_6b	210	zh	category	disease_taxonomy	is_a	疾病	常见的	final_non_gold	same_onset	same_onset	19	19	19	19	19	True	False	False	42
+qwen3_0_6b	220	zh	category	disease_taxonomy	is_a	疾病	病毒	final_non_gold	same_onset	same_onset	22	22	22	22	26	True	True	False	42
+qwen3_0_6b	259	zh	category	plant_taxonomy	is_a	花	植物	final_non_gold	same_onset	same_onset	22	22	22	22	22	True	True	False	42
+qwen3_0_6b	330	zh	location	factual	capital_city	莫斯科	莫斯科	final_exact_gold	exact_gold_convergence	exact_gold_convergence	25	25	25	25	28	True	False	False	42
+qwen3_0_6b	351	zh	location	factual	country_of_city	俄罗斯	俄罗斯	final_exact_gold	exact_gold_convergence	exact_gold_convergence	23	23	23	23	27	True	False	False	42
+qwen3_0_6b	264	zh	location	commonsense	found_in_place	厨房	厨房	final_exact_gold	exact_gold_convergence	exact_gold_convergence	23	23	23	23	28	True	False	False	42
+qwen3_0_6b	269	zh	location	commonsense	found_in_place	教室	哪些	final_non_gold	final_before_gold	final_before_gold	23	20	23	20	23	True	False	False	42
+qwen3_0_6b	352	zh	location	factual	country_of_city	印度	哪个	final_non_gold	final_before_gold	final_before_gold	24	20	24	20	23	True	False	False	42
+qwen3_0_6b	325	zh	location	factual	capital_city	北京	____	final_non_gold	final_before_gold	final_before_gold	25	15	25	15	28	True	False	False	42
+qwen3_0_6b	267	zh	location	commonsense	found_in_place	办公室	哪些	final_non_gold	final_only	final_sustained_gold_not_sustained		20		20	23	False	False	True	42
+qwen3_0_6b	333	zh	location	factual	country_of_city	希腊	哪个	final_non_gold	final_only	final_sustained_gold_not_sustained		20		20	28	False	False	True	42
+qwen3_0_6b	304	zh	location	commonsense	stored_in	橱柜	哪里	final_non_gold	final_only	final_sustained_gold_not_sustained		1		20	28	False	False	True	42
+qwen3_0_6b	326	zh	location	factual	capital_city	巴黎	哪里	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	24	25	24		28	True	False	False	42
+qwen3_0_6b	331	zh	location	factual	capital_city	伦敦	哪里	final_non_gold	final_before_gold	gold_sustained_final_not_sustained	26	25	26		28	True	False	False	42
+qwen3_0_6b	328	zh	location	factual	capital_city	罗马	哪里	final_non_gold	final_before_gold	gold_sustained_final_not_sustained	26	23	26		28	True	False	False	42
+qwen3_0_6b	510	zh	material	traditional_material	traditionally_made_of	木材	木材	final_exact_gold	exact_gold_convergence	exact_gold_convergence	28	28			28	True	False	False	42
+qwen3_0_6b	445	zh	material	manufacturing_material	commonly_made_of	玻璃	玻璃	final_exact_gold	exact_gold_convergence	exact_gold_convergence	23	23	23	23	23	True	False	False	42
+qwen3_0_6b	484	zh	material	manufacturing_material	commonly_made_of	玻璃	玻璃	final_exact_gold	exact_gold_convergence	exact_gold_convergence	23	23	23	23	25	True	False	False	42
+qwen3_0_6b	401	zh	material	component_material	common_conductive_metal	铜	____	final_non_gold	final_before_gold	final_before_gold	25	11	25	14	16	True	False	False	42
+qwen3_0_6b	503	zh	material	raw_material	source_material	石油	____	final_non_gold	final_before_gold	final_before_gold	24	17	24	17	25	True	False	False	42
+qwen3_0_6b	451	zh	material	manufacturing_material	commonly_made_of	纸	____	final_non_gold	final_before_gold	final_before_gold	23	11	23	16	26	True	False	False	42
+qwen3_0_6b	403	zh	material	component_material	common_component	钢	____	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	26	11		15	17	True	True	False	42
+qwen3_0_6b	418	zh	material	ingredient	main_ingredient	面粉	____	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	28	16		16	27	True	False	False	42
+qwen3_0_6b	519	zh	material	traditional_material	traditionally_made_of	羊毛	____	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	28	11		15	17	True	False	False	42
+qwen3_0_6b	405	zh	material	dissolved_component	contains	盐	氯	final_non_gold	gold_before_final	gold_before_final	22	23	22	23	28	True	False	False	42
+qwen3_0_6b	439	zh	material	manufacturing_material	common_structural_material	混凝土	砂	final_non_gold	gold_before_final	gold_before_final	21	23	21	23	28	True	False	False	42
+qwen3_0_6b	407	zh	material	fiber_composition	common_fiber	棉	羊毛	final_non_gold	same_onset	gold_sustained_final_not_sustained	25	25	25		28	True	False	False	42
+qwen3_0_6b	422	zh	material	ingredient	common_ingredient	盐	辣椒	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	23	28	23		28	True	False	False	42
+qwen3_0_6b	482	zh	material	manufacturing_material	common_structural_material	混凝土	钢材	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	23	28	23		28	True	False	False	42
+qwen3_0_6b	516	zh	material	traditional_material	traditionally_made_of	石头	木材	final_non_gold	final_only	neither_sustained		28			28	False	False	True	42
+qwen3_0_6b	485	zh	material	manufacturing_material	commonly_made_of	皮革	不锈钢	final_non_gold	final_only	neither_sustained		26			28	False	False	True	42
+qwen3_0_6b	402	zh	material	component_material	common_component	塑料	不锈钢	final_non_gold	gold_before_final	neither_sustained	26	28			28	True	True	False	42
+qwen3_0_6b	489	zh	material	manufacturing_material	commonly_made_of	塑料	木材	final_non_gold	same_onset	same_onset	25	25	25	25	28	True	False	False	42
+qwen3_14b	94	en	attribute	visual	color	red	 red	final_exact_gold	exact_gold_convergence	exact_gold_convergence	30	30	30	30	33	True	False	False	42
+qwen3_14b	115	en	attribute	visual	color	yellow	 yellow	final_exact_gold	exact_gold_convergence	exact_gold_convergence	27	27	27	27	35	True	False	False	42
+qwen3_14b	89	en	attribute	visual	color	green	 green	final_exact_gold	exact_gold_convergence	exact_gold_convergence	34	34	34	34	36	True	False	False	42
+qwen3_14b	40	en	attribute	sensory	taste	sour	 described	final_non_gold	final_before_gold	final_before_gold	29	28	29	28	38	True	False	False	42
+qwen3_14b	41	en	attribute	sensory	taste	sour	 due	final_non_gold	final_before_gold	final_before_gold	32	29	32	29	40	True	False	False	42
+qwen3_14b	87	en	attribute	visual	color	green	 usually	final_non_gold	final_before_gold	final_before_gold	31	19	31	30	40	True	False	False	42
+qwen3_14b	80	en	attribute	visual	color	black	 a	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	39	38		38	40	True	True	False	42
+qwen3_14b	12	en	attribute	geometric	outline_shape	round	 represented	final_non_gold	final_only	final_sustained_gold_not_sustained		33		33	34	False	False	True	42
+qwen3_14b	15	en	attribute	geometric	surface_flatness	flat	 in	final_non_gold	final_only	final_sustained_gold_not_sustained		38		38	39	False	False	True	42
+qwen3_14b	47	en	attribute	sensory	taste	sweet	 a	final_non_gold	gold_before_final	gold_before_final	32	37	32	37	40	True	False	False	42
+qwen3_14b	104	en	attribute	visual	color	blue	 a	final_non_gold	gold_before_final	gold_before_final	31	38	31	38	40	True	False	False	42
+qwen3_14b	16	en	attribute	physical	hardness	hard	 rigid	final_non_gold	gold_before_final	gold_before_final	26	30	26	30	40	True	False	False	42
+qwen3_14b	64	en	attribute	tactile	softness	soft	 a	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	29	39	29		40	True	False	False	42
+qwen3_14b	129	en	attribute	visual	color	gray	 determined	final_non_gold	same_onset	same_onset	34	34	34	34	40	True	False	False	42
+qwen3_14b	50	en	attribute	sensory	taste	sweet	 described	final_non_gold	same_onset	same_onset	28	28	28	28	40	True	False	False	42
+qwen3_14b	44	en	attribute	sensory	taste	sweet	 described	final_non_gold	same_onset	same_onset	29	29	29	29	39	True	False	False	42
+qwen3_14b	178	en	category	crime_taxonomy	is_a	crime	 crime	final_exact_gold	exact_gold_convergence	exact_gold_convergence	29	29	29	29	36	True	False	False	42
+qwen3_14b	256	en	category	plant_taxonomy	is_a	flower	 flower	final_exact_gold	exact_gold_convergence	exact_gold_convergence	31	31	31	31	36	True	False	False	42
+qwen3_14b	174	en	category	color_taxonomy	is_a	color	 color	final_exact_gold	exact_gold_convergence	exact_gold_convergence	25	25	25	25	37	True	False	False	42
+qwen3_14b	231	en	category	emotion_taxonomy	is_a	emotion	 emotional	final_non_gold	final_before_gold	final_before_gold	34	33	34	33	39	True	False	False	42
+qwen3_14b	183	en	category	crime_taxonomy	is_a	crime	 corruption	final_non_gold	final_before_gold	final_before_gold	34	29	36	29	30	True	True	False	42
+qwen3_14b	243	en	category	food_taxonomy	is_a	vegetable	 plant	final_non_gold	final_before_gold	final_before_gold	30	25	30	28	38	True	True	False	42
+qwen3_14b	207	en	category	disease_taxonomy	is_a	disease	 acute	final_non_gold	gold_before_final	final_sustained_gold_not_sustained	30	37		37	38	True	True	False	42
+qwen3_14b	223	en	category	disease_taxonomy	is_a	disease	 skin	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	30	29		29	38	True	True	False	42
+qwen3_14b	220	en	category	disease_taxonomy	is_a	disease	 viral	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	39	29		29	33	True	False	False	42
+qwen3_14b	217	en	category	disease_taxonomy	is_a	disease	 infection	final_non_gold	same_onset	gold_before_final	29	29	29	32	37	True	True	False	42
+qwen3_14b	209	en	category	disease_taxonomy	is_a	disease	 infection	final_non_gold	gold_before_final	gold_before_final	29	32	29	32	38	True	True	False	42
+qwen3_14b	170	en	category	color_taxonomy	is_a	color	 red	final_non_gold	gold_before_final	gold_before_final	28	30	28	30	32	True	True	False	42
+qwen3_14b	191	en	category	device_taxonomy	is_a	device	 instrument	final_non_gold	same_onset	same_onset	29	29	29	29	36	True	True	False	42
+qwen3_14b	259	en	category	plant_taxonomy	is_a	flower	 flowering	final_non_gold	same_onset	same_onset	32	32	32	32	40	True	False	False	42
+qwen3_14b	199	en	category	device_taxonomy	is_a	device	 instrument	final_non_gold	same_onset	same_onset	29	29	29	29	36	True	False	False	42
+qwen3_14b	272	en	location	commonsense	found_in_place	gym	 gym	final_exact_gold	exact_gold_convergence	exact_gold_convergence	25	25	25	25	33	True	False	False	42
+qwen3_14b	328	en	location	factual	capital_city	Rome	 Rome	final_exact_gold	exact_gold_convergence	exact_gold_convergence	31	31	31	31	34	True	False	False	42
+qwen3_14b	332	en	location	factual	country_of_city	Netherlands	 Netherlands	final_exact_gold	exact_gold_convergence	exact_gold_convergence	26	26	26	26	26	True	False	False	42
+qwen3_14b	368	en	location	factual	country_of_city	Poland	 __	final_non_gold	final_before_gold	final_before_gold	33	30	33	30	37	True	True	False	42
+qwen3_14b	345	en	location	factual	country_of_city	Turkey	 __	final_non_gold	final_before_gold	final_before_gold	32	30	32	30	40	True	False	False	42
+qwen3_14b	281	en	location	commonsense	grows_in	garden	 field	final_non_gold	final_before_gold	final_before_gold	35	34	35	34	40	True	False	False	42
+qwen3_14b	278	en	location	commonsense	grows_in	forest	 variety	final_non_gold	final_only	final_sustained_gold_not_sustained		7		7	37	False	False	True	42
+qwen3_14b	305	en	location	commonsense	stored_in	bedroom	 drawer	final_non_gold	final_only	final_sustained_gold_not_sustained		29		29	34	False	False	True	42
+qwen3_14b	268	en	location	commonsense	found_in_place	classroom	 state	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	40	30		30	33	True	False	False	42
+qwen3_14b	386	en	location	factual	place_of_land	Rome	 __	final_non_gold	final_before_gold	gold_before_final	33	30	33	35	40	True	False	False	42
+qwen3_14b	372	en	location	factual	place_of_land	Berlin	 __	final_non_gold	gold_before_final	gold_before_final	33	37	33	37	39	True	True	False	42
+qwen3_14b	358	en	location	factual	country_of_city	Italy	 __	final_non_gold	final_before_gold	gold_before_final	31	30	31	35	40	True	False	False	42
+qwen3_14b	277	en	location	commonsense	grows_in	water	 which	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	35	39	38		40	True	True	False	42
+qwen3_14b	374	en	location	factual	place_of_land	London	 the	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	33	39	33		40	True	False	False	42
+qwen3_14b	310	en	location	commonsense	workplace	store	 retail	final_non_gold	same_onset	same_onset	32	32	32	32	40	True	False	False	42
+qwen3_14b	289	en	location	commonsense	habitat	sea	 ocean	final_non_gold	same_onset	same_onset	8	8	29	29	40	True	True	False	42
+qwen3_14b	307	en	location	commonsense	workplace	clinic	 dental	final_non_gold	same_onset	same_onset	33	33	33	33	39	True	False	False	42
+qwen3_14b	444	en	material	manufacturing_material	commonly_made_of	glass	 glass	final_exact_gold	exact_gold_convergence	exact_gold_convergence	14	14	14	14	35	True	True	False	42
+qwen3_14b	416	en	material	ingredient	common_ingredient	salt	 salt	final_exact_gold	exact_gold_convergence	exact_gold_convergence	29	29	29	29	31	True	False	False	42
+qwen3_14b	508	en	material	traditional_material	traditionally_made_of	copper	 copper	final_exact_gold	exact_gold_convergence	exact_gold_convergence	31	31	31	31	34	True	False	False	42
+qwen3_14b	433	en	material	intrinsic_composition	main_component	carbon	 __	final_non_gold	final_before_gold	final_before_gold	32	30	32	30	40	True	False	False	42
+qwen3_14b	428	en	material	intrinsic_composition	composed_of	carbon	 __	final_non_gold	final_before_gold	final_before_gold	33	30	33	30	40	True	False	False	42
+qwen3_14b	438	en	material	manufacturing_material	commonly_made_of	ceramic	 porcelain	final_non_gold	final_before_gold	final_before_gold	33	31	33	31	36	True	False	False	42
+qwen3_14b	494	en	material	physical_substance	substance_identity	air	 the	final_non_gold	gold_before_final	final_sustained_gold_not_sustained	36	37		37	40	True	True	False	42
+qwen3_14b	424	en	material	ingredient	main_liquid_ingredient	water	 ____	final_non_gold	final_only	final_sustained_gold_not_sustained		16		16	38	False	False	True	42
+qwen3_14b	505	en	material	traditional_material	traditionally_made_of	bronze	 	final_non_gold	gold_before_final	final_sustained_gold_not_sustained	37	38		38	39	False	True	False	42
+qwen3_14b	488	en	material	manufacturing_material	commonly_made_of	plastic	 a	final_non_gold	gold_before_final	gold_before_final	29	38	29	38	40	True	False	False	42
+qwen3_14b	405	en	material	dissolved_component	contains	salt	 sodium	final_non_gold	gold_before_final	gold_before_final	29	31	29	31	40	True	False	False	42
+qwen3_14b	423	en	material	ingredient	main_liquid_ingredient	water	 __	final_non_gold	final_before_gold	gold_before_final	31	28	33	37	39	True	True	False	42
+qwen3_14b	473	en	material	manufacturing_material	common_structural_material	concrete	:	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	32	39	32		40	True	False	False	42
+qwen3_14b	516	en	material	traditional_material	traditionally_made_of	stone	:	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	32	39	32		40	True	False	False	42
+qwen3_14b	402	en	material	component_material	common_component	plastic	"
+"	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	31	39	31		40	True	True	False	42
+qwen3_14b	457	en	material	manufacturing_material	commonly_made_of	rubber	 latex	final_non_gold	same_onset	same_onset	29	29	29	29	38	True	False	False	42
+qwen3_14b	467	en	material	manufacturing_material	commonly_made_of	aluminum	 copper	final_non_gold	gold_before_final	same_onset	29	31	31	31	39	True	True	False	42
+qwen3_14b	486	en	material	manufacturing_material	commonly_made_of	steel	 iron	final_non_gold	same_onset	same_onset	32	32	32	32	32	True	True	False	42
+qwen3_14b	93	zh	attribute	visual	color	红色	红色	final_exact_gold	exact_gold_convergence	exact_gold_convergence	30	30	30	30	39	True	False	False	42
+qwen3_14b	39	zh	attribute	sensory	taste	酸	酸	final_exact_gold	exact_gold_convergence	exact_gold_convergence	32	32	32	32	34	True	False	False	42
+qwen3_14b	49	zh	attribute	sensory	taste	甜	甜	final_exact_gold	exact_gold_convergence	exact_gold_convergence	30	30	30	30	31	True	False	False	42
+qwen3_14b	113	zh	attribute	visual	color	白色	白色的	final_non_gold	final_before_gold	final_before_gold	29	17	29	17	29	True	False	False	42
+qwen3_14b	13	zh	attribute	geometric	overall_shape	圆	球	final_non_gold	final_before_gold	final_before_gold	35	29	37	29	31	True	True	False	42
+qwen3_14b	74	zh	attribute	tactile	smoothness	光滑	柔软	final_non_gold	final_before_gold	final_before_gold	31	26	31	29	30	True	True	False	42
+qwen3_14b	11	zh	attribute	geometric	overall_shape	圆	怎	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	38	35		35	40	True	True	False	42
+qwen3_14b	1	zh	attribute	geometric	surface_flatness	平坦	水平	final_non_gold	gold_before_final	final_sustained_gold_not_sustained	31	35		35	40	True	True	False	42
+qwen3_14b	14	zh	attribute	geometric	outline_shape	圆形	圆	final_non_gold	gold_before_final	gold_before_final	15	29	18	29	39	True	True	False	42
+qwen3_14b	90	zh	attribute	visual	color	紫色	深	final_non_gold	gold_before_final	gold_before_final	30	35	30	35	39	True	False	False	42
+qwen3_14b	101	zh	attribute	visual	color	黄色	淡	final_non_gold	gold_before_final	gold_before_final	30	36	30	36	39	True	False	False	42
+qwen3_14b	78	zh	attribute	tactile	softness	柔软	____	final_non_gold	same_onset	gold_sustained_final_not_sustained	26	26	26		39	True	False	False	42
+qwen3_14b	8	zh	attribute	geometric	overall_shape	圆	____	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	35	39	35		40	True	False	False	42
+qwen3_14b	107	zh	attribute	visual	color	灰色	____	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	32	39	32		40	True	False	False	42
+qwen3_14b	15	zh	attribute	geometric	surface_flatness	平坦	用	final_non_gold	final_only	neither_sustained		39			40	False	False	True	42
+qwen3_14b	66	zh	attribute	tactile	stickiness	黏	粘	final_non_gold	same_onset	same_onset	29	29	29	29	39	True	False	False	42
+qwen3_14b	71	zh	attribute	tactile	stickiness	黏	粘	final_non_gold	gold_before_final	same_onset	27	29	29	29	39	True	True	False	42
+qwen3_14b	77	zh	attribute	tactile	stickiness	黏	粘	final_non_gold	gold_before_final	same_onset	27	29	29	29	40	True	True	False	42
+qwen3_14b	236	zh	category	food_taxonomy	is_a	水果	水果	final_exact_gold	exact_gold_convergence	exact_gold_convergence	32	32	32	32	40	True	False	False	42
+qwen3_14b	158	zh	category	chemical_element_taxonomy	is_a	元素	元素	final_exact_gold	exact_gold_convergence	exact_gold_convergence	30	30	30	30	32	True	False	False	42
+qwen3_14b	167	zh	category	color_taxonomy	is_a	颜色	颜色	final_exact_gold	exact_gold_convergence	exact_gold_convergence	12	12	12	12	33	True	False	False	42
+qwen3_14b	135	zh	category	animal_taxonomy	is_a	鸟	常见的	final_non_gold	final_before_gold	final_before_gold	35	16	35	16	39	True	False	False	42
+qwen3_14b	199	zh	category	device_taxonomy	is_a	设备	工具	final_non_gold	final_before_gold	final_before_gold	29	21	29	21	37	True	True	False	42
+qwen3_14b	226	zh	category	emotion_taxonomy	is_a	情绪	感觉	final_non_gold	final_before_gold	final_before_gold	34	30	36	30	38	True	True	False	42
+qwen3_14b	257	zh	category	plant_taxonomy	is_a	花	常见的	final_non_gold	final_only	final_sustained_gold_not_sustained		26		26	29	False	False	True	42
+qwen3_14b	138	zh	category	animal_taxonomy	is_a	鸟	优雅	final_non_gold	final_only	final_sustained_gold_not_sustained		32		32	34	False	False	True	42
+qwen3_14b	253	zh	category	plant_taxonomy	is_a	花	多年	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	39	33		33	39	True	False	False	42
+qwen3_14b	250	zh	category	instrument_taxonomy	is_a	乐器	弦	final_non_gold	gold_before_final	gold_before_final	14	33	29	33	40	True	True	False	42
+qwen3_14b	146	zh	category	animal_taxonomy	is_a	昆虫	社会	final_non_gold	final_before_gold	gold_before_final	31	12	31	37	40	True	False	False	42
+qwen3_14b	227	zh	category	emotion_taxonomy	is_a	情绪	复杂	final_non_gold	gold_before_final	gold_before_final	15	31	17	31	39	True	True	False	42
+qwen3_14b	210	zh	category	disease_taxonomy	is_a	疾病	由	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	30	39	30		40	False	True	False	42
+qwen3_14b	206	zh	category	disease_taxonomy	is_a	疾病	由	final_non_gold	gold_before_final	neither_sustained	33	39			40	False	True	False	42
+qwen3_14b	214	zh	category	disease_taxonomy	is_a	疾病	因	final_non_gold	final_only	neither_sustained		39			40	False	False	True	42
+qwen3_14b	218	zh	category	disease_taxonomy	is_a	疾病	由	final_non_gold	final_only	neither_sustained		39			39	False	False	True	42
+qwen3_14b	176	zh	category	crime_taxonomy	is_a	犯罪	严重的	final_non_gold	final_before_gold	same_onset	28	22	28	28	38	True	False	False	42
+qwen3_14b	330	zh	location	factual	capital_city	莫斯科	莫斯科	final_exact_gold	exact_gold_convergence	exact_gold_convergence	32	32	32	32	32	True	False	False	42
+qwen3_14b	262	zh	location	commonsense	found_in_place	办公室	办公室	final_exact_gold	exact_gold_convergence	exact_gold_convergence	27	27	27	27	30	True	False	False	42
+qwen3_14b	264	zh	location	commonsense	found_in_place	厨房	厨房	final_exact_gold	exact_gold_convergence	exact_gold_convergence	27	27	27	27	30	True	False	False	42
+qwen3_14b	337	zh	location	factual	country_of_city	德国	哪个	final_non_gold	final_before_gold	final_before_gold	30	14	30	26	38	True	False	False	42
+qwen3_14b	292	zh	location	commonsense	habitat	森林	亚洲	final_non_gold	final_before_gold	final_before_gold	34	29	37	32	36	True	True	False	42
+qwen3_14b	271	zh	location	commonsense	found_in_place	浴室	哪个	final_non_gold	final_before_gold	final_before_gold	29	26	31	26	40	True	True	False	42
+qwen3_14b	358	zh	location	factual	country_of_city	意大利	哪个	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	39	31		31	39	True	False	False	42
+qwen3_14b	287	zh	location	commonsense	habitat	河流	哪些	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	37	31		31	39	True	True	False	42
+qwen3_14b	316	zh	location	commonsense	stored_in	橱柜	哪种	final_non_gold	final_only	final_sustained_gold_not_sustained		19		23	39	False	False	True	42
+qwen3_14b	318	zh	location	commonsense	habitat	河流	哪些	final_non_gold	gold_before_final	gold_before_final	29	30	29	30	39	True	False	False	42
+qwen3_14b	334	zh	location	factual	country_of_city	泰国	____	final_non_gold	gold_before_final	gold_before_final	32	38	32	38	40	True	False	False	42
+qwen3_14b	351	zh	location	factual	country_of_city	俄罗斯	____	final_non_gold	gold_before_final	gold_before_final	31	37	31	37	39	True	False	False	42
+qwen3_14b	382	zh	location	factual	place_of_land	东京	"？
+"	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	32	39	32		40	True	False	False	42
+qwen3_14b	379	zh	location	factual	place_of_land	莫斯科	____	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	32	39	32		40	True	False	False	42
+qwen3_14b	386	zh	location	factual	place_of_land	罗马	____	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	33	39	33		40	True	False	False	42
+qwen3_14b	279	zh	location	commonsense	grows_in	河流	什么	final_non_gold	final_only	neither_sustained		39			40	False	False	True	42
+qwen3_14b	278	zh	location	commonsense	grows_in	森林	什么	final_non_gold	final_only	neither_sustained		31			40	False	False	True	42
+qwen3_14b	276	zh	location	commonsense	grows_in	农场	什么	final_non_gold	final_only	neither_sustained		39			40	False	False	True	42
+qwen3_14b	293	zh	location	commonsense	habitat	河流	清澈	final_non_gold	final_before_gold	same_onset	32	30	32	32	33	True	True	False	42
+qwen3_14b	503	zh	material	raw_material	source_material	石油	石油	final_exact_gold	exact_gold_convergence	exact_gold_convergence	31	31	31	31	36	True	False	False	42
+qwen3_14b	390	zh	material	component_material	common_component	玻璃	玻璃	final_exact_gold	exact_gold_convergence	exact_gold_convergence	29	29	29	29	40	True	False	False	42
+qwen3_14b	412	zh	material	ingredient	main_ingredient	面粉	面粉	final_exact_gold	exact_gold_convergence	exact_gold_convergence	29	29	29	29	31	True	False	False	42
+qwen3_14b	401	zh	material	component_material	common_conductive_metal	铜	____	final_non_gold	final_before_gold	final_before_gold	31	26	31	30	40	True	False	False	42
+qwen3_14b	434	zh	material	intrinsic_composition	central_metal	铁	____	final_non_gold	final_before_gold	final_before_gold	32	20	32	28	40	True	False	False	42
+qwen3_14b	471	zh	material	manufacturing_material	commonly_made_of	陶瓷	陶	final_non_gold	final_before_gold	final_before_gold	34	32	34	32	34	True	True	False	42
+qwen3_14b	486	zh	material	manufacturing_material	commonly_made_of	钢	____	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	36	30		37	40	True	True	False	42
+qwen3_14b	459	zh	material	manufacturing_material	commonly_made_of	钢	不锈钢	final_non_gold	final_only	final_sustained_gold_not_sustained		30		30	40	False	False	True	42
+qwen3_14b	490	zh	material	manufacturing_material	commonly_made_of	钢	____	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	35	20		29	37	True	True	False	42
+qwen3_14b	408	zh	material	fiber_material	common_fiber	羊毛	____	final_non_gold	gold_before_final	gold_before_final	30	37	30	37	39	True	True	False	42
+qwen3_14b	484	zh	material	manufacturing_material	commonly_made_of	玻璃	____	final_non_gold	gold_before_final	gold_before_final	29	37	29	37	39	True	False	False	42
+qwen3_14b	466	zh	material	manufacturing_material	commonly_made_of	铝	____	final_non_gold	same_onset	gold_before_final	31	31	31	37	40	True	False	False	42
+qwen3_14b	452	zh	material	manufacturing_material	commonly_made_of	纸	____	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	29	39	29		39	True	False	False	42
+qwen3_14b	464	zh	material	manufacturing_material	commonly_made_of	木材	____	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	29	39	29		39	False	True	False	42
+qwen3_14b	513	zh	material	traditional_material	common_material	木材	____	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	27	39	27		40	True	True	False	42
+qwen3_14b	436	zh	material	manufacturing_material	commonly_made_of	铝	____	final_non_gold	same_onset	same_onset	29	29	29	29	40	True	False	False	42
+qwen3_14b	450	zh	material	manufacturing_material	commonly_made_of	纸	____	final_non_gold	final_before_gold	same_onset	29	26	29	29	39	True	True	False	42
+qwen3_14b	404	zh	material	component_material	common_component	钢	碳	final_non_gold	same_onset	same_onset	35	35	35	35	37	True	True	False	42
+qwen3_4b	129	en	attribute	visual	color	gray	 gray	final_exact_gold	exact_gold_convergence	exact_gold_convergence	27	27	27	27	36	True	False	False	42
+qwen3_4b	41	en	attribute	sensory	taste	sour	 sour	final_exact_gold	exact_gold_convergence	exact_gold_convergence	29	29	29	29	35	True	False	False	42
+qwen3_4b	16	en	attribute	physical	hardness	hard	 hard	final_exact_gold	exact_gold_convergence	exact_gold_convergence	27	27	27	27	32	True	False	False	42
+qwen3_4b	59	en	attribute	sensory	taste	bitter	 often	final_non_gold	final_before_gold	final_before_gold	28	14	28	16	32	True	False	False	42
+qwen3_4b	11	en	attribute	geometric	overall_shape	round	 spherical	final_non_gold	final_before_gold	final_before_gold	29	27	29	27	28	True	False	False	42
+qwen3_4b	40	en	attribute	sensory	taste	sour	 described	final_non_gold	final_before_gold	final_before_gold	28	23	30	23	29	True	True	False	42
+qwen3_4b	65	en	attribute	tactile	softness	soft	 described	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	32	24		24	33	True	True	False	42
+qwen3_4b	42	en	attribute	sensory	taste	spicy	 described	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	36	22		22	30	True	False	False	42
+qwen3_4b	5	en	attribute	geometric	outline_shape	round	 a	final_non_gold	final_only	final_sustained_gold_not_sustained		30		30	34	False	False	True	42
+qwen3_4b	83	en	attribute	visual	color	brown	 a	final_non_gold	gold_before_final	gold_before_final	28	34	28	34	36	True	False	False	42
+qwen3_4b	126	en	attribute	visual	color	red	 a	final_non_gold	gold_before_final	gold_before_final	27	34	27	34	36	True	False	False	42
+qwen3_4b	47	en	attribute	sensory	taste	sweet	 a	final_non_gold	gold_before_final	gold_before_final	28	34	28	34	36	True	False	False	42
+qwen3_4b	56	en	attribute	sensory	taste	sweet	 a	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	28	35	30		36	True	True	False	42
+qwen3_4b	99	en	attribute	visual	color	white	 a	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	30	35	30		36	True	True	False	42
+qwen3_4b	69	en	attribute	tactile	smoothness	smooth	 a	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	30	35	30		36	True	False	False	42
+qwen3_4b	80	en	attribute	visual	color	black	 not	final_non_gold	final_only	neither_sustained		35			36	False	False	True	42
+qwen3_4b	64	en	attribute	tactile	softness	soft	 a	final_non_gold	gold_before_final	neither_sustained	32	35			36	True	True	False	42
+qwen3_4b	43	en	attribute	sensory	taste	spicy	 a	final_non_gold	final_only	neither_sustained		35			36	False	False	True	42
+qwen3_4b	116	en	attribute	visual	color	yellow	 determined	final_non_gold	same_onset	same_onset	31	31	31	31	36	True	False	False	42
+qwen3_4b	121	en	attribute	visual	color	black	 dark	final_non_gold	gold_before_final	same_onset	28	30	30	30	32	True	True	False	42
+qwen3_4b	219	en	category	disease_taxonomy	is_a	disease	 disease	final_exact_gold	exact_gold_convergence	exact_gold_convergence	24	24	24	24	34	True	True	False	42
+qwen3_4b	235	en	category	food_taxonomy	is_a	fruit	 fruit	final_exact_gold	exact_gold_convergence	exact_gold_convergence	11	11	24	24	28	True	True	False	42
+qwen3_4b	226	en	category	emotion_taxonomy	is_a	emotion	 emotion	final_exact_gold	exact_gold_convergence	exact_gold_convergence	28	28	28	28	36	True	False	False	42
+qwen3_4b	252	en	category	plant_taxonomy	is_a	flower	 plant	final_non_gold	final_before_gold	final_before_gold	25	15	27	24	33	True	True	False	42
+qwen3_4b	246	en	category	instrument_taxonomy	is_a	instrument	 musical	final_non_gold	final_before_gold	final_before_gold	25	10	25	10	34	True	False	False	42
+qwen3_4b	247	en	category	instrument_taxonomy	is_a	instrument	 musical	final_non_gold	final_before_gold	final_before_gold	24	10	24	10	33	True	False	False	42
+qwen3_4b	167	en	category	color_taxonomy	is_a	color	 cloud	final_non_gold	final_only	final_sustained_gold_not_sustained		15		15	28	False	False	True	42
+qwen3_4b	141	en	category	animal_taxonomy	is_a	fish	 line	final_non_gold	final_only	final_sustained_gold_not_sustained		29		29	34	False	False	True	42
+qwen3_4b	170	en	category	color_taxonomy	is_a	color	 red	final_non_gold	gold_before_final	gold_before_final	9	26	12	26	33	True	True	False	42
+qwen3_4b	228	en	category	emotion_taxonomy	is_a	emotion	 basic	final_non_gold	gold_before_final	gold_before_final	24	32	24	32	36	True	False	False	42
+qwen3_4b	223	en	category	disease_taxonomy	is_a	disease	 skin	final_non_gold	gold_before_final	gold_before_final	24	28	24	28	36	True	True	False	42
+qwen3_4b	212	en	category	disease_taxonomy	is_a	disease	 chronic	final_non_gold	same_onset	same_onset	24	24	27	27	29	True	True	False	42
+qwen3_4b	216	en	category	disease_taxonomy	is_a	disease	 chronic	final_non_gold	same_onset	same_onset	24	24	24	24	34	True	False	False	42
+qwen3_4b	217	en	category	disease_taxonomy	is_a	disease	 infection	final_non_gold	same_onset	same_onset	24	24	24	24	32	True	True	False	42
+qwen3_4b	288	en	location	commonsense	habitat	water	 water	final_exact_gold	exact_gold_convergence	exact_gold_convergence	12	12	14	14	28	True	True	False	42
+qwen3_4b	312	en	location	commonsense	workplace	laboratory	 laboratory	final_exact_gold	exact_gold_convergence	exact_gold_convergence	25	25	27	27	28	True	True	False	42
+qwen3_4b	269	en	location	commonsense	found_in_place	classroom	 classroom	final_exact_gold	exact_gold_convergence	exact_gold_convergence	25	25	25	25	33	True	False	False	42
+qwen3_4b	361	en	location	factual	country_of_city	Australia	 known	final_non_gold	gold_before_final	final_before_gold	26	30	31	30	35	True	True	False	42
+qwen3_4b	301	en	location	commonsense	stored_in	fridge	 refrigerator	final_non_gold	final_before_gold	final_before_gold	27	26	27	26	35	True	False	False	42
+qwen3_4b	365	en	location	factual	country_of_city	Canada	 known	final_non_gold	final_before_gold	final_before_gold	31	30	31	30	35	True	True	False	42
+qwen3_4b	352	en	location	factual	country_of_city	India	 known	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	32	28		30	30	True	True	False	42
+qwen3_4b	349	en	location	factual	country_of_city	Italy	 known	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	32	27		30	36	True	True	False	42
+qwen3_4b	323	en	location	commonsense	workplace	clinic	(n	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	31	28		28	36	True	True	False	42
+qwen3_4b	295	en	location	commonsense	habitat	river	 lake	final_non_gold	gold_before_final	gold_before_final	27	28	27	28	32	True	False	False	42
+qwen3_4b	282	en	location	commonsense	grows_in	farm	 large	final_non_gold	final_before_gold	gold_before_final	25	20	25	26	34	True	False	False	42
+qwen3_4b	309	en	location	commonsense	workplace	hospital	(n	final_non_gold	same_onset	gold_before_final	28	28	28	33	36	True	False	False	42
+qwen3_4b	388	en	location	factual	place_of_land	Japan	 the	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	18	35	30		36	True	True	False	42
+qwen3_4b	314	en	location	commonsense	workplace	theater	(n	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	29	35	29		36	True	False	False	42
+qwen3_4b	363	en	location	factual	country_of_city	Japan	 the	final_non_gold	gold_before_final	neither_sustained	18	35			36	False	True	False	42
+qwen3_4b	322	en	location	commonsense	workplace	kitchen	 bakery	final_non_gold	same_onset	same_onset	30	30	30	30	36	True	False	False	42
+qwen3_4b	281	en	location	commonsense	grows_in	garden	 field	final_non_gold	same_onset	same_onset	28	28	28	28	36	True	False	False	42
+qwen3_4b	467	en	material	manufacturing_material	commonly_made_of	aluminum	 aluminum	final_exact_gold	exact_gold_convergence	exact_gold_convergence	9	9	27	27	29	True	True	False	42
+qwen3_4b	512	en	material	traditional_material	traditionally_made_of	wood	 wood	final_exact_gold	exact_gold_convergence	exact_gold_convergence	19	19	25	25	29	True	True	False	42
+qwen3_4b	498	en	material	physical_substance	composed_of	water	 water	final_exact_gold	exact_gold_convergence	exact_gold_convergence	29	29	31	31	35	True	True	False	42
+qwen3_4b	424	en	material	ingredient	main_liquid_ingredient	water	 __	final_non_gold	final_before_gold	final_before_gold	28	23	28	23	35	True	False	False	42
+qwen3_4b	418	en	material	ingredient	main_ingredient	flour	 a	final_non_gold	final_before_gold	final_before_gold	30	26	30	26	35	True	True	False	42
+qwen3_4b	401	en	material	component_material	common_conductive_metal	copper	 __	final_non_gold	final_before_gold	final_before_gold	31	21	31	21	35	True	False	False	42
+qwen3_4b	460	en	material	manufacturing_material	commonly_made_of	steel	 __	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	32	25		25	35	True	True	False	42
+qwen3_4b	449	en	material	manufacturing_material	commonly_made_of	paper	 a	final_non_gold	final_only	final_sustained_gold_not_sustained		32		34	35	False	False	True	42
+qwen3_4b	486	en	material	manufacturing_material	commonly_made_of	steel	 an	final_non_gold	gold_before_final	final_sustained_gold_not_sustained	32	34		34	36	False	True	False	42
+qwen3_4b	440	en	material	manufacturing_material	commonly_made_of	concrete	 a	final_non_gold	gold_before_final	gold_before_final	31	34	31	34	36	True	True	False	42
+qwen3_4b	488	en	material	manufacturing_material	commonly_made_of	plastic	 a	final_non_gold	gold_before_final	gold_before_final	13	34	29	34	36	False	True	False	42
+qwen3_4b	514	en	material	traditional_material	traditionally_made_of	wood	 spr	final_non_gold	gold_before_final	gold_before_final	24	33	24	33	34	True	True	False	42
+qwen3_4b	408	en	material	fiber_material	common_fiber	wool	 	final_non_gold	final_before_gold	gold_sustained_final_not_sustained	12	0	29		36	True	True	False	42
+qwen3_4b	445	en	material	manufacturing_material	commonly_made_of	glass	 a	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	27	35	29		35	True	True	False	42
+qwen3_4b	484	en	material	manufacturing_material	commonly_made_of	glass	 a	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	10	35	10		36	True	True	False	42
+qwen3_4b	477	en	material	manufacturing_material	commonly_made_of	rubber	 a	final_non_gold	final_only	neither_sustained		35			36	False	False	True	42
+qwen3_4b	507	en	material	traditional_material	traditionally_made_of	paper	 a	final_non_gold	gold_before_final	neither_sustained	31	35			36	False	True	False	42
+qwen3_4b	396	en	material	component_material	common_component	steel	 a	final_non_gold	gold_before_final	neither_sustained	31	35			36	False	True	False	42
+qwen3_4b	404	en	material	component_material	common_component	steel	 iron	final_non_gold	same_onset	same_onset	29	29	29	29	33	True	False	False	42
+qwen3_4b	510	en	material	traditional_material	traditionally_made_of	wood	 being	final_non_gold	same_onset	same_onset	30	30	30	30	36	True	True	False	42
+qwen3_4b	416	en	material	ingredient	common_ingredient	salt	 sodium	final_non_gold	same_onset	same_onset	27	27	27	27	33	True	False	False	42
+qwen3_4b	124	zh	attribute	visual	color	绿色	绿色	final_exact_gold	exact_gold_convergence	exact_gold_convergence	24	24	24	24	27	True	False	False	42
+qwen3_4b	61	zh	attribute	tactile	roughness	粗糙	粗糙	final_exact_gold	exact_gold_convergence	exact_gold_convergence	27	27	27	27	30	True	False	False	42
+qwen3_4b	92	zh	attribute	visual	color	红色	红色	final_exact_gold	exact_gold_convergence	exact_gold_convergence	24	24	24	24	26	True	False	False	42
+qwen3_4b	40	zh	attribute	sensory	taste	酸	苦	final_non_gold	final_before_gold	final_before_gold	30	27	30	27	29	True	True	False	42
+qwen3_4b	114	zh	attribute	visual	color	黄色	____	final_non_gold	final_before_gold	final_before_gold	24	6	24	19	35	True	False	False	42
+qwen3_4b	63	zh	attribute	tactile	smoothness	光滑	柔软	final_non_gold	final_before_gold	final_before_gold	27	24	30	24	32	True	True	False	42
+qwen3_4b	1	zh	attribute	geometric	surface_flatness	平坦	长	final_non_gold	final_only	final_sustained_gold_not_sustained		31		31	33	False	False	True	42
+qwen3_4b	42	zh	attribute	sensory	taste	辣	____	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	31	23		23	35	False	True	False	42
+qwen3_4b	100	zh	attribute	visual	color	白色	蓝色	final_non_gold	gold_before_final	final_sustained_gold_not_sustained	26	27		27	30	True	True	False	42
+qwen3_4b	3	zh	attribute	geometric	overall_shape	圆	球	final_non_gold	gold_before_final	gold_before_final	22	28	24	28	36	True	True	False	42
+qwen3_4b	99	zh	attribute	visual	color	白色	黄色	final_non_gold	gold_before_final	gold_before_final	11	24	11	24	29	True	True	False	42
+qwen3_4b	9	zh	attribute	geometric	overall_shape	圆	球	final_non_gold	gold_before_final	gold_before_final	20	28	20	28	36	True	True	False	42
+qwen3_4b	59	zh	attribute	sensory	taste	苦	甜	final_non_gold	same_onset	same_onset	28	28	28	28	30	True	False	False	42
+qwen3_4b	72	zh	attribute	tactile	stickiness	黏	粘	final_non_gold	same_onset	same_onset	27	27	27	27	30	True	False	False	42
+qwen3_4b	85	zh	attribute	visual	color	灰色	灰	final_non_gold	same_onset	same_onset	27	27	27	27	33	True	False	False	42
+qwen3_4b	184	zh	category	crime_taxonomy	is_a	犯罪	犯罪	final_exact_gold	exact_gold_convergence	exact_gold_convergence	24	24	24	24	30	True	False	False	42
+qwen3_4b	177	zh	category	crime_taxonomy	is_a	犯罪	犯罪	final_exact_gold	exact_gold_convergence	exact_gold_convergence	7	7	7	7	30	True	True	False	42
+qwen3_4b	174	zh	category	color_taxonomy	is_a	颜色	颜色	final_exact_gold	exact_gold_convergence	exact_gold_convergence	10	10	23	23	23	True	True	False	42
+qwen3_4b	137	zh	category	animal_taxonomy	is_a	鸟	常见的	final_non_gold	final_before_gold	final_before_gold	29	11	29	11	31	True	False	False	42
+qwen3_4b	217	zh	category	disease_taxonomy	is_a	疾病	严重的	final_non_gold	gold_before_final	final_before_gold	8	15	27	15	35	True	True	False	42
+qwen3_4b	186	zh	category	crime_taxonomy	is_a	犯罪	特殊的	final_non_gold	final_before_gold	final_before_gold	33	23	33	23	36	True	True	False	42
+qwen3_4b	245	zh	category	food_taxonomy	is_a	蔬菜	常见的	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	36	12		12	23	True	False	False	42
+qwen3_4b	212	zh	category	disease_taxonomy	is_a	疾病	慢性	final_non_gold	final_only	final_sustained_gold_not_sustained		28		28	32	False	False	True	42
+qwen3_4b	183	zh	category	crime_taxonomy	is_a	犯罪	腐败	final_non_gold	final_only	final_sustained_gold_not_sustained		30		30	36	False	False	True	42
+qwen3_4b	227	zh	category	emotion_taxonomy	is_a	情绪	复杂	final_non_gold	gold_before_final	gold_before_final	9	28	11	28	36	True	True	False	42
+qwen3_4b	215	zh	category	disease_taxonomy	is_a	疾病	慢性	final_non_gold	gold_before_final	gold_before_final	26	30	26	30	36	True	False	False	42
+qwen3_4b	226	zh	category	emotion_taxonomy	is_a	情绪	主观	final_non_gold	final_before_gold	gold_before_final	29	27	29	30	35	True	False	False	42
+qwen3_4b	130	zh	category	anatomy_taxonomy	is_a	器官	气体	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	8	32	23		36	True	True	False	42
+qwen3_4b	198	zh	category	device_taxonomy	is_a	设备	工具	final_non_gold	same_onset	same_onset	25	25	25	25	34	True	False	False	42
+qwen3_4b	138	zh	category	animal_taxonomy	is_a	鸟	鸟类	final_non_gold	same_onset	same_onset	29	29	29	29	30	True	False	False	42
+qwen3_4b	255	zh	category	plant_taxonomy	is_a	花	多年	final_non_gold	same_onset	same_onset	30	30	30	30	35	True	False	False	42
+qwen3_4b	262	zh	location	commonsense	found_in_place	办公室	办公室	final_exact_gold	exact_gold_convergence	exact_gold_convergence	13	13	25	25	28	True	True	False	42
+qwen3_4b	363	zh	location	factual	country_of_city	日本	日本	final_exact_gold	exact_gold_convergence	exact_gold_convergence	28	28	28	28	30	True	False	False	42
+qwen3_4b	271	zh	location	commonsense	found_in_place	浴室	浴室	final_exact_gold	exact_gold_convergence	exact_gold_convergence	33	33			36	True	True	False	42
+qwen3_4b	373	zh	location	factual	place_of_land	伦敦	哪里	final_non_gold	final_before_gold	final_before_gold	30	23	30	23	36	True	False	False	42
+qwen3_4b	342	zh	location	factual	country_of_city	德国	____	final_non_gold	final_before_gold	final_before_gold	29	19	29	19	35	True	False	False	42
+qwen3_4b	370	zh	location	factual	place_of_land	柬埔寨	哪个	final_non_gold	final_before_gold	final_before_gold	32	10	32	16	36	True	True	False	42
+qwen3_4b	317	zh	location	commonsense	grows_in	农场	什么	final_non_gold	final_only	final_sustained_gold_not_sustained		27		33	36	False	False	True	42
+qwen3_4b	303	zh	location	commonsense	stored_in	橱柜	哪里	final_non_gold	final_only	final_sustained_gold_not_sustained		24		24	26	False	False	True	42
+qwen3_4b	305	zh	location	commonsense	stored_in	卧室	哪里	final_non_gold	final_only	final_sustained_gold_not_sustained		21		21	33	False	False	True	42
+qwen3_4b	274	zh	location	commonsense	grows_in	沙漠	干旱	final_non_gold	gold_before_final	gold_before_final	12	13	12	24	36	True	True	False	42
+qwen3_4b	429	zh	material	intrinsic_composition	main_component	铁	铁	final_exact_gold	exact_gold_convergence	exact_gold_convergence	28	28	28	28	30	True	False	False	42
+qwen3_4b	501	zh	material	physical_substance	main_liquid	水	水	final_exact_gold	exact_gold_convergence	exact_gold_convergence	25	25	25	25	29	True	False	False	42
+qwen3_4b	515	zh	material	traditional_material	traditionally_made_of	皮革	皮革	final_exact_gold	exact_gold_convergence	exact_gold_convergence	28	28	28	28	36	True	False	False	42
+qwen3_4b	469	zh	material	manufacturing_material	commonly_made_of	陶瓷	____	final_non_gold	final_before_gold	final_before_gold	27	19	27	19	35	True	True	False	42
+qwen3_4b	455	zh	material	manufacturing_material	commonly_made_of	塑料	____	final_non_gold	final_before_gold	final_before_gold	17	16	30	18	36	True	True	False	42
+qwen3_4b	395	zh	material	component_material	main_component	橡胶	____	final_non_gold	final_before_gold	final_before_gold	27	19	27	19	36	True	False	False	42
+qwen3_4b	490	zh	material	manufacturing_material	commonly_made_of	钢	____	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	31	11		14	18	True	True	False	42
+qwen3_4b	485	zh	material	manufacturing_material	commonly_made_of	皮革	____	final_non_gold	final_only	final_sustained_gold_not_sustained		16		19	35	False	False	True	42
+qwen3_4b	459	zh	material	manufacturing_material	commonly_made_of	钢	____	final_non_gold	final_before_gold	final_sustained_gold_not_sustained	32	11		14	33	True	True	False	42
+qwen3_4b	405	zh	material	dissolved_component	contains	盐	氯	final_non_gold	gold_before_final	gold_before_final	27	30	27	32	34	True	False	False	42
+qwen3_4b	516	zh	material	traditional_material	traditionally_made_of	石头	石	final_non_gold	gold_before_final	gold_before_final	27	28	27	28	36	True	False	False	42
+qwen3_4b	423	zh	material	ingredient	main_liquid_ingredient	水	茶	final_non_gold	gold_before_final	gold_before_final	28	30	28	30	34	True	False	False	42
+qwen3_4b	434	zh	material	intrinsic_composition	central_metal	铁	"
+"	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	30	35	30		36	True	False	False	42
+qwen3_4b	431	zh	material	intrinsic_composition	composed_of	木材	（	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	30	35	30		36	False	True	False	42
+qwen3_4b	504	zh	material	raw_material	source_material	石油	？	final_non_gold	gold_before_final	gold_sustained_final_not_sustained	29	35	29		36	True	False	False	42

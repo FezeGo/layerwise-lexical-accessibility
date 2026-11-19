@@ -1,0 +1,35 @@
+{
+  "analysis": "translation_equivalent_accessibility_under_chinese_prompt",
+  "model_key": "qwen3_0_6b",
+  "model_name": "Qwen/Qwen3-0.6B",
+  "alignment_path": "/content/drive/MyDrive/thesis/data/alignment/full/qwen3_0_6b/token_alignment.jsonl",
+  "output_dir": "/content/drive/MyDrive/thesis/data/logit_lens/translation_equivalent/qwen3_0_6b",
+  "num_complete_en_zh_pairs": 520,
+  "num_chinese_prompts_run": 520,
+  "num_layer_rows": 15080,
+  "num_rejected": 0,
+  "num_invalid_translation_equivalent_tokens": 0,
+  "english_equivalent_definition": "The paired English gold target_token_id from the same model's canonical alignment row is tracked under the Chinese prompt.",
+  "single_token_validation": "Checks that the paired English target_token_id is in vocabulary, is the next token at the stored English prediction position, and matches any explicit one-token target-span field when available.",
+  "projection": {
+    "apply_final_norm": true,
+    "final_layer_uses_outputs_logits": true,
+    "rank_definition": "1 + number of vocabulary logits strictly greater than the tracked token logit",
+    "top_k": 10,
+    "topk_membership_uses_actual_torch_topk": true,
+    "compute_prob": true,
+    "store_topk": true
+  },
+  "counts_by_semantic_group": {
+    "attribute": 130,
+    "category": 130,
+    "location": 130,
+    "material": 130
+  },
+  "outputs": {
+    "raw_jsonl": "/content/drive/MyDrive/thesis/data/logit_lens/translation_equivalent/qwen3_0_6b/translation_equivalent_by_layer.jsonl",
+    "compact_tsv": "/content/drive/MyDrive/thesis/data/logit_lens/translation_equivalent/qwen3_0_6b/translation_equivalent_by_layer_compact.tsv",
+    "token_validation_tsv": "/content/drive/MyDrive/thesis/data/logit_lens/translation_equivalent/qwen3_0_6b/translation_equivalent_token_validation.tsv",
+    "rejected_jsonl": "/content/drive/MyDrive/thesis/data/logit_lens/translation_equivalent/qwen3_0_6b/translation_equivalent.rejected.jsonl"
+  }
+}

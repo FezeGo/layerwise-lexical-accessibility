@@ -1,0 +1,946 @@
+﻿grouping	group	model_key	k	row_type	pattern	count	n	rate	broader_sustained_count	broader_sustained_rate	gold_sustained_count	gold_sustained_rate	both_sustained_count	both_sustained_rate	broader_before_gold_among_both_count	broader_before_gold_among_both_rate	gold_before_broader_among_both_count	gold_before_broader_among_both_rate	same_onset_among_both_count	same_onset_among_both_rate
+overall	all	qwen3_0_6b	1	pattern	broader_before_gold	17	110	0.15454545454545454												
+overall	all	qwen3_0_6b	1	pattern	gold_before_broader	0	110	0.0												
+overall	all	qwen3_0_6b	1	pattern	same_onset	0	110	0.0												
+overall	all	qwen3_0_6b	1	pattern	broader_only_sustained	18	110	0.16363636363636364												
+overall	all	qwen3_0_6b	1	pattern	gold_only_sustained	39	110	0.35454545454545455												
+overall	all	qwen3_0_6b	1	pattern	neither_sustained	36	110	0.32727272727272727												
+overall	all	qwen3_0_6b	1	coverage	__coverage_summary__		110		35	0.3181818181818182	56	0.509090909090909	17	0.15454545454545454	17	1.0	0	0.0	0	0.0
+overall	all	qwen3_0_6b	5	pattern	broader_before_gold	60	110	0.5454545454545454												
+overall	all	qwen3_0_6b	5	pattern	gold_before_broader	2	110	0.01818181818181818												
+overall	all	qwen3_0_6b	5	pattern	same_onset	5	110	0.045454545454545456												
+overall	all	qwen3_0_6b	5	pattern	broader_only_sustained	19	110	0.17272727272727273												
+overall	all	qwen3_0_6b	5	pattern	gold_only_sustained	11	110	0.1												
+overall	all	qwen3_0_6b	5	pattern	neither_sustained	13	110	0.11818181818181818												
+overall	all	qwen3_0_6b	5	coverage	__coverage_summary__		110		86	0.7818181818181819	78	0.7090909090909091	67	0.6090909090909091	60	0.8955223880597015	2	0.029850746268656716	5	0.07462686567164178
+overall	all	qwen3_0_6b	10	pattern	broader_before_gold	66	110	0.6												
+overall	all	qwen3_0_6b	10	pattern	gold_before_broader	2	110	0.01818181818181818												
+overall	all	qwen3_0_6b	10	pattern	same_onset	9	110	0.08181818181818182												
+overall	all	qwen3_0_6b	10	pattern	broader_only_sustained	15	110	0.13636363636363635												
+overall	all	qwen3_0_6b	10	pattern	gold_only_sustained	9	110	0.08181818181818182												
+overall	all	qwen3_0_6b	10	pattern	neither_sustained	9	110	0.08181818181818182												
+overall	all	qwen3_0_6b	10	coverage	__coverage_summary__		110		92	0.8363636363636363	86	0.7818181818181819	77	0.7	66	0.8571428571428571	2	0.025974025974025976	9	0.11688311688311688
+overall	all	qwen3_14b	1	pattern	broader_before_gold	19	110	0.17272727272727273												
+overall	all	qwen3_14b	1	pattern	gold_before_broader	0	110	0.0												
+overall	all	qwen3_14b	1	pattern	same_onset	0	110	0.0												
+overall	all	qwen3_14b	1	pattern	broader_only_sustained	0	110	0.0												
+overall	all	qwen3_14b	1	pattern	gold_only_sustained	58	110	0.5272727272727272												
+overall	all	qwen3_14b	1	pattern	neither_sustained	33	110	0.3												
+overall	all	qwen3_14b	1	coverage	__coverage_summary__		110		19	0.17272727272727273	77	0.7	19	0.17272727272727273	19	1.0	0	0.0	0	0.0
+overall	all	qwen3_14b	5	pattern	broader_before_gold	31	110	0.2818181818181818												
+overall	all	qwen3_14b	5	pattern	gold_before_broader	1	110	0.00909090909090909												
+overall	all	qwen3_14b	5	pattern	same_onset	0	110	0.0												
+overall	all	qwen3_14b	5	pattern	broader_only_sustained	4	110	0.03636363636363636												
+overall	all	qwen3_14b	5	pattern	gold_only_sustained	60	110	0.5454545454545454												
+overall	all	qwen3_14b	5	pattern	neither_sustained	14	110	0.12727272727272726												
+overall	all	qwen3_14b	5	coverage	__coverage_summary__		110		36	0.32727272727272727	92	0.8363636363636363	32	0.2909090909090909	31	0.96875	1	0.03125	0	0.0
+overall	all	qwen3_14b	10	pattern	broader_before_gold	39	110	0.35454545454545455												
+overall	all	qwen3_14b	10	pattern	gold_before_broader	6	110	0.05454545454545454												
+overall	all	qwen3_14b	10	pattern	same_onset	0	110	0.0												
+overall	all	qwen3_14b	10	pattern	broader_only_sustained	6	110	0.05454545454545454												
+overall	all	qwen3_14b	10	pattern	gold_only_sustained	52	110	0.4727272727272727												
+overall	all	qwen3_14b	10	pattern	neither_sustained	7	110	0.06363636363636363												
+overall	all	qwen3_14b	10	coverage	__coverage_summary__		110		51	0.4636363636363636	97	0.8818181818181818	45	0.4090909090909091	39	0.8666666666666667	6	0.13333333333333333	0	0.0
+overall	all	qwen3_4b	1	pattern	broader_before_gold	16	110	0.14545454545454545												
+overall	all	qwen3_4b	1	pattern	gold_before_broader	0	110	0.0												
+overall	all	qwen3_4b	1	pattern	same_onset	0	110	0.0												
+overall	all	qwen3_4b	1	pattern	broader_only_sustained	8	110	0.07272727272727272												
+overall	all	qwen3_4b	1	pattern	gold_only_sustained	63	110	0.5727272727272728												
+overall	all	qwen3_4b	1	pattern	neither_sustained	23	110	0.20909090909090908												
+overall	all	qwen3_4b	1	coverage	__coverage_summary__		110		24	0.21818181818181817	79	0.7181818181818181	16	0.14545454545454545	16	1.0	0	0.0	0	0.0
+overall	all	qwen3_4b	5	pattern	broader_before_gold	57	110	0.5181818181818182												
+overall	all	qwen3_4b	5	pattern	gold_before_broader	2	110	0.01818181818181818												
+overall	all	qwen3_4b	5	pattern	same_onset	6	110	0.05454545454545454												
+overall	all	qwen3_4b	5	pattern	broader_only_sustained	5	110	0.045454545454545456												
+overall	all	qwen3_4b	5	pattern	gold_only_sustained	35	110	0.3181818181818182												
+overall	all	qwen3_4b	5	pattern	neither_sustained	5	110	0.045454545454545456												
+overall	all	qwen3_4b	5	coverage	__coverage_summary__		110		70	0.6363636363636364	100	0.9090909090909091	65	0.5909090909090909	57	0.8769230769230769	2	0.03076923076923077	6	0.09230769230769231
+overall	all	qwen3_4b	10	pattern	broader_before_gold	71	110	0.6454545454545455												
+overall	all	qwen3_4b	10	pattern	gold_before_broader	5	110	0.045454545454545456												
+overall	all	qwen3_4b	10	pattern	same_onset	8	110	0.07272727272727272												
+overall	all	qwen3_4b	10	pattern	broader_only_sustained	1	110	0.00909090909090909												
+overall	all	qwen3_4b	10	pattern	gold_only_sustained	21	110	0.19090909090909092												
+overall	all	qwen3_4b	10	pattern	neither_sustained	4	110	0.03636363636363636												
+overall	all	qwen3_4b	10	coverage	__coverage_summary__		110		85	0.7727272727272727	105	0.9545454545454546	84	0.7636363636363637	71	0.8452380952380952	5	0.05952380952380952	8	0.09523809523809523
+language	en	qwen3_0_6b	1	pattern	broader_before_gold	9	55	0.16363636363636364												
+language	en	qwen3_0_6b	1	pattern	gold_before_broader	0	55	0.0												
+language	en	qwen3_0_6b	1	pattern	same_onset	0	55	0.0												
+language	en	qwen3_0_6b	1	pattern	broader_only_sustained	8	55	0.14545454545454545												
+language	en	qwen3_0_6b	1	pattern	gold_only_sustained	29	55	0.5272727272727272												
+language	en	qwen3_0_6b	1	pattern	neither_sustained	9	55	0.16363636363636364												
+language	en	qwen3_0_6b	1	coverage	__coverage_summary__		55		17	0.3090909090909091	38	0.6909090909090909	9	0.16363636363636364	9	1.0	0	0.0	0	0.0
+language	en	qwen3_0_6b	5	pattern	broader_before_gold	40	55	0.7272727272727273												
+language	en	qwen3_0_6b	5	pattern	gold_before_broader	1	55	0.01818181818181818												
+language	en	qwen3_0_6b	5	pattern	same_onset	2	55	0.03636363636363636												
+language	en	qwen3_0_6b	5	pattern	broader_only_sustained	1	55	0.01818181818181818												
+language	en	qwen3_0_6b	5	pattern	gold_only_sustained	10	55	0.18181818181818182												
+language	en	qwen3_0_6b	5	pattern	neither_sustained	1	55	0.01818181818181818												
+language	en	qwen3_0_6b	5	coverage	__coverage_summary__		55		44	0.8	53	0.9636363636363636	43	0.7818181818181819	40	0.9302325581395349	1	0.023255813953488372	2	0.046511627906976744
+language	en	qwen3_0_6b	10	pattern	broader_before_gold	41	55	0.7454545454545455												
+language	en	qwen3_0_6b	10	pattern	gold_before_broader	2	55	0.03636363636363636												
+language	en	qwen3_0_6b	10	pattern	same_onset	5	55	0.09090909090909091												
+language	en	qwen3_0_6b	10	pattern	broader_only_sustained	1	55	0.01818181818181818												
+language	en	qwen3_0_6b	10	pattern	gold_only_sustained	5	55	0.09090909090909091												
+language	en	qwen3_0_6b	10	pattern	neither_sustained	1	55	0.01818181818181818												
+language	en	qwen3_0_6b	10	coverage	__coverage_summary__		55		49	0.8909090909090909	53	0.9636363636363636	48	0.8727272727272727	41	0.8541666666666666	2	0.041666666666666664	5	0.10416666666666667
+language	zh	qwen3_0_6b	1	pattern	broader_before_gold	8	55	0.14545454545454545												
+language	zh	qwen3_0_6b	1	pattern	gold_before_broader	0	55	0.0												
+language	zh	qwen3_0_6b	1	pattern	same_onset	0	55	0.0												
+language	zh	qwen3_0_6b	1	pattern	broader_only_sustained	10	55	0.18181818181818182												
+language	zh	qwen3_0_6b	1	pattern	gold_only_sustained	10	55	0.18181818181818182												
+language	zh	qwen3_0_6b	1	pattern	neither_sustained	27	55	0.4909090909090909												
+language	zh	qwen3_0_6b	1	coverage	__coverage_summary__		55		18	0.32727272727272727	18	0.32727272727272727	8	0.14545454545454545	8	1.0	0	0.0	0	0.0
+language	zh	qwen3_0_6b	5	pattern	broader_before_gold	20	55	0.36363636363636365												
+language	zh	qwen3_0_6b	5	pattern	gold_before_broader	1	55	0.01818181818181818												
+language	zh	qwen3_0_6b	5	pattern	same_onset	3	55	0.05454545454545454												
+language	zh	qwen3_0_6b	5	pattern	broader_only_sustained	18	55	0.32727272727272727												
+language	zh	qwen3_0_6b	5	pattern	gold_only_sustained	1	55	0.01818181818181818												
+language	zh	qwen3_0_6b	5	pattern	neither_sustained	12	55	0.21818181818181817												
+language	zh	qwen3_0_6b	5	coverage	__coverage_summary__		55		42	0.7636363636363637	25	0.45454545454545453	24	0.43636363636363634	20	0.8333333333333334	1	0.041666666666666664	3	0.125
+language	zh	qwen3_0_6b	10	pattern	broader_before_gold	25	55	0.45454545454545453												
+language	zh	qwen3_0_6b	10	pattern	gold_before_broader	0	55	0.0												
+language	zh	qwen3_0_6b	10	pattern	same_onset	4	55	0.07272727272727272												
+language	zh	qwen3_0_6b	10	pattern	broader_only_sustained	14	55	0.2545454545454545												
+language	zh	qwen3_0_6b	10	pattern	gold_only_sustained	4	55	0.07272727272727272												
+language	zh	qwen3_0_6b	10	pattern	neither_sustained	8	55	0.14545454545454545												
+language	zh	qwen3_0_6b	10	coverage	__coverage_summary__		55		43	0.7818181818181819	33	0.6	29	0.5272727272727272	25	0.8620689655172413	0	0.0	4	0.13793103448275862
+language	en	qwen3_14b	1	pattern	broader_before_gold	1	55	0.01818181818181818												
+language	en	qwen3_14b	1	pattern	gold_before_broader	0	55	0.0												
+language	en	qwen3_14b	1	pattern	same_onset	0	55	0.0												
+language	en	qwen3_14b	1	pattern	broader_only_sustained	0	55	0.0												
+language	en	qwen3_14b	1	pattern	gold_only_sustained	48	55	0.8727272727272727												
+language	en	qwen3_14b	1	pattern	neither_sustained	6	55	0.10909090909090909												
+language	en	qwen3_14b	1	coverage	__coverage_summary__		55		1	0.01818181818181818	49	0.8909090909090909	1	0.01818181818181818	1	1.0	0	0.0	0	0.0
+language	en	qwen3_14b	5	pattern	broader_before_gold	13	55	0.23636363636363636												
+language	en	qwen3_14b	5	pattern	gold_before_broader	1	55	0.01818181818181818												
+language	en	qwen3_14b	5	pattern	same_onset	0	55	0.0												
+language	en	qwen3_14b	5	pattern	broader_only_sustained	0	55	0.0												
+language	en	qwen3_14b	5	pattern	gold_only_sustained	39	55	0.7090909090909091												
+language	en	qwen3_14b	5	pattern	neither_sustained	2	55	0.03636363636363636												
+language	en	qwen3_14b	5	coverage	__coverage_summary__		55		14	0.2545454545454545	53	0.9636363636363636	14	0.2545454545454545	13	0.9285714285714286	1	0.07142857142857142	0	0.0
+language	en	qwen3_14b	10	pattern	broader_before_gold	21	55	0.38181818181818183												
+language	en	qwen3_14b	10	pattern	gold_before_broader	6	55	0.10909090909090909												
+language	en	qwen3_14b	10	pattern	same_onset	0	55	0.0												
+language	en	qwen3_14b	10	pattern	broader_only_sustained	0	55	0.0												
+language	en	qwen3_14b	10	pattern	gold_only_sustained	27	55	0.4909090909090909												
+language	en	qwen3_14b	10	pattern	neither_sustained	1	55	0.01818181818181818												
+language	en	qwen3_14b	10	coverage	__coverage_summary__		55		27	0.4909090909090909	54	0.9818181818181818	27	0.4909090909090909	21	0.7777777777777778	6	0.2222222222222222	0	0.0
+language	zh	qwen3_14b	1	pattern	broader_before_gold	18	55	0.32727272727272727												
+language	zh	qwen3_14b	1	pattern	gold_before_broader	0	55	0.0												
+language	zh	qwen3_14b	1	pattern	same_onset	0	55	0.0												
+language	zh	qwen3_14b	1	pattern	broader_only_sustained	0	55	0.0												
+language	zh	qwen3_14b	1	pattern	gold_only_sustained	10	55	0.18181818181818182												
+language	zh	qwen3_14b	1	pattern	neither_sustained	27	55	0.4909090909090909												
+language	zh	qwen3_14b	1	coverage	__coverage_summary__		55		18	0.32727272727272727	28	0.509090909090909	18	0.32727272727272727	18	1.0	0	0.0	0	0.0
+language	zh	qwen3_14b	5	pattern	broader_before_gold	18	55	0.32727272727272727												
+language	zh	qwen3_14b	5	pattern	gold_before_broader	0	55	0.0												
+language	zh	qwen3_14b	5	pattern	same_onset	0	55	0.0												
+language	zh	qwen3_14b	5	pattern	broader_only_sustained	4	55	0.07272727272727272												
+language	zh	qwen3_14b	5	pattern	gold_only_sustained	21	55	0.38181818181818183												
+language	zh	qwen3_14b	5	pattern	neither_sustained	12	55	0.21818181818181817												
+language	zh	qwen3_14b	5	coverage	__coverage_summary__		55		22	0.4	39	0.7090909090909091	18	0.32727272727272727	18	1.0	0	0.0	0	0.0
+language	zh	qwen3_14b	10	pattern	broader_before_gold	18	55	0.32727272727272727												
+language	zh	qwen3_14b	10	pattern	gold_before_broader	0	55	0.0												
+language	zh	qwen3_14b	10	pattern	same_onset	0	55	0.0												
+language	zh	qwen3_14b	10	pattern	broader_only_sustained	6	55	0.10909090909090909												
+language	zh	qwen3_14b	10	pattern	gold_only_sustained	25	55	0.45454545454545453												
+language	zh	qwen3_14b	10	pattern	neither_sustained	6	55	0.10909090909090909												
+language	zh	qwen3_14b	10	coverage	__coverage_summary__		55		24	0.43636363636363634	43	0.7818181818181819	18	0.32727272727272727	18	1.0	0	0.0	0	0.0
+language	en	qwen3_4b	1	pattern	broader_before_gold	3	55	0.05454545454545454												
+language	en	qwen3_4b	1	pattern	gold_before_broader	0	55	0.0												
+language	en	qwen3_4b	1	pattern	same_onset	0	55	0.0												
+language	en	qwen3_4b	1	pattern	broader_only_sustained	3	55	0.05454545454545454												
+language	en	qwen3_4b	1	pattern	gold_only_sustained	48	55	0.8727272727272727												
+language	en	qwen3_4b	1	pattern	neither_sustained	1	55	0.01818181818181818												
+language	en	qwen3_4b	1	coverage	__coverage_summary__		55		6	0.10909090909090909	51	0.9272727272727272	3	0.05454545454545454	3	1.0	0	0.0	0	0.0
+language	en	qwen3_4b	5	pattern	broader_before_gold	35	55	0.6363636363636364												
+language	en	qwen3_4b	5	pattern	gold_before_broader	1	55	0.01818181818181818												
+language	en	qwen3_4b	5	pattern	same_onset	6	55	0.10909090909090909												
+language	en	qwen3_4b	5	pattern	broader_only_sustained	0	55	0.0												
+language	en	qwen3_4b	5	pattern	gold_only_sustained	12	55	0.21818181818181817												
+language	en	qwen3_4b	5	pattern	neither_sustained	1	55	0.01818181818181818												
+language	en	qwen3_4b	5	coverage	__coverage_summary__		55		42	0.7636363636363637	54	0.9818181818181818	42	0.7636363636363637	35	0.8333333333333334	1	0.023809523809523808	6	0.14285714285714285
+language	en	qwen3_4b	10	pattern	broader_before_gold	42	55	0.7636363636363637												
+language	en	qwen3_4b	10	pattern	gold_before_broader	3	55	0.05454545454545454												
+language	en	qwen3_4b	10	pattern	same_onset	7	55	0.12727272727272726												
+language	en	qwen3_4b	10	pattern	broader_only_sustained	0	55	0.0												
+language	en	qwen3_4b	10	pattern	gold_only_sustained	2	55	0.03636363636363636												
+language	en	qwen3_4b	10	pattern	neither_sustained	1	55	0.01818181818181818												
+language	en	qwen3_4b	10	coverage	__coverage_summary__		55		52	0.9454545454545454	54	0.9818181818181818	52	0.9454545454545454	42	0.8076923076923077	3	0.057692307692307696	7	0.1346153846153846
+language	zh	qwen3_4b	1	pattern	broader_before_gold	13	55	0.23636363636363636												
+language	zh	qwen3_4b	1	pattern	gold_before_broader	0	55	0.0												
+language	zh	qwen3_4b	1	pattern	same_onset	0	55	0.0												
+language	zh	qwen3_4b	1	pattern	broader_only_sustained	5	55	0.09090909090909091												
+language	zh	qwen3_4b	1	pattern	gold_only_sustained	15	55	0.2727272727272727												
+language	zh	qwen3_4b	1	pattern	neither_sustained	22	55	0.4												
+language	zh	qwen3_4b	1	coverage	__coverage_summary__		55		18	0.32727272727272727	28	0.509090909090909	13	0.23636363636363636	13	1.0	0	0.0	0	0.0
+language	zh	qwen3_4b	5	pattern	broader_before_gold	22	55	0.4												
+language	zh	qwen3_4b	5	pattern	gold_before_broader	1	55	0.01818181818181818												
+language	zh	qwen3_4b	5	pattern	same_onset	0	55	0.0												
+language	zh	qwen3_4b	5	pattern	broader_only_sustained	5	55	0.09090909090909091												
+language	zh	qwen3_4b	5	pattern	gold_only_sustained	23	55	0.41818181818181815												
+language	zh	qwen3_4b	5	pattern	neither_sustained	4	55	0.07272727272727272												
+language	zh	qwen3_4b	5	coverage	__coverage_summary__		55		28	0.509090909090909	46	0.8363636363636363	23	0.41818181818181815	22	0.9565217391304348	1	0.043478260869565216	0	0.0
+language	zh	qwen3_4b	10	pattern	broader_before_gold	29	55	0.5272727272727272												
+language	zh	qwen3_4b	10	pattern	gold_before_broader	2	55	0.03636363636363636												
+language	zh	qwen3_4b	10	pattern	same_onset	1	55	0.01818181818181818												
+language	zh	qwen3_4b	10	pattern	broader_only_sustained	1	55	0.01818181818181818												
+language	zh	qwen3_4b	10	pattern	gold_only_sustained	19	55	0.34545454545454546												
+language	zh	qwen3_4b	10	pattern	neither_sustained	3	55	0.05454545454545454												
+language	zh	qwen3_4b	10	coverage	__coverage_summary__		55		33	0.6	51	0.9272727272727272	32	0.5818181818181818	29	0.90625	2	0.0625	1	0.03125
+subgroup	animal_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	5	34	0.14705882352941177												
+subgroup	animal_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	8	34	0.23529411764705882												
+subgroup	animal_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	6	34	0.17647058823529413												
+subgroup	animal_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	15	34	0.4411764705882353												
+subgroup	animal_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		34		13	0.38235294117647056	11	0.3235294117647059	5	0.14705882352941177	5	1.0	0	0.0	0	0.0
+subgroup	animal_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	15	34	0.4411764705882353												
+subgroup	animal_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	1	34	0.029411764705882353												
+subgroup	animal_taxonomy	qwen3_0_6b	5	pattern	same_onset	2	34	0.058823529411764705												
+subgroup	animal_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	14	34	0.4117647058823529												
+subgroup	animal_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	2	34	0.058823529411764705												
+subgroup	animal_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		34		32	0.9411764705882353	18	0.5294117647058824	18	0.5294117647058824	15	0.8333333333333334	1	0.05555555555555555	2	0.1111111111111111
+subgroup	animal_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	20	34	0.5882352941176471												
+subgroup	animal_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_0_6b	10	pattern	same_onset	2	34	0.058823529411764705												
+subgroup	animal_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	11	34	0.3235294117647059												
+subgroup	animal_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	1	34	0.029411764705882353												
+subgroup	animal_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		34		33	0.9705882352941176	22	0.6470588235294118	22	0.6470588235294118	20	0.9090909090909091	0	0.0	2	0.09090909090909091
+subgroup	chemical_element_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	8	36	0.2222222222222222												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	23	36	0.6388888888888888												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	5	36	0.1388888888888889												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		36		8	0.2222222222222222	31	0.8611111111111112	8	0.2222222222222222	8	1.0	0	0.0	0	0.0
+subgroup	chemical_element_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	35	36	0.9722222222222222												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	5	pattern	same_onset	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	1	36	0.027777777777777776												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		36		36	1.0	35	0.9722222222222222	35	0.9722222222222222	35	1.0	0	0.0	0	0.0
+subgroup	chemical_element_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	35	36	0.9722222222222222												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	10	pattern	same_onset	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	1	36	0.027777777777777776												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		36		36	1.0	35	0.9722222222222222	35	0.9722222222222222	35	1.0	0	0.0	0	0.0
+subgroup	food_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	0	24	0.0												
+subgroup	food_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	24	0.0												
+subgroup	food_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	24	0.0												
+subgroup	food_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	10	24	0.4166666666666667												
+subgroup	food_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	14	24	0.5833333333333334												
+subgroup	food_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		24		0	0.0	10	0.4166666666666667	0	0.0	0		0		0	
+subgroup	food_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	0	24	0.0												
+subgroup	food_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	1	24	0.041666666666666664												
+subgroup	food_taxonomy	qwen3_0_6b	5	pattern	same_onset	1	24	0.041666666666666664												
+subgroup	food_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	11	24	0.4583333333333333												
+subgroup	food_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	11	24	0.4583333333333333												
+subgroup	food_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		24		2	0.08333333333333333	13	0.5416666666666666	2	0.08333333333333333	0	0.0	1	0.5	1	0.5
+subgroup	food_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	0	24	0.0												
+subgroup	food_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	2	24	0.08333333333333333												
+subgroup	food_taxonomy	qwen3_0_6b	10	pattern	same_onset	5	24	0.20833333333333334												
+subgroup	food_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	9	24	0.375												
+subgroup	food_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	8	24	0.3333333333333333												
+subgroup	food_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		24		7	0.2916666666666667	16	0.6666666666666666	7	0.2916666666666667	0	0.0	2	0.2857142857142857	5	0.7142857142857143
+subgroup	plant_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	4	16	0.25												
+subgroup	plant_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	10	16	0.625												
+subgroup	plant_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	2	16	0.125												
+subgroup	plant_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		16		14	0.875	4	0.25	4	0.25	4	1.0	0	0.0	0	0.0
+subgroup	plant_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	10	16	0.625												
+subgroup	plant_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_0_6b	5	pattern	same_onset	2	16	0.125												
+subgroup	plant_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	4	16	0.25												
+subgroup	plant_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		16		16	1.0	12	0.75	12	0.75	10	0.8333333333333334	0	0.0	2	0.16666666666666666
+subgroup	plant_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	11	16	0.6875												
+subgroup	plant_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_0_6b	10	pattern	same_onset	2	16	0.125												
+subgroup	plant_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	3	16	0.1875												
+subgroup	plant_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		16		16	1.0	13	0.8125	13	0.8125	11	0.8461538461538461	0	0.0	2	0.15384615384615385
+subgroup	animal_taxonomy	qwen3_14b	1	pattern	broader_before_gold	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	1	pattern	same_onset	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	21	34	0.6176470588235294												
+subgroup	animal_taxonomy	qwen3_14b	1	pattern	neither_sustained	13	34	0.38235294117647056												
+subgroup	animal_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		34		0	0.0	21	0.6176470588235294	0	0.0	0		0		0	
+subgroup	animal_taxonomy	qwen3_14b	5	pattern	broader_before_gold	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	5	pattern	same_onset	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	27	34	0.7941176470588235												
+subgroup	animal_taxonomy	qwen3_14b	5	pattern	neither_sustained	7	34	0.20588235294117646												
+subgroup	animal_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		34		0	0.0	27	0.7941176470588235	0	0.0	0		0		0	
+subgroup	animal_taxonomy	qwen3_14b	10	pattern	broader_before_gold	2	34	0.058823529411764705												
+subgroup	animal_taxonomy	qwen3_14b	10	pattern	gold_before_broader	4	34	0.11764705882352941												
+subgroup	animal_taxonomy	qwen3_14b	10	pattern	same_onset	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	23	34	0.6764705882352942												
+subgroup	animal_taxonomy	qwen3_14b	10	pattern	neither_sustained	5	34	0.14705882352941177												
+subgroup	animal_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		34		6	0.17647058823529413	29	0.8529411764705882	6	0.17647058823529413	2	0.3333333333333333	4	0.6666666666666666	0	0.0
+subgroup	chemical_element_taxonomy	qwen3_14b	1	pattern	broader_before_gold	18	36	0.5												
+subgroup	chemical_element_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	1	pattern	same_onset	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	18	36	0.5												
+subgroup	chemical_element_taxonomy	qwen3_14b	1	pattern	neither_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		36		18	0.5	36	1.0	18	0.5	18	1.0	0	0.0	0	0.0
+subgroup	chemical_element_taxonomy	qwen3_14b	5	pattern	broader_before_gold	24	36	0.6666666666666666												
+subgroup	chemical_element_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	5	pattern	same_onset	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	12	36	0.3333333333333333												
+subgroup	chemical_element_taxonomy	qwen3_14b	5	pattern	neither_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		36		24	0.6666666666666666	36	1.0	24	0.6666666666666666	24	1.0	0	0.0	0	0.0
+subgroup	chemical_element_taxonomy	qwen3_14b	10	pattern	broader_before_gold	30	36	0.8333333333333334												
+subgroup	chemical_element_taxonomy	qwen3_14b	10	pattern	gold_before_broader	1	36	0.027777777777777776												
+subgroup	chemical_element_taxonomy	qwen3_14b	10	pattern	same_onset	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	5	36	0.1388888888888889												
+subgroup	chemical_element_taxonomy	qwen3_14b	10	pattern	neither_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		36		31	0.8611111111111112	36	1.0	31	0.8611111111111112	30	0.967741935483871	1	0.03225806451612903	0	0.0
+subgroup	food_taxonomy	qwen3_14b	1	pattern	broader_before_gold	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	1	pattern	same_onset	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	13	24	0.5416666666666666												
+subgroup	food_taxonomy	qwen3_14b	1	pattern	neither_sustained	11	24	0.4583333333333333												
+subgroup	food_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		24		0	0.0	13	0.5416666666666666	0	0.0	0		0		0	
+subgroup	food_taxonomy	qwen3_14b	5	pattern	broader_before_gold	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	5	pattern	same_onset	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	21	24	0.875												
+subgroup	food_taxonomy	qwen3_14b	5	pattern	neither_sustained	3	24	0.125												
+subgroup	food_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		24		0	0.0	21	0.875	0	0.0	0		0		0	
+subgroup	food_taxonomy	qwen3_14b	10	pattern	broader_before_gold	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	10	pattern	gold_before_broader	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	10	pattern	same_onset	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	24	24	1.0												
+subgroup	food_taxonomy	qwen3_14b	10	pattern	neither_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		24		0	0.0	24	1.0	0	0.0	0		0		0	
+subgroup	plant_taxonomy	qwen3_14b	1	pattern	broader_before_gold	1	16	0.0625												
+subgroup	plant_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_14b	1	pattern	same_onset	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	6	16	0.375												
+subgroup	plant_taxonomy	qwen3_14b	1	pattern	neither_sustained	9	16	0.5625												
+subgroup	plant_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		16		1	0.0625	7	0.4375	1	0.0625	1	1.0	0	0.0	0	0.0
+subgroup	plant_taxonomy	qwen3_14b	5	pattern	broader_before_gold	7	16	0.4375												
+subgroup	plant_taxonomy	qwen3_14b	5	pattern	gold_before_broader	1	16	0.0625												
+subgroup	plant_taxonomy	qwen3_14b	5	pattern	same_onset	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	4	16	0.25												
+subgroup	plant_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_14b	5	pattern	neither_sustained	4	16	0.25												
+subgroup	plant_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		16		12	0.75	8	0.5	8	0.5	7	0.875	1	0.125	0	0.0
+subgroup	plant_taxonomy	qwen3_14b	10	pattern	broader_before_gold	7	16	0.4375												
+subgroup	plant_taxonomy	qwen3_14b	10	pattern	gold_before_broader	1	16	0.0625												
+subgroup	plant_taxonomy	qwen3_14b	10	pattern	same_onset	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	6	16	0.375												
+subgroup	plant_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_14b	10	pattern	neither_sustained	2	16	0.125												
+subgroup	plant_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		16		14	0.875	8	0.5	8	0.5	7	0.875	1	0.125	0	0.0
+subgroup	animal_taxonomy	qwen3_4b	1	pattern	broader_before_gold	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_4b	1	pattern	same_onset	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	0	34	0.0												
+subgroup	animal_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	23	34	0.6764705882352942												
+subgroup	animal_taxonomy	qwen3_4b	1	pattern	neither_sustained	11	34	0.3235294117647059												
+subgroup	animal_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		34		0	0.0	23	0.6764705882352942	0	0.0	0		0		0	
+subgroup	animal_taxonomy	qwen3_4b	5	pattern	broader_before_gold	8	34	0.23529411764705882												
+subgroup	animal_taxonomy	qwen3_4b	5	pattern	gold_before_broader	2	34	0.058823529411764705												
+subgroup	animal_taxonomy	qwen3_4b	5	pattern	same_onset	1	34	0.029411764705882353												
+subgroup	animal_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	1	34	0.029411764705882353												
+subgroup	animal_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	19	34	0.5588235294117647												
+subgroup	animal_taxonomy	qwen3_4b	5	pattern	neither_sustained	3	34	0.08823529411764706												
+subgroup	animal_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		34		12	0.35294117647058826	30	0.8823529411764706	11	0.3235294117647059	8	0.7272727272727273	2	0.18181818181818182	1	0.09090909090909091
+subgroup	animal_taxonomy	qwen3_4b	10	pattern	broader_before_gold	11	34	0.3235294117647059												
+subgroup	animal_taxonomy	qwen3_4b	10	pattern	gold_before_broader	5	34	0.14705882352941177												
+subgroup	animal_taxonomy	qwen3_4b	10	pattern	same_onset	4	34	0.11764705882352941												
+subgroup	animal_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	1	34	0.029411764705882353												
+subgroup	animal_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	10	34	0.29411764705882354												
+subgroup	animal_taxonomy	qwen3_4b	10	pattern	neither_sustained	3	34	0.08823529411764706												
+subgroup	animal_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		34		21	0.6176470588235294	30	0.8823529411764706	20	0.5882352941176471	11	0.55	5	0.25	4	0.2
+subgroup	chemical_element_taxonomy	qwen3_4b	1	pattern	broader_before_gold	13	36	0.3611111111111111												
+subgroup	chemical_element_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	1	pattern	same_onset	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	23	36	0.6388888888888888												
+subgroup	chemical_element_taxonomy	qwen3_4b	1	pattern	neither_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		36		13	0.3611111111111111	36	1.0	13	0.3611111111111111	13	1.0	0	0.0	0	0.0
+subgroup	chemical_element_taxonomy	qwen3_4b	5	pattern	broader_before_gold	33	36	0.9166666666666666												
+subgroup	chemical_element_taxonomy	qwen3_4b	5	pattern	gold_before_broader	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	5	pattern	same_onset	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	3	36	0.08333333333333333												
+subgroup	chemical_element_taxonomy	qwen3_4b	5	pattern	neither_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		36		33	0.9166666666666666	36	1.0	33	0.9166666666666666	33	1.0	0	0.0	0	0.0
+subgroup	chemical_element_taxonomy	qwen3_4b	10	pattern	broader_before_gold	36	36	1.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	10	pattern	gold_before_broader	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	10	pattern	same_onset	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	10	pattern	neither_sustained	0	36	0.0												
+subgroup	chemical_element_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		36		36	1.0	36	1.0	36	1.0	36	1.0	0	0.0	0	0.0
+subgroup	food_taxonomy	qwen3_4b	1	pattern	broader_before_gold	1	24	0.041666666666666664												
+subgroup	food_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	24	0.0												
+subgroup	food_taxonomy	qwen3_4b	1	pattern	same_onset	0	24	0.0												
+subgroup	food_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	14	24	0.5833333333333334												
+subgroup	food_taxonomy	qwen3_4b	1	pattern	neither_sustained	9	24	0.375												
+subgroup	food_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		24		1	0.041666666666666664	15	0.625	1	0.041666666666666664	1	1.0	0	0.0	0	0.0
+subgroup	food_taxonomy	qwen3_4b	5	pattern	broader_before_gold	8	24	0.3333333333333333												
+subgroup	food_taxonomy	qwen3_4b	5	pattern	gold_before_broader	0	24	0.0												
+subgroup	food_taxonomy	qwen3_4b	5	pattern	same_onset	1	24	0.041666666666666664												
+subgroup	food_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	13	24	0.5416666666666666												
+subgroup	food_taxonomy	qwen3_4b	5	pattern	neither_sustained	2	24	0.08333333333333333												
+subgroup	food_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		24		9	0.375	22	0.9166666666666666	9	0.375	8	0.8888888888888888	0	0.0	1	0.1111111111111111
+subgroup	food_taxonomy	qwen3_4b	10	pattern	broader_before_gold	11	24	0.4583333333333333												
+subgroup	food_taxonomy	qwen3_4b	10	pattern	gold_before_broader	0	24	0.0												
+subgroup	food_taxonomy	qwen3_4b	10	pattern	same_onset	1	24	0.041666666666666664												
+subgroup	food_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	24	0.0												
+subgroup	food_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	11	24	0.4583333333333333												
+subgroup	food_taxonomy	qwen3_4b	10	pattern	neither_sustained	1	24	0.041666666666666664												
+subgroup	food_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		24		12	0.5	23	0.9583333333333334	12	0.5	11	0.9166666666666666	0	0.0	1	0.08333333333333333
+subgroup	plant_taxonomy	qwen3_4b	1	pattern	broader_before_gold	2	16	0.125												
+subgroup	plant_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_4b	1	pattern	same_onset	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	8	16	0.5												
+subgroup	plant_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	3	16	0.1875												
+subgroup	plant_taxonomy	qwen3_4b	1	pattern	neither_sustained	3	16	0.1875												
+subgroup	plant_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		16		10	0.625	5	0.3125	2	0.125	2	1.0	0	0.0	0	0.0
+subgroup	plant_taxonomy	qwen3_4b	5	pattern	broader_before_gold	8	16	0.5												
+subgroup	plant_taxonomy	qwen3_4b	5	pattern	gold_before_broader	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_4b	5	pattern	same_onset	4	16	0.25												
+subgroup	plant_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	4	16	0.25												
+subgroup	plant_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_4b	5	pattern	neither_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		16		16	1.0	12	0.75	12	0.75	8	0.6666666666666666	0	0.0	4	0.3333333333333333
+subgroup	plant_taxonomy	qwen3_4b	10	pattern	broader_before_gold	13	16	0.8125												
+subgroup	plant_taxonomy	qwen3_4b	10	pattern	gold_before_broader	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_4b	10	pattern	same_onset	3	16	0.1875												
+subgroup	plant_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_4b	10	pattern	neither_sustained	0	16	0.0												
+subgroup	plant_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		16		16	1.0	16	1.0	16	1.0	13	0.8125	0	0.0	3	0.1875
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	5	17	0.29411764705882354												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	4	17	0.23529411764705882												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	6	17	0.35294117647058826												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	2	17	0.11764705882352941												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		17		9	0.5294117647058824	11	0.6470588235294118	5	0.29411764705882354	5	1.0	0	0.0	0	0.0
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	15	17	0.8823529411764706												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	5	pattern	same_onset	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		17		16	0.9411764705882353	16	0.9411764705882353	16	0.9411764705882353	15	0.9375	0	0.0	1	0.0625
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	16	17	0.9411764705882353												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	10	pattern	same_onset	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		17		16	0.9411764705882353	16	0.9411764705882353	16	0.9411764705882353	16	1.0	0	0.0	0	0.0
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	13	18	0.7222222222222222												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	5	18	0.2777777777777778												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		18		0	0.0	13	0.7222222222222222	0	0.0	0		0		0	
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	17	18	0.9444444444444444												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	5	pattern	same_onset	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	1	18	0.05555555555555555												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		18		18	1.0	17	0.9444444444444444	17	0.9444444444444444	17	1.0	0	0.0	0	0.0
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	17	18	0.9444444444444444												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	10	pattern	same_onset	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	1	18	0.05555555555555555												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		18		18	1.0	17	0.9444444444444444	17	0.9444444444444444	17	1.0	0	0.0	0	0.0
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	10	12	0.8333333333333334												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	2	12	0.16666666666666666												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		12		0	0.0	10	0.8333333333333334	0	0.0	0		0		0	
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	1	12	0.08333333333333333												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	5	pattern	same_onset	1	12	0.08333333333333333												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	10	12	0.8333333333333334												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		12		2	0.16666666666666666	12	1.0	2	0.16666666666666666	0	0.0	1	0.5	1	0.5
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	2	12	0.16666666666666666												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	10	pattern	same_onset	5	12	0.4166666666666667												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	5	12	0.4166666666666667												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		12		7	0.5833333333333334	12	1.0	7	0.5833333333333334	0	0.0	2	0.2857142857142857	5	0.7142857142857143
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	4	8	0.5												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	4	8	0.5												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		8		8	1.0	4	0.5	4	0.5	4	1.0	0	0.0	0	0.0
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	8	8	1.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	5	pattern	same_onset	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		8		8	1.0	8	1.0	8	1.0	8	1.0	0	0.0	0	0.0
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	8	8	1.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	10	pattern	same_onset	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		8		8	1.0	8	1.0	8	1.0	8	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	4	17	0.23529411764705882												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	13	17	0.7647058823529411												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		17		4	0.23529411764705882	0	0.0	0	0.0	0		0		0	
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	1	17	0.058823529411764705												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	5	pattern	same_onset	1	17	0.058823529411764705												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	14	17	0.8235294117647058												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	1	17	0.058823529411764705												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		17		16	0.9411764705882353	2	0.11764705882352941	2	0.11764705882352941	0	0.0	1	0.5	1	0.5
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	4	17	0.23529411764705882												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	10	pattern	same_onset	2	17	0.11764705882352941												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	11	17	0.6470588235294118												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		17		17	1.0	6	0.35294117647058826	6	0.35294117647058826	4	0.6666666666666666	0	0.0	2	0.3333333333333333
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	8	18	0.4444444444444444												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	10	18	0.5555555555555556												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		18		8	0.4444444444444444	18	1.0	8	0.4444444444444444	8	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	18	18	1.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	5	pattern	same_onset	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		18		18	1.0	18	1.0	18	1.0	18	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	18	18	1.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	10	pattern	same_onset	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		18		18	1.0	18	1.0	18	1.0	18	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	12	12	1.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		12		0	0.0	0	0.0	0	0.0	0		0		0	
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	5	pattern	same_onset	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	1	12	0.08333333333333333												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	11	12	0.9166666666666666												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		12		0	0.0	1	0.08333333333333333	0	0.0	0		0		0	
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	10	pattern	same_onset	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	4	12	0.3333333333333333												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	8	12	0.6666666666666666												
+language_x_subgroup	zh|food_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		12		0	0.0	4	0.3333333333333333	0	0.0	0		0		0	
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	1	pattern	broader_before_gold	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	1	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	1	pattern	same_onset	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	1	pattern	broader_only_sustained	6	8	0.75												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	1	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	1	pattern	neither_sustained	2	8	0.25												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	1	coverage	__coverage_summary__		8		6	0.75	0	0.0	0	0.0	0		0		0	
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	5	pattern	broader_before_gold	2	8	0.25												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	5	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	5	pattern	same_onset	2	8	0.25												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	5	pattern	broader_only_sustained	4	8	0.5												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	5	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	5	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	5	coverage	__coverage_summary__		8		8	1.0	4	0.5	4	0.5	2	0.5	0	0.0	2	0.5
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	10	pattern	broader_before_gold	3	8	0.375												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	10	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	10	pattern	same_onset	2	8	0.25												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	10	pattern	broader_only_sustained	3	8	0.375												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	10	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	10	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_0_6b	10	coverage	__coverage_summary__		8		8	1.0	5	0.625	5	0.625	3	0.6	0	0.0	2	0.4
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	1	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	1	pattern	same_onset	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	15	17	0.8823529411764706												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	1	pattern	neither_sustained	2	17	0.11764705882352941												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		17		0	0.0	15	0.8823529411764706	0	0.0	0		0		0	
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	5	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	5	pattern	same_onset	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	16	17	0.9411764705882353												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	5	pattern	neither_sustained	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		17		0	0.0	16	0.9411764705882353	0	0.0	0		0		0	
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	10	pattern	broader_before_gold	2	17	0.11764705882352941												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	10	pattern	gold_before_broader	4	17	0.23529411764705882												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	10	pattern	same_onset	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	10	17	0.5882352941176471												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	10	pattern	neither_sustained	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		17		6	0.35294117647058826	16	0.9411764705882353	6	0.35294117647058826	2	0.3333333333333333	4	0.6666666666666666	0	0.0
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	1	pattern	broader_before_gold	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	1	pattern	same_onset	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	18	18	1.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	1	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		18		0	0.0	18	1.0	0	0.0	0		0		0	
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	5	pattern	broader_before_gold	6	18	0.3333333333333333												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	5	pattern	same_onset	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	12	18	0.6666666666666666												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	5	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		18		6	0.3333333333333333	18	1.0	6	0.3333333333333333	6	1.0	0	0.0	0	0.0
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	10	pattern	broader_before_gold	12	18	0.6666666666666666												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	10	pattern	gold_before_broader	1	18	0.05555555555555555												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	10	pattern	same_onset	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	5	18	0.2777777777777778												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	10	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		18		13	0.7222222222222222	18	1.0	13	0.7222222222222222	12	0.9230769230769231	1	0.07692307692307693	0	0.0
+language_x_subgroup	en|food_taxonomy	qwen3_14b	1	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	1	pattern	same_onset	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	9	12	0.75												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	1	pattern	neither_sustained	3	12	0.25												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		12		0	0.0	9	0.75	0	0.0	0		0		0	
+language_x_subgroup	en|food_taxonomy	qwen3_14b	5	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	5	pattern	same_onset	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	11	12	0.9166666666666666												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	5	pattern	neither_sustained	1	12	0.08333333333333333												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		12		0	0.0	11	0.9166666666666666	0	0.0	0		0		0	
+language_x_subgroup	en|food_taxonomy	qwen3_14b	10	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	10	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	10	pattern	same_onset	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	12	12	1.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	10	pattern	neither_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		12		0	0.0	12	1.0	0	0.0	0		0		0	
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	1	pattern	broader_before_gold	1	8	0.125												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	1	pattern	same_onset	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	6	8	0.75												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	1	pattern	neither_sustained	1	8	0.125												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		8		1	0.125	7	0.875	1	0.125	1	1.0	0	0.0	0	0.0
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	5	pattern	broader_before_gold	7	8	0.875												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	5	pattern	gold_before_broader	1	8	0.125												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	5	pattern	same_onset	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	5	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		8		8	1.0	8	1.0	8	1.0	7	0.875	1	0.125	0	0.0
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	10	pattern	broader_before_gold	7	8	0.875												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	10	pattern	gold_before_broader	1	8	0.125												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	10	pattern	same_onset	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	10	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		8		8	1.0	8	1.0	8	1.0	7	0.875	1	0.125	0	0.0
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	1	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	1	pattern	same_onset	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	6	17	0.35294117647058826												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	1	pattern	neither_sustained	11	17	0.6470588235294118												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		17		0	0.0	6	0.35294117647058826	0	0.0	0		0		0	
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	5	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	5	pattern	same_onset	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	11	17	0.6470588235294118												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	5	pattern	neither_sustained	6	17	0.35294117647058826												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		17		0	0.0	11	0.6470588235294118	0	0.0	0		0		0	
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	10	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	10	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	10	pattern	same_onset	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	13	17	0.7647058823529411												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	10	pattern	neither_sustained	4	17	0.23529411764705882												
+language_x_subgroup	zh|animal_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		17		0	0.0	13	0.7647058823529411	0	0.0	0		0		0	
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	1	pattern	broader_before_gold	18	18	1.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	1	pattern	same_onset	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	1	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		18		18	1.0	18	1.0	18	1.0	18	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	5	pattern	broader_before_gold	18	18	1.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	5	pattern	same_onset	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	5	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		18		18	1.0	18	1.0	18	1.0	18	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	10	pattern	broader_before_gold	18	18	1.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	10	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	10	pattern	same_onset	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	10	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		18		18	1.0	18	1.0	18	1.0	18	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	1	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	1	pattern	same_onset	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	4	12	0.3333333333333333												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	1	pattern	neither_sustained	8	12	0.6666666666666666												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		12		0	0.0	4	0.3333333333333333	0	0.0	0		0		0	
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	5	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	5	pattern	same_onset	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	10	12	0.8333333333333334												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	5	pattern	neither_sustained	2	12	0.16666666666666666												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		12		0	0.0	10	0.8333333333333334	0	0.0	0		0		0	
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	10	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	10	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	10	pattern	same_onset	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	12	12	1.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	10	pattern	neither_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		12		0	0.0	12	1.0	0	0.0	0		0		0	
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	1	pattern	broader_before_gold	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	1	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	1	pattern	same_onset	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	1	pattern	broader_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	1	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	1	pattern	neither_sustained	8	8	1.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	1	coverage	__coverage_summary__		8		0	0.0	0	0.0	0	0.0	0		0		0	
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	5	pattern	broader_before_gold	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	5	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	5	pattern	same_onset	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	5	pattern	broader_only_sustained	4	8	0.5												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	5	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	5	pattern	neither_sustained	4	8	0.5												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	5	coverage	__coverage_summary__		8		4	0.5	0	0.0	0	0.0	0		0		0	
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	10	pattern	broader_before_gold	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	10	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	10	pattern	same_onset	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	10	pattern	broader_only_sustained	6	8	0.75												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	10	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	10	pattern	neither_sustained	2	8	0.25												
+language_x_subgroup	zh|plant_taxonomy	qwen3_14b	10	coverage	__coverage_summary__		8		6	0.75	0	0.0	0	0.0	0		0		0	
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	1	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	1	pattern	same_onset	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	16	17	0.9411764705882353												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	1	pattern	neither_sustained	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		17		0	0.0	16	0.9411764705882353	0	0.0	0		0		0	
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	5	pattern	broader_before_gold	8	17	0.47058823529411764												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	5	pattern	gold_before_broader	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	5	pattern	same_onset	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	6	17	0.35294117647058826												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	5	pattern	neither_sustained	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		17		10	0.5882352941176471	16	0.9411764705882353	10	0.5882352941176471	8	0.8	1	0.1	1	0.1
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	10	pattern	broader_before_gold	8	17	0.47058823529411764												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	10	pattern	gold_before_broader	3	17	0.17647058823529413												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	10	pattern	same_onset	3	17	0.17647058823529413												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	2	17	0.11764705882352941												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	10	pattern	neither_sustained	1	17	0.058823529411764705												
+language_x_subgroup	en|animal_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		17		14	0.8235294117647058	16	0.9411764705882353	14	0.8235294117647058	8	0.5714285714285714	3	0.21428571428571427	3	0.21428571428571427
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	1	pattern	broader_before_gold	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	1	pattern	same_onset	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	18	18	1.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	1	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		18		0	0.0	18	1.0	0	0.0	0		0		0	
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	5	pattern	broader_before_gold	15	18	0.8333333333333334												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	5	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	5	pattern	same_onset	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	3	18	0.16666666666666666												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	5	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		18		15	0.8333333333333334	18	1.0	15	0.8333333333333334	15	1.0	0	0.0	0	0.0
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	10	pattern	broader_before_gold	18	18	1.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	10	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	10	pattern	same_onset	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	10	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	en|chemical_element_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		18		18	1.0	18	1.0	18	1.0	18	1.0	0	0.0	0	0.0
+language_x_subgroup	en|food_taxonomy	qwen3_4b	1	pattern	broader_before_gold	1	12	0.08333333333333333												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	1	pattern	same_onset	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	11	12	0.9166666666666666												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	1	pattern	neither_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		12		1	0.08333333333333333	12	1.0	1	0.08333333333333333	1	1.0	0	0.0	0	0.0
+language_x_subgroup	en|food_taxonomy	qwen3_4b	5	pattern	broader_before_gold	8	12	0.6666666666666666												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	5	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	5	pattern	same_onset	1	12	0.08333333333333333												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	3	12	0.25												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	5	pattern	neither_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		12		9	0.75	12	1.0	9	0.75	8	0.8888888888888888	0	0.0	1	0.1111111111111111
+language_x_subgroup	en|food_taxonomy	qwen3_4b	10	pattern	broader_before_gold	11	12	0.9166666666666666												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	10	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	10	pattern	same_onset	1	12	0.08333333333333333												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	10	pattern	neither_sustained	0	12	0.0												
+language_x_subgroup	en|food_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		12		12	1.0	12	1.0	12	1.0	11	0.9166666666666666	0	0.0	1	0.08333333333333333
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	1	pattern	broader_before_gold	2	8	0.25												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	1	pattern	same_onset	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	3	8	0.375												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	3	8	0.375												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	1	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		8		5	0.625	5	0.625	2	0.25	2	1.0	0	0.0	0	0.0
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	5	pattern	broader_before_gold	4	8	0.5												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	5	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	5	pattern	same_onset	4	8	0.5												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	5	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		8		8	1.0	8	1.0	8	1.0	4	0.5	0	0.0	4	0.5
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	10	pattern	broader_before_gold	5	8	0.625												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	10	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	10	pattern	same_onset	3	8	0.375												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	10	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	en|plant_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		8		8	1.0	8	1.0	8	1.0	5	0.625	0	0.0	3	0.375
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	1	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	1	pattern	same_onset	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	7	17	0.4117647058823529												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	1	pattern	neither_sustained	10	17	0.5882352941176471												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		17		0	0.0	7	0.4117647058823529	0	0.0	0		0		0	
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	5	pattern	broader_before_gold	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	5	pattern	gold_before_broader	1	17	0.058823529411764705												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	5	pattern	same_onset	0	17	0.0												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	1	17	0.058823529411764705												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	13	17	0.7647058823529411												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	5	pattern	neither_sustained	2	17	0.11764705882352941												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		17		2	0.11764705882352941	14	0.8235294117647058	1	0.058823529411764705	0	0.0	1	1.0	0	0.0
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	10	pattern	broader_before_gold	3	17	0.17647058823529413												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	10	pattern	gold_before_broader	2	17	0.11764705882352941												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	10	pattern	same_onset	1	17	0.058823529411764705												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	1	17	0.058823529411764705												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	8	17	0.47058823529411764												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	10	pattern	neither_sustained	2	17	0.11764705882352941												
+language_x_subgroup	zh|animal_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		17		7	0.4117647058823529	14	0.8235294117647058	6	0.35294117647058826	3	0.5	2	0.3333333333333333	1	0.16666666666666666
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	1	pattern	broader_before_gold	13	18	0.7222222222222222												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	1	pattern	same_onset	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	5	18	0.2777777777777778												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	1	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		18		13	0.7222222222222222	18	1.0	13	0.7222222222222222	13	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	5	pattern	broader_before_gold	18	18	1.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	5	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	5	pattern	same_onset	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	5	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		18		18	1.0	18	1.0	18	1.0	18	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	10	pattern	broader_before_gold	18	18	1.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	10	pattern	gold_before_broader	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	10	pattern	same_onset	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	10	pattern	neither_sustained	0	18	0.0												
+language_x_subgroup	zh|chemical_element_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		18		18	1.0	18	1.0	18	1.0	18	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	1	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	1	pattern	same_onset	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	3	12	0.25												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	1	pattern	neither_sustained	9	12	0.75												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		12		0	0.0	3	0.25	0	0.0	0		0		0	
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	5	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	5	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	5	pattern	same_onset	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	10	12	0.8333333333333334												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	5	pattern	neither_sustained	2	12	0.16666666666666666												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		12		0	0.0	10	0.8333333333333334	0	0.0	0		0		0	
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	10	pattern	broader_before_gold	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	10	pattern	gold_before_broader	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	10	pattern	same_onset	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	12	0.0												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	11	12	0.9166666666666666												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	10	pattern	neither_sustained	1	12	0.08333333333333333												
+language_x_subgroup	zh|food_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		12		0	0.0	11	0.9166666666666666	0	0.0	0		0		0	
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	1	pattern	broader_before_gold	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	1	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	1	pattern	same_onset	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	1	pattern	broader_only_sustained	5	8	0.625												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	1	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	1	pattern	neither_sustained	3	8	0.375												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	1	coverage	__coverage_summary__		8		5	0.625	0	0.0	0	0.0	0		0		0	
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	5	pattern	broader_before_gold	4	8	0.5												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	5	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	5	pattern	same_onset	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	5	pattern	broader_only_sustained	4	8	0.5												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	5	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	5	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	5	coverage	__coverage_summary__		8		8	1.0	4	0.5	4	0.5	4	1.0	0	0.0	0	0.0
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	10	pattern	broader_before_gold	8	8	1.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	10	pattern	gold_before_broader	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	10	pattern	same_onset	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	10	pattern	broader_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	10	pattern	gold_only_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	10	pattern	neither_sustained	0	8	0.0												
+language_x_subgroup	zh|plant_taxonomy	qwen3_4b	10	coverage	__coverage_summary__		8		8	1.0	8	1.0	8	1.0	8	1.0	0	0.0	0	0.0

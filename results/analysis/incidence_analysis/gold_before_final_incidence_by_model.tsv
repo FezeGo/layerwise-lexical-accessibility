@@ -1,0 +1,4 @@
+﻿model_key	total_eligible_trajectories	gold_before_final_n	gold_before_final_percent	annotated_gold_before_final_n	annotation_coverage_percent
+qwen3_0_6b	1040	35	3.3654	35	100.0
+qwen3_4b	1040	134	12.8846	134	100.0
+qwen3_14b	1040	264	25.3846	264	100.0

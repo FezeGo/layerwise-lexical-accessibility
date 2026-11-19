@@ -1,0 +1,67 @@
+{
+  "analysis": "translation_equivalent_accessibility_under_chinese_prompt",
+  "input_files": [
+    "data/logit_lens/translation_equivalent/qwen3_0_6b/translation_equivalent_by_layer.jsonl",
+    "data/logit_lens/translation_equivalent/qwen3_4b/translation_equivalent_by_layer.jsonl",
+    "data/logit_lens/translation_equivalent/qwen3_14b/translation_equivalent_by_layer.jsonl"
+  ],
+  "raw_layer_rows": 55640,
+  "trajectory_units_model_id": 1560,
+  "model_example_counts": {
+    "qwen3_0_6b": 520,
+    "qwen3_14b": 520,
+    "qwen3_4b": 520
+  },
+  "requested_model_example_counts": {
+    "qwen3_0_6b": 520,
+    "qwen3_4b": 520,
+    "qwen3_14b": 520
+  },
+  "min_consecutive": 3,
+  "measurement_source": "Direct token-specific full-vocabulary measurements produced by logit_lens_translation_equivalent.py; no decoded-string matching.",
+  "rank_definition": "1 + number of vocabulary logits strictly greater than the tracked token logit",
+  "rank_difference_definition": "English-equivalent rank minus Chinese-gold rank; negative means English ranks better.",
+  "topk_definition": "Actual torch.topk membership from the EQ1 extraction.",
+  "sustained_onset_definition": "Earliest layer beginning at least 3 consecutive layers of Top-k membership.",
+  "top10_pattern_counts_by_model": {
+    "qwen3_0_6b": {
+      "neither_sustained": 289,
+      "chinese_only_sustained": 207,
+      "chinese_before_english": 22,
+      "same_onset": 2
+    },
+    "qwen3_14b": {
+      "chinese_only_sustained": 124,
+      "neither_sustained": 54,
+      "chinese_before_english": 248,
+      "same_onset": 76,
+      "english_before_chinese": 18
+    },
+    "qwen3_4b": {
+      "chinese_only_sustained": 178,
+      "neither_sustained": 49,
+      "same_onset": 76,
+      "chinese_before_english": 199,
+      "english_before_chinese": 15,
+      "english_only_sustained": 3
+    }
+  },
+  "english_before_chinese_top10_count": 33,
+  "validation": {
+    "all_rows_chinese_prompt": true,
+    "rank_difference_consistency_checked": true,
+    "actual_topk_membership_consistency_checked": true,
+    "trajectory_contiguity_checked": true,
+    "final_layer_prediction_consistency_checked": true
+  },
+  "outputs": {
+    "layerwise": "translation_equivalent_layerwise.tsv",
+    "trajectories_tsv": "translation_equivalent_trajectories.tsv",
+    "trajectories_jsonl": "translation_equivalent_trajectories.jsonl",
+    "pattern_counts": "translation_equivalent_pattern_counts.tsv",
+    "onset_summary": "translation_equivalent_onset_summary.tsv",
+    "layerwise_summary": "translation_equivalent_layerwise_summary.tsv",
+    "final_layer_summary": "translation_equivalent_final_layer_summary.tsv",
+    "english_before_chinese_top10": "english_before_chinese_gold.tsv"
+  }
+}

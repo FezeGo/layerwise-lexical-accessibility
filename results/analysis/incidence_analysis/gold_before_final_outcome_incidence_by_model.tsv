@@ -1,0 +1,4 @@
+﻿model_key	total_eligible_trajectories	gold_before_final_n	gold_before_final_percent	annotated_gold_before_final_n	annotation_coverage_percent	not_evaluable_n	not_evaluable_percent_of_all_trajectories	not_evaluable_percent_within_annotated_gold_before_final	broadly_acceptable_n	broadly_acceptable_percent_of_all_trajectories	broadly_acceptable_percent_within_annotated_gold_before_final	incompatible_or_unrelated_n	incompatible_or_unrelated_percent_of_all_trajectories	incompatible_or_unrelated_percent_within_annotated_gold_before_final
+qwen3_0_6b	1040	35	3.3654	35	100.0	21	2.0192	60.0	9	0.8654	25.7143	5	0.4808	14.2857
+qwen3_4b	1040	134	12.8846	134	100.0	106	10.1923	79.1045	23	2.2115	17.1642	5	0.4808	3.7313
+qwen3_14b	1040	264	25.3846	264	100.0	225	21.6346	85.2273	32	3.0769	12.1212	7	0.6731	2.6515

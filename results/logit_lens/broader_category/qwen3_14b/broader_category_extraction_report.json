@@ -1,0 +1,60 @@
+{
+  "analysis": "broader_category_accessibility_extraction",
+  "model_key": "qwen3_14b",
+  "model_name": "Qwen/Qwen3-14B",
+  "alignment_path": "/content/drive/MyDrive/thesis/data/broader_category/broader_category_alignment.jsonl",
+  "output_dir": "/content/drive/MyDrive/thesis/data/logit_lens/broader_category/qwen3_14b",
+  "trajectory_definition": "One model-example-language trajectory; gold and broader-category vocabulary tokens are measured from the same causal prediction-position hidden state.",
+  "counts": {
+    "alignment_trajectories_requested": 110,
+    "alignment_by_language": {
+      "en": 55,
+      "zh": 55
+    },
+    "bilingual_pair_count": 55,
+    "bilingual_pairs_by_subgroup": {
+      "animal_taxonomy": 17,
+      "chemical_element_taxonomy": 18,
+      "food_taxonomy": 12,
+      "plant_taxonomy": 8
+    },
+    "num_transformer_layers": 40,
+    "hidden_states_per_trajectory": 41,
+    "layer_rows": 4510,
+    "rejected_trajectories": 0,
+    "completed_trajectories": 110
+  },
+  "projection": {
+    "apply_final_norm": true,
+    "embedding_applies_final_norm": false,
+    "intermediate_applies_final_norm": true,
+    "final_layer_uses_outputs_logits": true,
+    "rank_definition": "1 + number of vocabulary logits strictly greater than the tracked token logit",
+    "rank_difference_definition": "broader rank minus gold rank; negative means broader ranks better",
+    "top_k": 10,
+    "topk_membership_uses_actual_torch_topk": true,
+    "compute_prob": true,
+    "store_topk": true
+  },
+  "runtime": {
+    "dtype": "torch.bfloat16",
+    "device_map": "auto"
+  },
+  "final_prediction_exact_match_counts": {
+    "gold": 72,
+    "broader_category": 1
+  },
+  "outputs": {
+    "raw_jsonl": "/content/drive/MyDrive/thesis/data/logit_lens/broader_category/qwen3_14b/broader_category_by_layer.jsonl",
+    "compact_tsv": "/content/drive/MyDrive/thesis/data/logit_lens/broader_category/qwen3_14b/broader_category_by_layer_compact.tsv",
+    "rejected_jsonl": "/content/drive/MyDrive/thesis/data/logit_lens/broader_category/qwen3_14b/broader_category.rejected.jsonl",
+    "run_config_json": "/content/drive/MyDrive/thesis/data/logit_lens/broader_category/qwen3_14b/run_config.json"
+  },
+  "processed_this_run": 110,
+  "validation": {
+    "all_requested_trajectories_complete": true,
+    "all_saved_layers_contiguous": true,
+    "gold_and_broader_measured_from_same_hidden_state": true,
+    "final_layer_prediction_consistency_checked_per_trajectory": true
+  }
+}

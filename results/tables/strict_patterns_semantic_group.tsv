@@ -1,0 +1,83 @@
+﻿model_key	semantic_group	strict_sustained_pattern_top10	count	group_total	rate	pattern_label
+qwen3_0_6b	attribute	exact_gold_convergence	26	260	0.1	Exact-gold convergence
+qwen3_0_6b	attribute	final_sustained_gold_not_sustained	143	260	0.55	Final sustained; gold not sustained
+qwen3_0_6b	attribute	final_before_gold	50	260	0.19230769230769232	Final before gold
+qwen3_0_6b	attribute	gold_before_final	5	260	0.019230769230769232	Gold before final
+qwen3_0_6b	attribute	gold_sustained_final_not_sustained	22	260	0.08461538461538462	Gold sustained; final not sustained
+qwen3_0_6b	attribute	same_onset	4	260	0.015384615384615385	Same sustained onset
+qwen3_0_6b	attribute	neither_sustained	10	260	0.038461538461538464	Neither sustained
+qwen3_0_6b	category	exact_gold_convergence	141	260	0.5423076923076923	Exact-gold convergence
+qwen3_0_6b	category	final_sustained_gold_not_sustained	46	260	0.17692307692307693	Final sustained; gold not sustained
+qwen3_0_6b	category	final_before_gold	34	260	0.13076923076923078	Final before gold
+qwen3_0_6b	category	gold_before_final	25	260	0.09615384615384616	Gold before final
+qwen3_0_6b	category	gold_sustained_final_not_sustained	1	260	0.0038461538461538464	Gold sustained; final not sustained
+qwen3_0_6b	category	same_onset	11	260	0.04230769230769231	Same sustained onset
+qwen3_0_6b	category	neither_sustained	2	260	0.007692307692307693	Neither sustained
+qwen3_0_6b	location	exact_gold_convergence	44	260	0.16923076923076924	Exact-gold convergence
+qwen3_0_6b	location	final_sustained_gold_not_sustained	183	260	0.7038461538461539	Final sustained; gold not sustained
+qwen3_0_6b	location	final_before_gold	20	260	0.07692307692307693	Final before gold
+qwen3_0_6b	location	gold_before_final	1	260	0.0038461538461538464	Gold before final
+qwen3_0_6b	location	gold_sustained_final_not_sustained	5	260	0.019230769230769232	Gold sustained; final not sustained
+qwen3_0_6b	location	same_onset	3	260	0.011538461538461539	Same sustained onset
+qwen3_0_6b	location	neither_sustained	4	260	0.015384615384615385	Neither sustained
+qwen3_0_6b	material	exact_gold_convergence	20	260	0.07692307692307693	Exact-gold convergence
+qwen3_0_6b	material	final_sustained_gold_not_sustained	164	260	0.6307692307692307	Final sustained; gold not sustained
+qwen3_0_6b	material	final_before_gold	64	260	0.24615384615384617	Final before gold
+qwen3_0_6b	material	gold_before_final	4	260	0.015384615384615385	Gold before final
+qwen3_0_6b	material	gold_sustained_final_not_sustained	3	260	0.011538461538461539	Gold sustained; final not sustained
+qwen3_0_6b	material	same_onset	2	260	0.007692307692307693	Same sustained onset
+qwen3_0_6b	material	neither_sustained	3	260	0.011538461538461539	Neither sustained
+qwen3_14b	attribute	exact_gold_convergence	144	260	0.5538461538461539	Exact-gold convergence
+qwen3_14b	attribute	final_sustained_gold_not_sustained	20	260	0.07692307692307693	Final sustained; gold not sustained
+qwen3_14b	attribute	final_before_gold	23	260	0.08846153846153847	Final before gold
+qwen3_14b	attribute	gold_before_final	58	260	0.2230769230769231	Gold before final
+qwen3_14b	attribute	gold_sustained_final_not_sustained	6	260	0.023076923076923078	Gold sustained; final not sustained
+qwen3_14b	attribute	same_onset	8	260	0.03076923076923077	Same sustained onset
+qwen3_14b	attribute	neither_sustained	1	260	0.0038461538461538464	Neither sustained
+qwen3_14b	category	exact_gold_convergence	144	260	0.5538461538461539	Exact-gold convergence
+qwen3_14b	category	final_sustained_gold_not_sustained	33	260	0.12692307692307692	Final sustained; gold not sustained
+qwen3_14b	category	final_before_gold	37	260	0.1423076923076923	Final before gold
+qwen3_14b	category	gold_before_final	35	260	0.1346153846153846	Gold before final
+qwen3_14b	category	gold_sustained_final_not_sustained	1	260	0.0038461538461538464	Gold sustained; final not sustained
+qwen3_14b	category	same_onset	6	260	0.023076923076923078	Same sustained onset
+qwen3_14b	category	neither_sustained	4	260	0.015384615384615385	Neither sustained
+qwen3_14b	location	exact_gold_convergence	69	260	0.2653846153846154	Exact-gold convergence
+qwen3_14b	location	final_sustained_gold_not_sustained	23	260	0.08846153846153847	Final sustained; gold not sustained
+qwen3_14b	location	final_before_gold	90	260	0.34615384615384615	Final before gold
+qwen3_14b	location	gold_before_final	61	260	0.23461538461538461	Gold before final
+qwen3_14b	location	gold_sustained_final_not_sustained	6	260	0.023076923076923078	Gold sustained; final not sustained
+qwen3_14b	location	same_onset	8	260	0.03076923076923077	Same sustained onset
+qwen3_14b	location	neither_sustained	3	260	0.011538461538461539	Neither sustained
+qwen3_14b	material	exact_gold_convergence	84	260	0.3230769230769231	Exact-gold convergence
+qwen3_14b	material	final_sustained_gold_not_sustained	8	260	0.03076923076923077	Final sustained; gold not sustained
+qwen3_14b	material	final_before_gold	25	260	0.09615384615384616	Final before gold
+qwen3_14b	material	gold_before_final	110	260	0.4230769230769231	Gold before final
+qwen3_14b	material	gold_sustained_final_not_sustained	26	260	0.1	Gold sustained; final not sustained
+qwen3_14b	material	same_onset	7	260	0.026923076923076925	Same sustained onset
+qwen3_4b	attribute	exact_gold_convergence	115	260	0.4423076923076923	Exact-gold convergence
+qwen3_4b	attribute	final_sustained_gold_not_sustained	27	260	0.10384615384615385	Final sustained; gold not sustained
+qwen3_4b	attribute	final_before_gold	50	260	0.19230769230769232	Final before gold
+qwen3_4b	attribute	gold_before_final	50	260	0.19230769230769232	Gold before final
+qwen3_4b	attribute	gold_sustained_final_not_sustained	5	260	0.019230769230769232	Gold sustained; final not sustained
+qwen3_4b	attribute	same_onset	9	260	0.03461538461538462	Same sustained onset
+qwen3_4b	attribute	neither_sustained	4	260	0.015384615384615385	Neither sustained
+qwen3_4b	category	exact_gold_convergence	159	260	0.6115384615384616	Exact-gold convergence
+qwen3_4b	category	final_sustained_gold_not_sustained	13	260	0.05	Final sustained; gold not sustained
+qwen3_4b	category	final_before_gold	45	260	0.17307692307692307	Final before gold
+qwen3_4b	category	gold_before_final	32	260	0.12307692307692308	Gold before final
+qwen3_4b	category	gold_sustained_final_not_sustained	1	260	0.0038461538461538464	Gold sustained; final not sustained
+qwen3_4b	category	same_onset	10	260	0.038461538461538464	Same sustained onset
+qwen3_4b	location	exact_gold_convergence	90	260	0.34615384615384615	Exact-gold convergence
+qwen3_4b	location	final_sustained_gold_not_sustained	70	260	0.2692307692307692	Final sustained; gold not sustained
+qwen3_4b	location	final_before_gold	88	260	0.3384615384615385	Final before gold
+qwen3_4b	location	gold_before_final	7	260	0.026923076923076925	Gold before final
+qwen3_4b	location	gold_sustained_final_not_sustained	2	260	0.007692307692307693	Gold sustained; final not sustained
+qwen3_4b	location	same_onset	2	260	0.007692307692307693	Same sustained onset
+qwen3_4b	location	neither_sustained	1	260	0.0038461538461538464	Neither sustained
+qwen3_4b	material	exact_gold_convergence	43	260	0.16538461538461538	Exact-gold convergence
+qwen3_4b	material	final_sustained_gold_not_sustained	30	260	0.11538461538461539	Final sustained; gold not sustained
+qwen3_4b	material	final_before_gold	105	260	0.40384615384615385	Final before gold
+qwen3_4b	material	gold_before_final	45	260	0.17307692307692307	Gold before final
+qwen3_4b	material	gold_sustained_final_not_sustained	26	260	0.1	Gold sustained; final not sustained
+qwen3_4b	material	same_onset	5	260	0.019230769230769232	Same sustained onset
+qwen3_4b	material	neither_sustained	6	260	0.023076923076923078	Neither sustained

@@ -1,0 +1,9 @@
+﻿language	semantic_group	total_eligible_trajectories	gold_before_final_n	gold_before_final_percent	annotated_gold_before_final_n	annotation_coverage_percent
+en	attribute	390	64	16.4103	64	100.0
+en	category	390	45	11.5385	45	100.0
+en	material	390	87	22.3077	87	100.0
+en	location	390	38	9.7436	38	100.0
+zh	attribute	390	49	12.5641	49	100.0
+zh	category	390	47	12.0513	47	100.0
+zh	material	390	72	18.4615	72	100.0
+zh	location	390	31	7.9487	31	100.0

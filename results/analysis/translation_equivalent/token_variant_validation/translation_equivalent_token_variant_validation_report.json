@@ -1,0 +1,80 @@
+{
+  "analysis": "translation_equivalent_token_variant_validation",
+  "purpose": "Check whether the English token tracked in EQ1 corresponds to the no-space or leading-space English lexical variant after the Chinese prefix, and whether both contextual variants are clean single tokens.",
+  "num_rows": 1560,
+  "num_models": 3,
+  "models": [
+    "qwen3_0_6b",
+    "qwen3_14b",
+    "qwen3_4b"
+  ],
+  "tracked_variant_class_counts_overall": {
+    "leading_space_variant": 1560
+  },
+  "model_summaries": {
+    "qwen3_0_6b": {
+      "n": 520,
+      "tracked_variant_class_counts": {
+        "leading_space_variant": 520
+      },
+      "no_space_context_single_token_count": 350,
+      "no_space_context_single_token_rate": 0.6730769230769231,
+      "leading_space_context_single_token_count": 520,
+      "leading_space_context_single_token_rate": 1.0,
+      "tracked_matches_no_space_context_count": 0,
+      "tracked_matches_no_space_context_rate": 0.0,
+      "tracked_matches_leading_space_context_count": 520,
+      "tracked_matches_leading_space_context_rate": 1.0,
+      "distinct_contextual_single_token_variants_count": 350,
+      "distinct_contextual_single_token_variants_rate": 0.6730769230769231,
+      "no_space_context_boundary_clean_count": 520,
+      "leading_space_context_boundary_clean_count": 520,
+      "no_space_context_covers_full_target_count": 520,
+      "leading_space_context_covers_full_target_count": 520
+    },
+    "qwen3_14b": {
+      "n": 520,
+      "tracked_variant_class_counts": {
+        "leading_space_variant": 520
+      },
+      "no_space_context_single_token_count": 350,
+      "no_space_context_single_token_rate": 0.6730769230769231,
+      "leading_space_context_single_token_count": 520,
+      "leading_space_context_single_token_rate": 1.0,
+      "tracked_matches_no_space_context_count": 0,
+      "tracked_matches_no_space_context_rate": 0.0,
+      "tracked_matches_leading_space_context_count": 520,
+      "tracked_matches_leading_space_context_rate": 1.0,
+      "distinct_contextual_single_token_variants_count": 350,
+      "distinct_contextual_single_token_variants_rate": 0.6730769230769231,
+      "no_space_context_boundary_clean_count": 520,
+      "leading_space_context_boundary_clean_count": 520,
+      "no_space_context_covers_full_target_count": 520,
+      "leading_space_context_covers_full_target_count": 520
+    },
+    "qwen3_4b": {
+      "n": 520,
+      "tracked_variant_class_counts": {
+        "leading_space_variant": 520
+      },
+      "no_space_context_single_token_count": 350,
+      "no_space_context_single_token_rate": 0.6730769230769231,
+      "leading_space_context_single_token_count": 520,
+      "leading_space_context_single_token_rate": 1.0,
+      "tracked_matches_no_space_context_count": 0,
+      "tracked_matches_no_space_context_rate": 0.0,
+      "tracked_matches_leading_space_context_count": 520,
+      "tracked_matches_leading_space_context_rate": 1.0,
+      "distinct_contextual_single_token_variants_count": 350,
+      "distinct_contextual_single_token_variants_rate": 0.6730769230769231,
+      "no_space_context_boundary_clean_count": 520,
+      "leading_space_context_boundary_clean_count": 520,
+      "no_space_context_covers_full_target_count": 520,
+      "leading_space_context_covers_full_target_count": 520
+    }
+  },
+  "outputs": {
+    "detail_tsv": "data/analysis/full/translation_equivalent/token_variant_validation/translation_equivalent_token_variant_validation.tsv",
+    "report_json": "data/analysis/full/translation_equivalent/token_variant_validation/translation_equivalent_token_variant_validation_report.json"
+  }
+}

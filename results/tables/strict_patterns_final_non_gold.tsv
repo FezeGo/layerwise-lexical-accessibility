@@ -1,0 +1,19 @@
+﻿model_key	strict_sustained_pattern_top10	count	group_total	rate	pattern_label	model
+qwen3_0_6b	final_sustained_gold_not_sustained	536	809	0.6625463535228677	Final sustained; gold not sustained	Qwen3-0.6B
+qwen3_0_6b	final_before_gold	168	809	0.207663782447466	Final before gold	Qwen3-0.6B
+qwen3_0_6b	gold_before_final	35	809	0.04326328800988875	Gold before final	Qwen3-0.6B
+qwen3_0_6b	gold_sustained_final_not_sustained	31	809	0.038318912237330034	Gold sustained; final not sustained	Qwen3-0.6B
+qwen3_0_6b	same_onset	20	809	0.024721878862793572	Same sustained onset	Qwen3-0.6B
+qwen3_0_6b	neither_sustained	19	809	0.023485784919653894	Neither sustained	Qwen3-0.6B
+qwen3_4b	gold_sustained_final_not_sustained	34	633	0.053712480252764615	Gold sustained; final not sustained	Qwen3-4B
+qwen3_4b	gold_before_final	134	633	0.21169036334913113	Gold before final	Qwen3-4B
+qwen3_4b	final_before_gold	288	633	0.4549763033175355	Final before gold	Qwen3-4B
+qwen3_4b	final_sustained_gold_not_sustained	140	633	0.2211690363349131	Final sustained; gold not sustained	Qwen3-4B
+qwen3_4b	neither_sustained	11	633	0.017377567140600316	Neither sustained	Qwen3-4B
+qwen3_4b	same_onset	26	633	0.04107424960505529	Same sustained onset	Qwen3-4B
+qwen3_14b	neither_sustained	8	599	0.01335559265442404	Neither sustained	Qwen3-14B
+qwen3_14b	gold_sustained_final_not_sustained	39	599	0.0651085141903172	Gold sustained; final not sustained	Qwen3-14B
+qwen3_14b	final_before_gold	175	599	0.2921535893155259	Final before gold	Qwen3-14B
+qwen3_14b	final_sustained_gold_not_sustained	84	599	0.14023372287145242	Final sustained; gold not sustained	Qwen3-14B
+qwen3_14b	same_onset	29	599	0.048414023372287146	Same sustained onset	Qwen3-14B
+qwen3_14b	gold_before_final	264	599	0.44073455759599334	Gold before final	Qwen3-14B

@@ -1,0 +1,8 @@
+{
+  "valid": false,
+  "error": "Annotation coverage is incomplete: strict rows without annotation=1, annotations without strict row=3. Check event detection/join keys or deliberately use --allow-partial-coverage.",
+  "trajectory_files": [
+    "data/analysis/full/all_models_layer_trajectory_examples.tsv"
+  ],
+  "annotation_file": "data/analysis/annotation/gold_before_final_annotations_final.tsv"
+}

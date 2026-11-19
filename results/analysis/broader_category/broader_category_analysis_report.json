@@ -1,0 +1,146 @@
+{
+  "analysis": "broader_category_accessibility",
+  "research_question": "For category-completion examples, does a manually specified broader category become accessible before the more specific predefined gold category under a plain Logit Lens?",
+  "input_files": [
+    "data/logit_lens/broader_category/qwen3_0_6b/broader_category_by_layer.jsonl",
+    "data/logit_lens/broader_category/qwen3_4b/broader_category_by_layer.jsonl",
+    "data/logit_lens/broader_category/qwen3_14b/broader_category_by_layer.jsonl"
+  ],
+  "counts": {
+    "raw_layer_rows": 11770,
+    "trajectory_units_model_id_language": 330,
+    "model_trajectory_counts": {
+      "qwen3_0_6b": 110,
+      "qwen3_14b": 110,
+      "qwen3_4b": 110
+    },
+    "model_language_counts": {
+      "qwen3_0_6b": {
+        "en": 55,
+        "zh": 55
+      },
+      "qwen3_14b": {
+        "en": 55,
+        "zh": 55
+      },
+      "qwen3_4b": {
+        "en": 55,
+        "zh": 55
+      }
+    },
+    "bilingual_pairs_total": 165,
+    "bilingual_pairs_per_model": {
+      "qwen3_0_6b": 55,
+      "qwen3_14b": 55,
+      "qwen3_4b": 55
+    },
+    "subgroup_counts_by_model": {
+      "qwen3_0_6b": {
+        "animal_taxonomy": 17,
+        "chemical_element_taxonomy": 18,
+        "food_taxonomy": 12,
+        "plant_taxonomy": 8
+      },
+      "qwen3_14b": {
+        "animal_taxonomy": 17,
+        "chemical_element_taxonomy": 18,
+        "food_taxonomy": 12,
+        "plant_taxonomy": 8
+      },
+      "qwen3_4b": {
+        "animal_taxonomy": 17,
+        "chemical_element_taxonomy": 18,
+        "food_taxonomy": 12,
+        "plant_taxonomy": 8
+      }
+    }
+  },
+  "method": {
+    "primary_k": 10,
+    "min_consecutive": 3,
+    "sustained_onset_definition": "Earliest layer beginning at least 3 consecutive layers of Top-k membership.",
+    "rank_difference_definition": "broader rank minus gold rank; negative means broader ranks better.",
+    "onset_delta_definition": "gold sustained-onset layer minus broader sustained-onset layer; positive means broader became sustained earlier.",
+    "normalized_depth_definition": "layer / num_layers"
+  },
+  "primary_top10_summary_all_trajectories": {
+    "both_sustained_count": 206,
+    "broader_before_gold_count": 176,
+    "broader_before_gold_rate_among_both": 0.8543689320388349,
+    "gold_before_broader_count": 13,
+    "gold_before_broader_rate_among_both": 0.06310679611650485,
+    "same_onset_count": 17,
+    "same_onset_rate_among_both": 0.0825242718446602
+  },
+  "top10_pattern_counts_by_model_language": {
+    "qwen3_0_6b": {
+      "en": {
+        "broader_before_gold": 41,
+        "neither_sustained": 1,
+        "broader_only_sustained": 1,
+        "gold_before_broader": 2,
+        "gold_only_sustained": 5,
+        "same_onset": 5
+      },
+      "zh": {
+        "broader_before_gold": 25,
+        "broader_only_sustained": 14,
+        "same_onset": 4,
+        "neither_sustained": 8,
+        "gold_only_sustained": 4
+      }
+    },
+    "qwen3_14b": {
+      "en": {
+        "gold_before_broader": 6,
+        "broader_before_gold": 21,
+        "gold_only_sustained": 27,
+        "neither_sustained": 1
+      },
+      "zh": {
+        "gold_only_sustained": 25,
+        "neither_sustained": 6,
+        "broader_before_gold": 18,
+        "broader_only_sustained": 6
+      }
+    },
+    "qwen3_4b": {
+      "en": {
+        "same_onset": 7,
+        "broader_before_gold": 42,
+        "gold_before_broader": 3,
+        "gold_only_sustained": 2,
+        "neither_sustained": 1
+      },
+      "zh": {
+        "gold_only_sustained": 19,
+        "broader_before_gold": 29,
+        "gold_before_broader": 2,
+        "broader_only_sustained": 1,
+        "neither_sustained": 3,
+        "same_onset": 1
+      }
+    }
+  },
+  "validation": {
+    "required_fields_checked": true,
+    "rank_difference_consistency_checked": true,
+    "topk_membership_consistency_checked_when_available": true,
+    "trajectory_contiguity_checked": true,
+    "final_layer_prediction_consistency_checked_when_available": true,
+    "matched_en_zh_pairs_checked": true
+  },
+  "interpretation_note": "Earlier/higher vocabulary-space accessibility under the plain Logit Lens does not establish a causal semantic-representation ordering.",
+  "outputs": {
+    "layerwise": "broader_category_layerwise.tsv",
+    "trajectories_tsv": "broader_category_trajectories.tsv",
+    "trajectories_jsonl": "broader_category_trajectories.jsonl",
+    "pattern_counts": "broader_category_pattern_counts.tsv",
+    "onset_summary": "broader_category_onset_summary.tsv",
+    "layerwise_summary": "broader_category_layerwise_summary.tsv",
+    "final_layer_summary": "broader_category_final_layer_summary.tsv",
+    "broader_before_gold_top10": "broader_before_gold_top10.tsv",
+    "bilingual_pair_comparison": "bilingual_pair_top10_comparison.tsv",
+    "bilingual_language_summary": "bilingual_language_comparison_summary.tsv"
+  }
+}
