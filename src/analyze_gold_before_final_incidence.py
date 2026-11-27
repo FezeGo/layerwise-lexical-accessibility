@@ -1,15 +1,3 @@
-"""
-python src/analyze_gold_before_final_incidence.py \
-    results/analysis/trajectory/all_models_layer_trajectory_examples.tsv \
-    --annotations \
-    data/annotations/gold_before_final_annotations_final.tsv \
-    --pattern-column strict_sustained_pattern_top10 \
-    --gbf-label gold_before_final \
-    --join-keys model_key language id \
-    --unit-keys model_key language id \
-    --output-dir data/analysis/annotation/incidence_analysis
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -17,10 +5,15 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
+from typing import Any, Mapping, Sequence
 
 import pandas as pd
 
+
+DEFAULT_INPUT_PATH = Path(
+    "results/analysis/trajectory/all_models_layer_trajectory_examples.tsv"
+)
+DEFAULT_OUTPUT_DIR = Path("results/analysis/gold_before_final/incidence_analysis")
 
 BROADLY_ACCEPTABLE = {
     "translation_equivalent",
@@ -31,24 +24,22 @@ BROADLY_ACCEPTABLE = {
     "other_plausible",
 }
 
-MODEL_ORDER = ["qwen3_0_6b", "qwen3_4b", "qwen3_14b"]
+MODEL_KEYS = ("qwen3_0_6b", "qwen3_4b", "qwen3_14b")
 LANGUAGE_ORDER = ["en", "zh"]
 GROUP_ORDER = ["attribute", "category", "material", "location"]
 
 MODEL_CANDIDATES = ["model_key", "model", "model_name"]
 LANGUAGE_CANDIDATES = ["language", "lang"]
 GROUP_CANDIDATES = ["semantic_group", "semantic_category", "group"]
+DEFAULT_EXPECTED_ANNOTATION_ROWS = 433
+DEFAULT_UNIT_KEYS = ["model_key", "language", "id"]
+
 PATTERN_CANDIDATES = [
+    "strict_sustained_pattern_top10",
     "strict_pattern",
     "strict_trajectory_pattern",
-    "trajectory_pattern",
-    "pattern",
-    "pattern_label",
-    "trajectory_type",
 ]
 INDICATOR_CANDIDATES = [
-    "is_gold_before_final",
-    "gold_before_final",
     "strict_gold_before_final",
 ]
 JOIN_KEY_CANDIDATES = [
@@ -80,46 +71,32 @@ GROUP_DISPLAY = {
 }
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Compute strict gold-before-final incidence with full denominators."
-    )
-    parser.add_argument(
-        "trajectory_files",
-        nargs="+",
-        type=Path,
-        help="One or more complete trajectory files; files are concatenated.",
-    )
-    parser.add_argument(
-        "--annotations",
-        required=True,
-        type=Path,
-        help="Finalized gold-before-final annotation file.",
-    )
-    parser.add_argument(
-        "--output-dir",
-        type=Path,
-        default=None,
-        help="Default: <annotation directory>/incidence_analysis",
-    )
+GROUPING_SPECS: Mapping[str, Sequence[str]] = {
+    "overall": [],
+    "by_model": ["model_key"],
+    "by_language": ["language"],
+    "by_semantic_group": ["semantic_group"],
+    "by_model_language": ["model_key", "language"],
+    "by_model_semantic_group": ["model_key", "semantic_group"],
+    "by_language_semantic_group": ["language", "semantic_group"],
+    "by_model_language_semantic_group": [
+        "model_key",
+        "language",
+        "semantic_group",
+    ],
+}
 
-    event = parser.add_mutually_exclusive_group()
-    event.add_argument("--pattern-column", default=None)
-    event.add_argument("--gbf-indicator-column", default=None)
-    parser.add_argument("--gbf-label", default="gold_before_final")
-
-    parser.add_argument("--model-column", default=None)
-    parser.add_argument("--language-column", default=None)
-    parser.add_argument("--semantic-group-column", default=None)
-
-    parser.add_argument("--eligible-column", default=None)
-    parser.add_argument("--eligible-values", nargs="+", default=None)
-    parser.add_argument("--join-keys", nargs="+", default=None)
-    parser.add_argument("--unit-keys", nargs="+", default=None)
-    parser.add_argument("--expected-annotation-rows", type=int, default=433)
-    parser.add_argument("--allow-partial-coverage", action="store_true")
-    parser.add_argument("--no-latex", action="store_true")
-    return parser.parse_args()
+OUTPUT_FILENAMES = (
+    *(f"gold_before_final_incidence_{name}.tsv" for name in GROUPING_SPECS),
+    *(f"gold_before_final_outcome_incidence_{name}.tsv" for name in GROUPING_SPECS),
+    "table5_gold_before_final_incidence.tsv",
+    "table6_gold_before_final_outcome_incidence.tsv",
+    "strict_gold_before_final_with_annotations.tsv",
+    "gold_before_final_incidence_report.json",
+    "table5_gold_before_final_incidence.tex",
+    "table6_gold_before_final_outcome_incidence.tex",
+)
+FAILURE_FILENAME = "gold_before_final_incidence_failure.json"
 
 
 def read_table(path: Path) -> pd.DataFrame:
@@ -161,7 +138,7 @@ def read_table(path: Path) -> pd.DataFrame:
 
 
 def read_trajectory_files(paths: Sequence[Path]) -> pd.DataFrame:
-    frames: List[pd.DataFrame] = []
+    frames: list[pd.DataFrame] = []
     schema: set[str] | None = None
     for path in paths:
         frame = read_table(path)
@@ -176,6 +153,18 @@ def read_trajectory_files(paths: Sequence[Path]) -> pd.DataFrame:
         frame["__source_file"] = str(path)
         frames.append(frame)
     return pd.concat(frames, ignore_index=True)
+
+
+def write_tsv(path: Path, df: pd.DataFrame) -> None:
+    df.to_csv(path, sep="\t", index=False, encoding="utf-8-sig")
+
+
+def write_json(path: Path, data: dict[str, Any]) -> None:
+    with path.open("w", encoding="utf-8") as handle:
+        json.dump(
+            data, handle, ensure_ascii=False, indent=2, allow_nan=False, default=str
+        )
+        handle.write("\n")
 
 
 def find_column(
@@ -214,14 +203,14 @@ def rename_dimensions(
                 raise ValueError(
                     f"Both '{source}' and '{target}' exist but contain different values."
                 )
+            result = result.drop(columns=source)
     return result.rename(columns=mapping)
 
 
 def harmonize_identifiers(
     trajectories: pd.DataFrame,
     annotations: pd.DataFrame,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """Create compatible `id` and `example_id` aliases in both inputs."""
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     trajectories = trajectories.copy()
     annotations = annotations.copy()
 
@@ -262,7 +251,7 @@ def harmonize_identifiers(
     return trajectories, annotations
 
 
-def norm_label(value: Any) -> str:
+def normalize_label(value: Any) -> str:
     text = str(value).strip().lower()
     text = re.sub(r"[\s\-]+", "_", text)
     return re.sub(r"_+", "_", text)
@@ -272,7 +261,7 @@ def apply_eligibility(
     df: pd.DataFrame,
     column: str | None,
     values: Sequence[str] | None,
-) -> Tuple[pd.DataFrame, Dict[str, Any]]:
+) -> tuple[pd.DataFrame, dict[str, Any]]:
     if not column:
         return df.copy(), {
             "filter_applied": False,
@@ -298,7 +287,7 @@ def detect_event(
     pattern_column: str | None,
     indicator_column: str | None,
     gbf_label: str,
-) -> Tuple[pd.Series, Dict[str, Any]]:
+) -> tuple[pd.Series, dict[str, Any]]:
     if indicator_column:
         if indicator_column not in df.columns:
             raise ValueError(f"Indicator column '{indicator_column}' not found.")
@@ -310,7 +299,6 @@ def detect_event(
         }
 
     if pattern_column is None:
-        # Prefer a pattern column. If absent, use a likely indicator column.
         pattern_matches = [c for c in PATTERN_CANDIDATES if c in df.columns]
         if pattern_matches:
             pattern_column = pattern_matches[0]
@@ -332,17 +320,10 @@ def detect_event(
     if pattern_column not in df.columns:
         raise ValueError(f"Pattern column '{pattern_column}' not found.")
 
-    normalized = df[pattern_column].map(norm_label)
-    target = norm_label(gbf_label)
+    normalized = df[pattern_column].map(normalize_label)
+    target = normalize_label(gbf_label)
     mask = normalized.eq(target)
     auto_label = None
-    if not mask.any():
-        candidates = sorted(
-            value for value in normalized.unique() if "gold_before_final" in value
-        )
-        if len(candidates) == 1:
-            auto_label = candidates[0]
-            mask = normalized.eq(auto_label)
     if not mask.any():
         counts = normalized.value_counts().head(25).to_dict()
         raise ValueError(
@@ -380,8 +361,8 @@ def is_unique(df: pd.DataFrame, keys: Sequence[str]) -> bool:
     return not key_series(df, keys).duplicated().any()
 
 
-def auto_join_keys(strict_df: pd.DataFrame, annotations: pd.DataFrame) -> List[str]:
-    diagnostics: List[Dict[str, Any]] = []
+def auto_join_keys(strict_df: pd.DataFrame, annotations: pd.DataFrame) -> list[str]:
+    diagnostics: list[dict[str, Any]] = []
     for keys in JOIN_KEY_CANDIDATES:
         if not all(k in strict_df.columns and k in annotations.columns for k in keys):
             continue
@@ -406,7 +387,7 @@ def auto_join_keys(strict_df: pd.DataFrame, annotations: pd.DataFrame) -> List[s
     )
 
 
-def validate_unit_keys(df: pd.DataFrame, keys: Sequence[str] | None) -> Dict[str, Any]:
+def validate_unit_keys(df: pd.DataFrame, keys: Sequence[str] | None) -> dict[str, Any]:
     if not keys:
         return {
             "checked": False,
@@ -423,7 +404,7 @@ def validate_unit_keys(df: pd.DataFrame, keys: Sequence[str] | None) -> Dict[str
     return {"checked": True, "unit_keys": list(keys), "duplicate_rows": 0}
 
 
-def validate_annotations(df: pd.DataFrame, expected_rows: int) -> Dict[str, Any]:
+def validate_annotations(df: pd.DataFrame, expected_rows: int) -> dict[str, Any]:
     required = {
         "annotation_id",
         "model_key",
@@ -432,7 +413,7 @@ def validate_annotations(df: pd.DataFrame, expected_rows: int) -> Dict[str, Any]
         "final_completion_form",
         "final_semantic_relation",
     }
-    errors: List[str] = []
+    errors: list[str] = []
     missing = sorted(required - set(df.columns))
     if missing:
         errors.append("Missing annotation columns: " + ", ".join(missing))
@@ -472,7 +453,7 @@ def merge_annotations(
     annotations: pd.DataFrame,
     join_keys: Sequence[str] | None,
     allow_partial: bool,
-) -> Tuple[pd.DataFrame, Dict[str, Any]]:
+) -> tuple[pd.DataFrame, dict[str, Any]]:
     keys = list(join_keys) if join_keys else auto_join_keys(strict_df, annotations)
     validate_keys(strict_df, keys, "Strict trajectory data")
     validate_keys(annotations, keys, "Annotation data")
@@ -497,6 +478,15 @@ def merge_annotations(
             "Check event detection/join keys or deliberately use "
             "--allow-partial-coverage."
         )
+
+    for column in ("model_key", "language", "semantic_group"):
+        if column in keys:
+            continue
+        left = strict_df.assign(__join_key=strict_ids).set_index("__join_key")[column]
+        right = annotations.assign(__join_key=ann_ids).set_index("__join_key")[column]
+        common = sorted(matched)
+        if not left.loc[common].equals(right.loc[common]):
+            raise ValueError(f"Matched annotation dimension mismatch: {column}")
 
     annotation_columns = list(
         dict.fromkeys(
@@ -535,9 +525,9 @@ def safe_pct(n: int, d: int) -> float | None:
     return None if d == 0 else round(100.0 * n / d, 4)
 
 
-def ordered_values(df: pd.DataFrame, column: str) -> List[str]:
+def ordered_values(df: pd.DataFrame, column: str) -> list[str]:
     preferred = {
-        "model_key": MODEL_ORDER,
+        "model_key": MODEL_KEYS,
         "language": LANGUAGE_ORDER,
         "semantic_group": GROUP_ORDER,
     }.get(column, [])
@@ -549,14 +539,14 @@ def ordered_values(df: pd.DataFrame, column: str) -> List[str]:
 
 def group_combinations(
     df: pd.DataFrame, columns: Sequence[str]
-) -> List[Tuple[str, ...]]:
+) -> list[tuple[str, ...]]:
     if not columns:
         return [tuple()]
     combos = set(df[list(columns)].itertuples(index=False, name=None))
     rank = {c: {v: i for i, v in enumerate(ordered_values(df, c))} for c in columns}
 
-    def sort_key(combo: Tuple[str, ...]) -> Tuple[Any, ...]:
-        result: List[Any] = []
+    def sort_key(combo: tuple[str, ...]) -> tuple[Any, ...]:
+        result: list[Any] = []
         for column, value in zip(columns, combo):
             result.extend([rank[column].get(value, 10**9), value])
         return tuple(result)
@@ -580,7 +570,7 @@ def aggregate_incidence(
     strict: pd.DataFrame,
     columns: Sequence[str],
 ) -> pd.DataFrame:
-    rows: List[Dict[str, Any]] = []
+    rows: list[dict[str, Any]] = []
     for combo in group_combinations(denominator, columns):
         all_cell = select_group(denominator, columns, combo)
         strict_cell = select_group(strict, columns, combo)
@@ -606,7 +596,7 @@ def aggregate_outcomes(
     strict: pd.DataFrame,
     columns: Sequence[str],
 ) -> pd.DataFrame:
-    rows: List[Dict[str, Any]] = []
+    rows: list[dict[str, Any]] = []
     outcomes = ["not_evaluable", "broadly_acceptable", "incompatible_or_unrelated"]
     for combo in group_combinations(denominator, columns):
         all_cell = select_group(denominator, columns, combo)
@@ -632,10 +622,6 @@ def aggregate_outcomes(
             )
         rows.append(row)
     return pd.DataFrame(rows)
-
-
-def write_tsv(df: pd.DataFrame, path: Path) -> None:
-    df.to_csv(path, sep="\t", index=False, encoding="utf-8-sig")
 
 
 def latex_escape(value: Any) -> str:
@@ -763,9 +749,86 @@ def render_table6(df: pd.DataFrame) -> str:
     return "\n".join(lines) + "\n"
 
 
-def main() -> int:
-    args = parse_args()
-    output_dir = args.output_dir or (args.annotations.parent / "incidence_analysis")
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Compute strict gold-before-final incidence with full denominators."
+    )
+    parser.add_argument(
+        "trajectory_files",
+        nargs="*",
+        type=Path,
+        help="One or more complete trajectory files; files are concatenated.",
+    )
+    parser.add_argument("--input", nargs="+", type=Path)
+    parser.add_argument(
+        "--annotations",
+        required=True,
+        type=Path,
+        help="Finalized gold-before-final annotation file.",
+    )
+    parser.add_argument(
+        "--output-dir",
+        "--output_dir",
+        type=Path,
+        default=DEFAULT_OUTPUT_DIR,
+    )
+
+    event = parser.add_mutually_exclusive_group()
+    event.add_argument("--pattern-column", default=None)
+    event.add_argument("--gbf-indicator-column", default=None)
+    parser.add_argument("--gbf-label", default="gold_before_final")
+
+    parser.add_argument("--model-column", default=None)
+    parser.add_argument("--language-column", default=None)
+    parser.add_argument("--semantic-group-column", default=None)
+
+    parser.add_argument("--eligible-column", default=None)
+    parser.add_argument("--eligible-values", nargs="+", default=None)
+    parser.add_argument("--join-keys", nargs="+", default=None)
+    parser.add_argument("--unit-keys", nargs="+", default=None)
+    parser.add_argument(
+        "--expected-annotation-rows", type=int, default=DEFAULT_EXPECTED_ANNOTATION_ROWS
+    )
+    parser.add_argument("--allow-partial-coverage", action="store_true")
+    parser.add_argument("--no-latex", action="store_true")
+    parser.add_argument("--overwrite", action="store_true")
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.input and args.trajectory_files:
+        parser.error("Use either --input or positional trajectory files, not both.")
+    args.trajectory_files = args.input or args.trajectory_files or [DEFAULT_INPUT_PATH]
+    if args.expected_annotation_rows < 0:
+        parser.error("--expected-annotation-rows must be non-negative.")
+    if args.eligible_values and not args.eligible_column:
+        parser.error("--eligible-values requires --eligible-column.")
+    output_dir = args.output_dir
+    nonstandard = (
+        args.allow_partial_coverage
+        or args.expected_annotation_rows != DEFAULT_EXPECTED_ANNOTATION_ROWS
+        or args.eligible_column is not None
+        or args.gbf_label != "gold_before_final"
+        or args.pattern_column is not None
+        or args.gbf_indicator_column is not None
+        or args.unit_keys is not None
+        or args.join_keys is not None
+        or args.model_column is not None
+        or args.language_column is not None
+        or args.semantic_group_column is not None
+    )
+    if nonstandard and output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve():
+        parser.error("Nonstandard analysis requires a separate --output-dir.")
+    existing = [
+        output_dir / name for name in OUTPUT_FILENAMES if (output_dir / name).exists()
+    ]
+    if existing and not args.overwrite:
+        parser.error(
+            "Existing outputs; use --overwrite or a separate --output-dir: "
+            + ", ".join(str(path) for path in existing)
+        )
     output_dir.mkdir(parents=True, exist_ok=True)
 
     try:
@@ -804,7 +867,9 @@ def main() -> int:
         )
         if denominator.empty:
             raise ValueError("No eligible trajectories remain after filtering.")
-        unit_report = validate_unit_keys(denominator, args.unit_keys)
+        unit_report = validate_unit_keys(
+            denominator, args.unit_keys or DEFAULT_UNIT_KEYS
+        )
 
         event_mask, event_report = detect_event(
             denominator,
@@ -822,34 +887,19 @@ def main() -> int:
             args.allow_partial_coverage,
         )
 
-        grouping_specs: Mapping[str, Sequence[str]] = {
-            "overall": [],
-            "by_model": ["model_key"],
-            "by_language": ["language"],
-            "by_semantic_group": ["semantic_group"],
-            "by_model_language": ["model_key", "language"],
-            "by_model_semantic_group": ["model_key", "semantic_group"],
-            "by_language_semantic_group": ["language", "semantic_group"],
-            "by_model_language_semantic_group": [
-                "model_key",
-                "language",
-                "semantic_group",
-            ],
-        }
+        outputs: dict[str, str] = {}
+        incidence_tables: dict[str, pd.DataFrame] = {}
+        outcome_tables: dict[str, pd.DataFrame] = {}
 
-        outputs: Dict[str, str] = {}
-        incidence_tables: Dict[str, pd.DataFrame] = {}
-        outcome_tables: Dict[str, pd.DataFrame] = {}
-
-        for name, columns in grouping_specs.items():
+        for name, columns in GROUPING_SPECS.items():
             incidence = aggregate_incidence(denominator, strict_annotated, columns)
             outcomes = aggregate_outcomes(denominator, strict_annotated, columns)
             incidence_path = output_dir / f"gold_before_final_incidence_{name}.tsv"
             outcome_path = (
                 output_dir / f"gold_before_final_outcome_incidence_{name}.tsv"
             )
-            write_tsv(incidence, incidence_path)
-            write_tsv(outcomes, outcome_path)
+            write_tsv(incidence_path, incidence)
+            write_tsv(outcome_path, outcomes)
             outputs[f"incidence_{name}"] = str(incidence_path)
             outputs[f"outcome_incidence_{name}"] = str(outcome_path)
             incidence_tables[name] = incidence
@@ -859,13 +909,13 @@ def main() -> int:
         table6 = outcome_tables["by_model_language_semantic_group"]
         table5_tsv = output_dir / "table5_gold_before_final_incidence.tsv"
         table6_tsv = output_dir / "table6_gold_before_final_outcome_incidence.tsv"
-        write_tsv(table5, table5_tsv)
-        write_tsv(table6, table6_tsv)
+        write_tsv(table5_tsv, table5)
+        write_tsv(table6_tsv, table6)
         outputs["table5_tsv"] = str(table5_tsv)
         outputs["table6_tsv"] = str(table6_tsv)
 
         matched_path = output_dir / "strict_gold_before_final_with_annotations.tsv"
-        write_tsv(strict_annotated, matched_path)
+        write_tsv(matched_path, strict_annotated)
         outputs["matched_strict_rows"] = str(matched_path)
 
         if not args.no_latex:
@@ -917,13 +967,23 @@ def main() -> int:
             "outputs": outputs,
         }
         report_path = output_dir / "gold_before_final_incidence_report.json"
-        report_path.write_text(
-            json.dumps(report, ensure_ascii=False, indent=2, default=str),
-            encoding="utf-8",
+        write_json(report_path, report)
+        if args.overwrite:
+            (output_dir / FAILURE_FILENAME).unlink(missing_ok=True)
+        overall = report["overall"]
+        print(
+            f"Gold-before-final: {overall['gold_before_final_n']}/"
+            f"{overall['total_eligible_trajectories']} trajectories "
+            f"({overall['gold_before_final_percent']:.4f}%)"
         )
-        print(json.dumps(report, ensure_ascii=False, indent=2, default=str))
-        print("\nGold-before-final incidence analysis completed.")
-        print(f"Output directory: {output_dir}")
+        print(
+            f"Annotation coverage: {coverage_report['matched_rows']}/"
+            f"{coverage_report['strict_rows']} "
+            f"({coverage_report['coverage_percent']:.4f}%)"
+        )
+        if not coverage_report["complete_coverage"]:
+            print("WARNING: incomplete annotation coverage.", file=sys.stderr)
+        print(f"Output: {output_dir}")
         return 0
 
     except Exception as exc:
@@ -933,10 +993,12 @@ def main() -> int:
             "trajectory_files": [str(p) for p in args.trajectory_files],
             "annotation_file": str(args.annotations),
         }
-        failure_path = output_dir / "gold_before_final_incidence_failure.json"
-        failure_path.write_text(
-            json.dumps(failure, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
+        failure_path = output_dir / FAILURE_FILENAME
+        if failure_path.exists() and not args.overwrite:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            print(f"Existing failure report preserved: {failure_path}", file=sys.stderr)
+            return 1
+        write_json(failure_path, failure)
         print(f"ERROR: {exc}", file=sys.stderr)
         print(f"Failure report: {failure_path}", file=sys.stderr)
         return 1

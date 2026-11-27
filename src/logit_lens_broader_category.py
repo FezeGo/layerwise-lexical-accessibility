@@ -1,22 +1,3 @@
-"""
-Qwen3-0.6B:
-python src/logit_lens_broader_category.py \
-    --model_key qwen3_0_6b
-
-Qwen3-4B:
-python src/logit_lens_broader_category.py \
-    --model_key qwen3_4b
-
-Qwen3-14B:
-python src/logit_lens_broader_category.py \
-    --model_key qwen3_14b
-
-For large models on a multi-device / offload-capable environment:
-python src/logit_lens_broader_category.py \
-    --model_key qwen3_14b \
-    --device_map auto
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -37,31 +18,27 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
-# ============================================================
-# Configuration
-# ============================================================
-
-DEFAULT_ALIGNMENT_PATH = Path(
-    "data/analysis/full/broader_category/tokenization_validation/"
-    "broader_category_alignment.jsonl"
+DEFAULT_INPUT_PATH = Path(
+    "data/alignment/broader_category/broader_category_alignment.jsonl"
 )
 
-DEFAULT_OUTPUT_BASE = Path("data/logit_lens/broader_category")
+DEFAULT_OUTPUT_DIR = Path("data/logit_lens/broader_category")
 
-MODEL_CONFIGS: dict[str, dict[str, str]] = {
-    "qwen3_0_6b": {
-        "model_name": "Qwen/Qwen3-0.6B",
-        "revision": "main",
-    },
-    "qwen3_4b": {
-        "model_name": "Qwen/Qwen3-4B",
-        "revision": "main",
-    },
-    "qwen3_14b": {
-        "model_name": "Qwen/Qwen3-14B",
-        "revision": "main",
-    },
+MODEL_REGISTRY = {
+    "qwen3_0_6b": "Qwen/Qwen3-0.6B",
+    "qwen3_4b": "Qwen/Qwen3-4B",
+    "qwen3_14b": "Qwen/Qwen3-14B",
 }
+MODEL_KEYS = tuple(MODEL_REGISTRY)
+MODEL_REVISION = "main"
+
+OUTPUT_FILENAMES = (
+    "broader_category_by_layer.jsonl",
+    "broader_category_by_layer_compact.tsv",
+    "broader_category.rejected.jsonl",
+    "broader_category_extraction_report.json",
+    "run_config.json",
+)
 
 EXPECTED_ROWS_PER_MODEL = 110
 EXPECTED_ROWS_PER_LANGUAGE = 55
@@ -71,7 +48,7 @@ TOP_K = 10
 COMPUTE_PROB = True
 STORE_TOPK = True
 
-DEFAULT_PROGRESS_EVERY = 10
+DEFAULT_PROGRESS_EVERY = 100
 DEFAULT_EMPTY_CACHE_EVERY = 25
 
 REQUIRED_ALIGNMENT_FIELDS = {
@@ -107,12 +84,56 @@ REQUIRED_ALIGNMENT_FIELDS = {
 }
 
 
-# ============================================================
+COMPACT_FIELDS = [
+    "id",
+    "semantic_group",
+    "subgroup",
+    "relation",
+    "mapping_rule",
+    "language",
+    "model_key",
+    "model_name",
+    "layer",
+    "layer_name",
+    "num_layers",
+    "layer_fraction",
+    "subject",
+    "prefix",
+    "prediction_position",
+    "gold",
+    "gold_token_id",
+    "gold_token_surface",
+    "broader_category",
+    "broader_token_id",
+    "broader_token_surface",
+    "gold_rank",
+    "broader_rank",
+    "rank_difference_broader_minus_gold",
+    "gold_logit",
+    "broader_logit",
+    "logit_difference_broader_minus_gold",
+    "gold_prob",
+    "broader_prob",
+    "prob_difference_broader_minus_gold",
+    "gold_in_top1",
+    "gold_in_top5",
+    "gold_in_top10",
+    "broader_in_top1",
+    "broader_in_top5",
+    "broader_in_top10",
+    "layer_top1_token_id",
+    "layer_top1_text",
+    "final_prediction_token_id",
+    "final_prediction_text",
+    "final_prediction_is_gold",
+    "final_prediction_is_broader_category",
+]
+
+
 # I/O
-# ============================================================
 
 
-def normalise_id(value: Any) -> str:
+def normalize_id(value: Any) -> str:
     return str(value)
 
 
@@ -149,23 +170,16 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def append_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
     """Append one complete trajectory and flush immediately."""
-    path.parent.mkdir(parents=True, exist_ok=True)
 
+    payload = "".join(
+        json.dumps(row, ensure_ascii=False, allow_nan=False) + "\n" for row in rows
+    )
     with path.open("a", encoding="utf-8") as handle:
-        for row in rows:
-            handle.write(
-                json.dumps(
-                    row,
-                    ensure_ascii=False,
-                    allow_nan=False,
-                )
-                + "\n"
-            )
+        handle.write(payload)
         handle.flush()
 
 
 def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
 
     with path.open("w", encoding="utf-8") as handle:
         for row in rows:
@@ -180,7 +194,6 @@ def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
 
 
 def write_json(path: Path, data: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
 
     with path.open("w", encoding="utf-8") as handle:
         json.dump(
@@ -208,7 +221,6 @@ def write_tsv(
     rows: Sequence[dict[str, Any]],
     fieldnames: Sequence[str],
 ) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
 
     with path.open(
         "w",
@@ -236,9 +248,7 @@ def write_tsv(
             writer.writerow(clean)
 
 
-# ============================================================
 # Alignment validation
-# ============================================================
 
 
 def as_bool(value: Any) -> bool:
@@ -343,11 +353,10 @@ def validate_alignment_rows(
     if not selected:
         raise ValueError(f"No alignment rows found for model_key={model_key!r}.")
 
-    # Unique trajectory key within one model.
     seen: set[tuple[str, str]] = set()
     for row in selected:
         key = (
-            normalise_id(row["id"]),
+            normalize_id(row["id"]),
             str(row["language"]),
         )
         if key in seen:
@@ -364,7 +373,7 @@ def validate_alignment_rows(
             raise ValueError(
                 f"Expected {EXPECTED_ROWS_PER_MODEL} alignment rows "
                 f"for {model_key}, found {len(selected)}. "
-                "Use --allow_nonstandard_count only for deliberate "
+                "Use --allow-nonstandard-count only for deliberate "
                 "debug/subset runs."
             )
 
@@ -387,9 +396,7 @@ def validate_alignment_rows(
     return selected
 
 
-# ============================================================
 # Model/device helpers
-# ============================================================
 
 
 def choose_dtype(dtype_name: str) -> torch.dtype:
@@ -401,7 +408,6 @@ def choose_dtype(dtype_name: str) -> torch.dtype:
                 return torch.bfloat16
             return torch.float16
 
-        # MPS/CPU: use float32 for numerical/device compatibility.
         return torch.float32
 
     mapping = {
@@ -472,7 +478,6 @@ def load_model_and_tokenizer(
 
     if not device_map:
         device = default_single_device()
-        print(f"Moving model to single device: {device}")
         model.to(device)
 
     model.eval()
@@ -535,18 +540,7 @@ def project_hidden_to_logits(
     layer_idx: int,
     last_layer_idx: int,
 ) -> torch.Tensor:
-    """
-    Plain Logit Lens projection matching the frozen main experiment.
-
-    Embedding output:
-        lm_head(hidden)
-
-    Intermediate transformer outputs:
-        lm_head(final_norm(hidden))
-
-    Final layer:
-        handled separately using outputs.logits.
-    """
+    """Embedding: lm_head; intermediate: final norm + lm_head; final: outputs.logits."""
     hidden = hidden_state.unsqueeze(0).unsqueeze(0)
 
     should_apply_norm = (
@@ -572,9 +566,7 @@ def project_hidden_to_logits(
     return logits.float()
 
 
-# ============================================================
 # Vocabulary metrics
-# ============================================================
 
 
 def check_token_id(
@@ -594,11 +586,7 @@ def rank_and_logit(
     logits: torch.Tensor,
     token_id: int,
 ) -> tuple[int, float]:
-    """
-    1-based rank:
-        1 + number of vocabulary logits strictly greater than
-        the tracked token's logit.
-    """
+    """One-based rank; tied logits share the same rank."""
     check_token_id(logits, token_id, "tracked")
 
     token_logit = logits[token_id]
@@ -611,10 +599,7 @@ def probability_of_token(
     logits: torch.Tensor,
     token_id: int,
 ) -> float:
-    """
-    Numerically stable probability without materializing
-    a full-vocabulary softmax tensor.
-    """
+    """Compute probability using logsumexp without a full softmax tensor."""
     check_token_id(logits, token_id, "tracked")
 
     log_normalizer = torch.logsumexp(logits, dim=-1)
@@ -667,9 +652,7 @@ def safe_float(value: Optional[float]) -> Optional[float]:
     return value
 
 
-# ============================================================
 # One-trajectory EQ2 extraction
-# ============================================================
 
 
 @torch.inference_mode()
@@ -733,10 +716,6 @@ def run_broader_category_logit_lens(
             f"observed transformer outputs={num_layers}"
         )
 
-    # --------------------------------------------------------
-    # Actual final model distribution
-    # --------------------------------------------------------
-
     final_logits = outputs.logits[
         0,
         prediction_position,
@@ -773,13 +752,8 @@ def run_broader_category_logit_lens(
 
     results: list[dict[str, Any]] = []
 
-    # --------------------------------------------------------
-    # Layer-wise extraction
-    # --------------------------------------------------------
-
     for layer_idx, layer_hidden_states in enumerate(hidden_states):
         if layer_idx == last_layer_idx:
-            # Exact model output distribution.
             logits = final_logits
         else:
             hidden = layer_hidden_states[
@@ -858,10 +832,7 @@ def run_broader_category_logit_lens(
                 raise AssertionError("final_broader_top1_consistency_failed")
 
         result: dict[str, Any] = {
-            # -----------------------------
-            # Trajectory metadata
-            # -----------------------------
-            "id": normalise_id(row["id"]),
+            "id": normalize_id(row["id"]),
             "semantic_group": str(row["semantic_group"]),
             "subgroup": str(row["subgroup"]),
             "relation": str(row["relation"]),
@@ -874,9 +845,6 @@ def run_broader_category_logit_lens(
             "layer_name": layer_name,
             "num_layers": num_layers,
             "layer_fraction": (layer_idx / num_layers if num_layers > 0 else 0.0),
-            # -----------------------------
-            # Input/context metadata
-            # -----------------------------
             "subject": str(row.get("subject", "")),
             "prefix": str(row.get("prefix", "")),
             "gold_sentence": str(row.get("gold_sentence", "")),
@@ -884,9 +852,6 @@ def run_broader_category_logit_lens(
             "prediction_position": (prediction_position),
             "prediction_token_id": int(row["prediction_token_id"]),
             "prediction_token": str(row.get("prediction_token", "")),
-            # -----------------------------
-            # Specific gold target
-            # -----------------------------
             "gold": str(row["gold"]),
             "gold_token_id": gold_token_id,
             "gold_token": str(row.get("gold_token", "")),
@@ -906,9 +871,6 @@ def run_broader_category_logit_lens(
             "gold_in_top1": gold_in_top1,
             "gold_in_top5": gold_in_top5,
             "gold_in_top10": gold_in_top10,
-            # -----------------------------
-            # Broader-category target
-            # -----------------------------
             "broader_category": str(row["broader_category"]),
             "broader_token_id": (broader_token_id),
             "broader_token": str(row.get("broader_token", "")),
@@ -933,9 +895,6 @@ def run_broader_category_logit_lens(
             "broader_in_top1": (broader_in_top1),
             "broader_in_top5": (broader_in_top5),
             "broader_in_top10": (broader_in_top10),
-            # -----------------------------
-            # Paired comparison
-            # -----------------------------
             # Negative rank difference:
             # broader category ranks better.
             "rank_difference_broader_minus_gold": (broader_rank - gold_rank),
@@ -945,16 +904,10 @@ def run_broader_category_logit_lens(
                 if (broader_prob is not None and gold_prob is not None)
                 else None
             ),
-            # -----------------------------
-            # Current layer Top-1
-            # -----------------------------
             "layer_top1_token_id": (layer_top1_token_id),
             "layer_top1_token": (layer_top1_token),
             "layer_top1_text": (layer_top1_text),
             "layer_top1_logit": (layer_top1_logit),
-            # -----------------------------
-            # Actual final prediction
-            # -----------------------------
             "final_prediction_token_id": (final_prediction_token_id),
             "final_prediction_token": (final_prediction_token),
             "final_prediction_text": (final_prediction_text),
@@ -993,16 +946,14 @@ def run_broader_category_logit_lens(
     return results
 
 
-# ============================================================
 # Resume / deduplication
-# ============================================================
 
 
 def trajectory_key(
     row: dict[str, Any],
 ) -> tuple[str, str, str]:
     return (
-        normalise_id(row["id"]),
+        normalize_id(row["id"]),
         str(row["language"]),
         str(row["model_key"]),
     )
@@ -1058,11 +1009,7 @@ def completed_trajectory_keys(
 def deduplicate_layer_rows(
     rows: Sequence[dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    """
-    Keep the LAST copy of each trajectory/layer.
-    This cleans duplicate rows created if a partially written
-    trajectory was rerun after interruption.
-    """
+    """Keep the last record for each trajectory and layer."""
     last_by_key: dict[
         tuple[str, str, str, int],
         dict[str, Any],
@@ -1071,7 +1018,7 @@ def deduplicate_layer_rows(
     for row in rows:
         try:
             key = (
-                normalise_id(row["id"]),
+                normalize_id(row["id"]),
                 str(row["language"]),
                 str(row["model_key"]),
                 int(row["layer"]),
@@ -1082,7 +1029,7 @@ def deduplicate_layer_rows(
         last_by_key[key] = row
 
     def id_sort_key(value: Any):
-        text = normalise_id(value)
+        text = normalize_id(value)
         if text.isdigit():
             return (0, int(text))
         return (1, text)
@@ -1145,9 +1092,7 @@ def validate_final_raw_coverage(
         )
 
 
-# ============================================================
 # Run config
-# ============================================================
 
 
 def make_run_config(
@@ -1223,54 +1168,7 @@ def configs_compatible(
     return all(previous.get(key) == current.get(key) for key in keys)
 
 
-# ============================================================
 # Finalization / reporting
-# ============================================================
-
-COMPACT_FIELDS = [
-    "id",
-    "semantic_group",
-    "subgroup",
-    "relation",
-    "mapping_rule",
-    "language",
-    "model_key",
-    "model_name",
-    "layer",
-    "layer_name",
-    "num_layers",
-    "layer_fraction",
-    "subject",
-    "prefix",
-    "prediction_position",
-    "gold",
-    "gold_token_id",
-    "gold_token_surface",
-    "broader_category",
-    "broader_token_id",
-    "broader_token_surface",
-    "gold_rank",
-    "broader_rank",
-    "rank_difference_broader_minus_gold",
-    "gold_logit",
-    "broader_logit",
-    "logit_difference_broader_minus_gold",
-    "gold_prob",
-    "broader_prob",
-    "prob_difference_broader_minus_gold",
-    "gold_in_top1",
-    "gold_in_top5",
-    "gold_in_top10",
-    "broader_in_top1",
-    "broader_in_top5",
-    "broader_in_top10",
-    "layer_top1_token_id",
-    "layer_top1_text",
-    "final_prediction_token_id",
-    "final_prediction_text",
-    "final_prediction_is_gold",
-    "final_prediction_is_broader_category",
-]
 
 
 def final_layer_rows(
@@ -1368,166 +1266,21 @@ def make_report(
     }
 
 
-# ============================================================
-# CLI
-# ============================================================
+# Per-model execution
 
 
-def parse_args(
-    argv: Optional[Sequence[str]] = None,
-) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description=(
-            "Run EQ2 plain Logit Lens extraction for specific gold vs broader category."
-        )
-    )
+def run_model(model_key, args):
+    model_name = MODEL_REGISTRY[model_key]
+    revision = MODEL_REVISION
 
-    parser.add_argument(
-        "--model_key",
-        choices=sorted(MODEL_CONFIGS),
-        default="qwen3_0_6b",
-        help=("Run one model at a time (default: qwen3_0_6b)."),
-    )
-    parser.add_argument(
-        "--alignment",
-        type=Path,
-        default=DEFAULT_ALIGNMENT_PATH,
-        help=("Canonical broader-category alignment JSONL."),
-    )
-    parser.add_argument(
-        "--output_base",
-        type=Path,
-        default=DEFAULT_OUTPUT_BASE,
-        help=("Base output directory; a model subdirectory is created automatically."),
-    )
-    parser.add_argument(
-        "--dtype",
-        default="auto",
-        choices=[
-            "auto",
-            "float32",
-            "float16",
-            "bfloat16",
-        ],
-        help=(
-            "Model load dtype. auto selects BF16 when "
-            "supported on CUDA, otherwise FP16 on CUDA "
-            "and FP32 on CPU/MPS."
-        ),
-    )
-    parser.add_argument(
-        "--device_map",
-        default=None,
-        help=(
-            "Optional Transformers/Accelerate device_map, "
-            "e.g. 'auto'. Omit for a single device."
-        ),
-    )
-    parser.add_argument(
-        "--attn_implementation",
-        default=None,
-        help=("Optional attention implementation, e.g. 'sdpa'."),
-    )
-    parser.add_argument(
-        "--cache_dir",
-        type=Path,
-        default=None,
-        help="Optional Hugging Face cache directory.",
-    )
-    parser.add_argument(
-        "--progress_every",
-        type=int,
-        default=DEFAULT_PROGRESS_EVERY,
-    )
-    parser.add_argument(
-        "--empty_cache_every",
-        type=int,
-        default=DEFAULT_EMPTY_CACHE_EVERY,
-    )
-    parser.add_argument(
-        "--max_rows",
-        type=int,
-        default=None,
-        help=("Optional deliberate debug subset after model filtering."),
-    )
-    parser.add_argument(
-        "--allow_nonstandard_count",
-        action="store_true",
-        help=(
-            "Allow a model alignment count other than the "
-            "canonical 110. Intended only for debugging."
-        ),
-    )
-    parser.add_argument(
-        "--no_resume",
-        action="store_true",
-        help=("Do not resume an existing compatible raw output."),
-    )
-    parser.add_argument(
-        "--reset_output",
-        action="store_true",
-        help=("Delete existing outputs for this model before starting."),
-    )
-
-    # Colab/Jupyter compatibility.
-    args, unknown = parser.parse_known_args(argv)
-
-    if unknown:
-        print(
-            "Ignoring unrecognized runtime arguments: " + " ".join(unknown),
-            file=sys.stderr,
-        )
-
-    if args.progress_every <= 0:
-        raise ValueError("--progress_every must be positive.")
-
-    if args.empty_cache_every <= 0:
-        raise ValueError("--empty_cache_every must be positive.")
-
-    if args.max_rows is not None and args.max_rows <= 0:
-        raise ValueError("--max_rows must be positive.")
-
-    return args
-
-
-# ============================================================
-# Main
-# ============================================================
-
-
-def main(
-    argv: Optional[Sequence[str]] = None,
-) -> int:
-    args = parse_args(argv)
-
-    model_key = str(args.model_key)
-    model_config = MODEL_CONFIGS[model_key]
-    model_name = model_config["model_name"]
-    revision = model_config["revision"]
-
-    alignment_path = Path(args.alignment)
-    output_dir = Path(args.output_base) / model_key
-    output_dir.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    alignment_path = args.input
+    output_dir = args.output_dir / model_key
 
     raw_jsonl = output_dir / "broader_category_by_layer.jsonl"
     compact_tsv = output_dir / "broader_category_by_layer_compact.tsv"
     rejected_jsonl = output_dir / "broader_category.rejected.jsonl"
     report_json = output_dir / "broader_category_extraction_report.json"
     run_config_json = output_dir / "run_config.json"
-
-    if args.reset_output:
-        for path in (
-            raw_jsonl,
-            compact_tsv,
-            rejected_jsonl,
-            report_json,
-            run_config_json,
-        ):
-            if path.exists():
-                path.unlink()
 
     all_alignment_rows = read_jsonl(alignment_path)
 
@@ -1543,22 +1296,14 @@ def main(
     if args.max_rows is not None:
         alignment_rows = alignment_rows[: args.max_rows]
 
-    print("\n========================================")
-    print("EQ2 broader-category Logit Lens")
-    print("========================================")
-    print(f"Model: {model_key} -> {model_name}")
-    print(f"Alignment: {alignment_path}")
-    print(f"Trajectories requested: {len(alignment_rows)}")
-
-    language_counts = Counter(str(row["language"]) for row in alignment_rows)
-    print(f"Languages: {dict(language_counts)}")
-    print(f"Output: {output_dir}")
-    print("========================================\n")
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     dtype = choose_dtype(args.dtype)
-
-    print(f"Requested dtype: {dtype}")
-    print(f"device_map: {args.device_map or 'single-device'}")
+    print(f"{model_key}: processing {len(alignment_rows)} trajectories", flush=True)
+    print(
+        f"  Device: {args.device_map or default_single_device()}, dtype: {dtype}",
+        flush=True,
+    )
 
     model, tokenizer = load_model_and_tokenizer(
         model_name=model_name,
@@ -1594,10 +1339,6 @@ def main(
 
     expected_layers = set(range(num_layers + 1))
 
-    # --------------------------------------------------------
-    # Validate stored token IDs against loaded tokenizer/model.
-    # --------------------------------------------------------
-
     vocab_size = int(model.get_output_embeddings().weight.shape[0])
 
     for row in alignment_rows:
@@ -1615,10 +1356,6 @@ def main(
                     f"model vocab size={vocab_size}."
                 )
 
-    # --------------------------------------------------------
-    # Run configuration safety
-    # --------------------------------------------------------
-
     run_config = make_run_config(
         model_key=model_key,
         model_name=model_name,
@@ -1632,6 +1369,22 @@ def main(
         max_rows=args.max_rows,
     )
 
+    if args.overwrite:
+        for path in (
+            raw_jsonl,
+            compact_tsv,
+            rejected_jsonl,
+            report_json,
+            run_config_json,
+        ):
+            if path.exists():
+                path.unlink()
+
+    if raw_jsonl.exists() and not run_config_json.exists():
+        raise RuntimeError(
+            "Existing raw output has no run_config.json; use --overwrite."
+        )
+
     if run_config_json.exists() and raw_jsonl.exists() and not args.no_resume:
         previous_config = load_json(run_config_json)
 
@@ -1642,17 +1395,13 @@ def main(
             raise RuntimeError(
                 "Existing raw output was created with an "
                 "incompatible run configuration. "
-                "Use --reset_output or a different output path."
+                "Use --overwrite or a different output path."
             )
 
     write_json(
         run_config_json,
         run_config,
     )
-
-    # --------------------------------------------------------
-    # Resume state
-    # --------------------------------------------------------
 
     existing_rows = read_existing_raw_safely(raw_jsonl) if not args.no_resume else []
 
@@ -1661,20 +1410,28 @@ def main(
         expected_layers,
     )
 
+    requested_keys = {trajectory_key(row) for row in alignment_rows}
+    completed &= requested_keys
+    # Drop partial trajectories before retrying; rewrite to remove truncated lines.
+    existing_rows = [
+        row
+        for row in deduplicate_layer_rows(existing_rows)
+        if trajectory_key(row) in completed
+    ]
+    write_jsonl(raw_jsonl, existing_rows)
     if completed:
-        print(f"Resume: found {len(completed)} completed trajectories.")
+        print(f"  Resuming: {len(completed)} completed trajectories", flush=True)
 
     rejected: list[dict[str, Any]] = []
-    if not args.reset_output and rejected_jsonl.exists():
+    if not args.overwrite and not args.no_resume and rejected_jsonl.exists():
         rejected = read_existing_raw_safely(rejected_jsonl)
 
-    # Completed trajectories should never remain marked as rejected.
     if completed and rejected:
         rejected = [
             item
             for item in rejected
             if (
-                normalise_id(item.get("id")),
+                normalize_id(item.get("id")),
                 str(item.get("language")),
                 str(item.get("model_key")),
             )
@@ -1705,21 +1462,18 @@ def main(
                 lm_head=lm_head,
             )
 
-            # Append all layers from one trajectory together.
             append_jsonl(
                 raw_jsonl,
                 trajectory_rows,
             )
             processed_this_run += 1
+            completed.add(key)
 
-            # A previous interrupted/failed attempt may have left a
-            # rejection record. Once the trajectory succeeds, remove that
-            # stale rejection so resume cannot report a false failure.
             rejected = [
                 item
                 for item in rejected
                 if (
-                    normalise_id(item.get("id")) != normalise_id(row.get("id"))
+                    normalize_id(item.get("id")) != normalize_id(row.get("id"))
                     or str(item.get("language")) != str(row.get("language"))
                     or str(item.get("model_key")) != model_key
                 )
@@ -1729,10 +1483,14 @@ def main(
                 rejected,
             )
 
+        except torch.cuda.OutOfMemoryError:
+            raise
+        except OSError:
+            raise
         except Exception as exc:
             rejected_row = {
                 "alignment_index": index - 1,
-                "id": normalise_id(row.get("id")),
+                "id": normalize_id(row.get("id")),
                 "model_key": model_key,
                 "model_name": model_name,
                 "language": row.get("language", ""),
@@ -1743,11 +1501,9 @@ def main(
             }
             rejected.append(rejected_row)
 
-            # Rewrite so repeated failures do not accumulate
-            # duplicate reject records across resume attempts.
             reject_map = {
                 (
-                    normalise_id(item["id"]),
+                    normalize_id(item["id"]),
                     str(item["language"]),
                     str(item["model_key"]),
                 ): item
@@ -1759,45 +1515,26 @@ def main(
                 rejected,
             )
 
-        if index % args.progress_every == 0:
-            current_raw = read_existing_raw_safely(raw_jsonl)
-            current_completed = completed_trajectory_keys(
-                current_raw,
-                expected_layers,
-            )
-            requested_keys = {trajectory_key(item) for item in alignment_rows}
-
-            print(
-                f"Progress {index}/{len(alignment_rows)} | "
-                f"complete="
-                f"{len(current_completed & requested_keys)}/"
-                f"{len(requested_keys)} | "
-                f"rejected={len(rejected)}"
-            )
+        if args.progress_every and index % args.progress_every == 0:
+            print(f"  {index}/{len(alignment_rows)} trajectories", flush=True)
 
         if torch.cuda.is_available() and index % args.empty_cache_every == 0:
             torch.cuda.empty_cache()
 
-    # --------------------------------------------------------
-    # Finalize raw output
-    # --------------------------------------------------------
-
     raw_rows = read_existing_raw_safely(raw_jsonl)
     clean_rows = deduplicate_layer_rows(raw_rows)
 
-    # Keep only requested trajectories in case an old debug run
-    # left extra rows after an unsafe manual edit.
     requested_keys = {trajectory_key(row) for row in alignment_rows}
-    clean_rows = [row for row in clean_rows if trajectory_key(row) in requested_keys]
+    complete_keys = (
+        completed_trajectory_keys(clean_rows, expected_layers) & requested_keys
+    )
+    clean_rows = [row for row in clean_rows if trajectory_key(row) in complete_keys]
 
-    # Rewrite canonical deduplicated raw output.
     write_jsonl(
         raw_jsonl,
         clean_rows,
     )
 
-    # If there were failures, coverage validation is deferred so
-    # the report/reject file can still be inspected.
     if not rejected:
         validate_final_raw_coverage(
             clean_rows,
@@ -1811,7 +1548,6 @@ def main(
         COMPACT_FIELDS,
     )
 
-    # Ensure rejected file exists even when empty.
     write_jsonl(
         rejected_jsonl,
         rejected,
@@ -1868,18 +1604,13 @@ def main(
         report,
     )
 
-    print("\n========================================")
-    print("EQ2 extraction finished")
-    print("========================================")
-    print(f"Completed trajectories: {len(completed_requested)}/{len(alignment_rows)}")
-    print(f"Layer rows: {len(clean_rows)}")
-    print(f"Rejected trajectories: {len(rejected)}")
-    print(f"Raw JSONL: {raw_jsonl}")
-    print(f"Compact TSV: {compact_tsv}")
-    print(f"Report: {report_json}")
-
+    print(
+        f"{model_key}: {len(completed_requested)} processed, "
+        f"{len(rejected)} rejected, {len(clean_rows)} layer rows",
+        flush=True,
+    )
     if rejected:
-        print(f"\nSome trajectories failed. Inspect:\n  {rejected_jsonl}")
+        print(f"  Rejections: {rejected_jsonl}", file=sys.stderr)
         return 2
 
     expected_row_count = len(alignment_rows) * (num_layers + 1)
@@ -1891,16 +1622,142 @@ def main(
             f"observed {len(clean_rows)}."
         )
 
-    print("\nAll requested trajectories passed.")
-
-    # Explicit cleanup is useful in notebooks/Colab.
-    del model
-    gc.collect()
-
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
-
     return 0
+
+
+# CLI
+
+
+def build_parser():
+    parser = argparse.ArgumentParser(
+        description="Track specific gold and broader-category tokens under the same context."
+    )
+    parser.add_argument(
+        "--model",
+        "--models",
+        "--model_key",
+        nargs="+",
+        choices=["all", *MODEL_KEYS],
+        default=["qwen3_0_6b"],
+    )
+    parser.add_argument("--input", "--alignment", type=Path, default=DEFAULT_INPUT_PATH)
+    parser.add_argument(
+        "--output-dir",
+        "--output_dir",
+        "--output_base",
+        type=Path,
+        default=DEFAULT_OUTPUT_DIR,
+    )
+    parser.add_argument(
+        "--dtype", choices=["auto", "float32", "float16", "bfloat16"], default="auto"
+    )
+    parser.add_argument("--device-map", "--device_map", default=None)
+    parser.add_argument(
+        "--device-map-auto", action="store_const", const="auto", dest="device_map"
+    )
+    parser.add_argument("--attn-implementation", "--attn_implementation", default=None)
+    parser.add_argument("--cache-dir", "--cache_dir", type=Path, default=None)
+    parser.add_argument(
+        "--progress-every",
+        "--progress_every",
+        type=int,
+        default=DEFAULT_PROGRESS_EVERY,
+        help="Progress interval; 0 disables progress messages.",
+    )
+    parser.add_argument(
+        "--empty-cache-every",
+        "--empty_cache_every",
+        type=int,
+        default=DEFAULT_EMPTY_CACHE_EVERY,
+    )
+    parser.add_argument("--max-rows", "--max_rows", type=int, default=None)
+    parser.add_argument(
+        "--allow-nonstandard-count", "--allow_nonstandard_count", action="store_true"
+    )
+    parser.add_argument("--no-resume", "--no_resume", action="store_true")
+    parser.add_argument(
+        "--overwrite",
+        "--reset-output",
+        "--reset_output",
+        action="store_true",
+        help="Discard existing outputs and start a new extraction.",
+    )
+    parser.add_argument("--top-k", type=int, default=10)
+    parser.add_argument("--no-prob", action="store_true")
+    parser.add_argument("--no-store-topk", action="store_true")
+    return parser
+
+
+def main(argv=None):
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.max_rows is not None and args.max_rows < 1:
+        parser.error("--max-rows must be positive")
+    if args.top_k < 10:
+        parser.error("--top-k must be at least 10")
+    if args.progress_every < 0 or args.empty_cache_every < 1:
+        parser.error("Invalid progress or cache interval")
+    if "all" in args.model and len(args.model) != 1:
+        parser.error("Use all alone or specify individual model keys")
+    if (
+        args.max_rows is not None
+        or args.allow_nonstandard_count
+        or args.top_k != 10
+        or args.no_prob
+        or args.no_store_topk
+    ) and args.output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve():
+        parser.error("Use a separate --output-dir for debug runs")
+
+    global TOP_K, COMPUTE_PROB, STORE_TOPK
+    TOP_K = args.top_k
+    COMPUTE_PROB = not args.no_prob
+    STORE_TOPK = not args.no_store_topk
+    model_keys = [
+        key for key in MODEL_KEYS if args.model == ["all"] or key in args.model
+    ]
+    if not args.input.is_file():
+        parser.error(f"Alignment file not found: {args.input}")
+    for model_key in model_keys:
+        output_dir = args.output_dir / model_key
+        existing = [
+            output_dir / name
+            for name in OUTPUT_FILENAMES
+            if (output_dir / name).exists()
+        ]
+        if args.overwrite or not existing:
+            continue
+        if args.no_resume:
+            parser.error(
+                f"Existing outputs for {model_key}; use --overwrite to replace them."
+            )
+        raw_path = output_dir / "broader_category_by_layer.jsonl"
+        config_path = output_dir / "run_config.json"
+        if not raw_path.exists() or not config_path.exists():
+            parser.error(
+                f"Existing outputs for {model_key} lack a resumable raw/config pair; use a different --output-dir or --overwrite."
+            )
+        report_path = output_dir / "broader_category_extraction_report.json"
+        if (
+            report_path.exists()
+            and load_json(report_path)
+            .get("validation", {})
+            .get("all_requested_trajectories_complete")
+            is True
+        ):
+            parser.error(
+                f"Completed outputs for {model_key}; use --overwrite to rerun or select a different output directory."
+            )
+    status = 0
+    for model_key in model_keys:
+        try:
+            status = max(status, run_model(model_key, args))
+        finally:
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            elif torch.backends.mps.is_available():
+                torch.mps.empty_cache()
+    return status
 
 
 if __name__ == "__main__":

@@ -1,19 +1,3 @@
-"""
-Recommended command
--------------------
-python src/analyze_final_rank_near_misses.py \
-  --base_input_dir data/logit_lens/full \
-  --trajectory results/analysis/trajectory/all_models_layer_trajectory_examples.tsv \
-  --output_dir results/analysis/final_rank_near_misses
-
-You can also provide explicit raw files:
-
-python src/analyze_final_rank_near_misses.py \
-  --input path/to/0.6b.jsonl path/to/4b.jsonl path/to/14b.jsonl \
-  --trajectory path/to/all_models_layer_trajectory_examples.tsv
-_rank_near_miss_report.json
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -22,36 +6,36 @@ import hashlib
 import json
 import math
 import re
-import sys
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Callable, Iterable, Optional, Sequence
+from typing import Any, Callable, Optional, Sequence
 
 
-# ============================================================
-# Defaults
-# ============================================================
+DEFAULT_INPUT_DIR = Path("data/logit_lens/full")
+DEFAULT_OUTPUT_DIR = Path("results/analysis/final_rank_near_misses")
+MODEL_KEYS = ("qwen3_0_6b", "qwen3_4b", "qwen3_14b")
+INPUT_FILENAME = "logit_lens_by_layer.jsonl"
 
-DEFAULT_BASE_INPUT_DIR = Path("data/logit_lens/full")
-DEFAULT_OUTPUT_DIR = Path("data/analysis/final_rank_near_misses")
-DEFAULT_MODELS = [
-    "qwen3_0_6b",
-    "qwen3_4b",
-    "qwen3_14b",
-]
-DEFAULT_INPUT_FILENAME = "logit_lens_by_layer.jsonl"
-
-DEFAULT_TRAJECTORY_CANDIDATES = [
-    Path("data/analysis/trajectory/all_models_layer_trajectory_examples.tsv"),
-    Path("data/analysis/full/all_models_layer_trajectory_examples.tsv"),
-]
+DEFAULT_TRAJECTORY_PATH = Path(
+    "results/analysis/trajectory/all_models_layer_trajectory_examples.tsv"
+)
 
 RANK_MIN = 11
 RANK_MAX = 30
-MIN_CONSECUTIVE = 3
+DEFAULT_MIN_CONSECUTIVE = 3
 EXPECTED_FINAL_ROWS_PER_MODEL = 1040
 DEFAULT_SAMPLE_PER_STRATUM = 1
 DEFAULT_SAMPLING_SEED = 42
+
+OUTPUT_FILENAMES = (
+    "final_rank_near_miss_cases.tsv",
+    "final_rank_near_miss_cases.jsonl",
+    "final_rank_near_miss_summary.tsv",
+    "final_rank_near_miss_rank_bins.tsv",
+    "final_rank_near_miss_history_summary.tsv",
+    "final_rank_near_miss_representative_sample.tsv",
+    "final_rank_near_miss_report.json",
+)
 
 TRAJECTORY_FIELDS_TO_MERGE = (
     "final_match_status",
@@ -94,12 +78,57 @@ TRAJECTORY_FIELDS_TO_MERGE = (
 )
 
 
-# ============================================================
+REQUIRED_RAW_FIELDS = {
+    "id",
+    "model_key",
+    "model_name",
+    "language",
+    "semantic_group",
+    "subgroup",
+    "relation",
+    "layer",
+    "num_layers",
+    "layer_name",
+    "target",
+    "target_token_id",
+    "target_rank",
+    "target_in_top10",
+    "final_prediction_token_id",
+    "final_prediction_text",
+    "final_prediction_is_target",
+    "topk_token_ids",
+    "topk_texts",
+}
+
+
+GROUPING_SPECS: list[tuple[str, Callable[[dict[str, Any]], str]]] = [
+    ("overall", lambda row: "all"),
+    ("model", lambda row: str(row["model_key"])),
+    ("language", lambda row: str(row["language"])),
+    ("semantic_group", lambda row: str(row["semantic_group"])),
+    (
+        "model_language",
+        lambda row: f"{row['model_key']}|{row['language']}",
+    ),
+    (
+        "model_semantic_group",
+        lambda row: f"{row['model_key']}|{row['semantic_group']}",
+    ),
+    (
+        "language_semantic_group",
+        lambda row: f"{row['language']}|{row['semantic_group']}",
+    ),
+    (
+        "model_language_semantic_group",
+        lambda row: f"{row['model_key']}|{row['language']}|{row['semantic_group']}",
+    ),
+]
+
+
 # Generic I/O
-# ============================================================
 
 
-def load_jsonl(path: Path) -> list[dict[str, Any]]:
+def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         raise FileNotFoundError(f"Input JSONL not found: {path}")
 
@@ -124,7 +153,7 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def load_tsv(path: Path) -> list[dict[str, str]]:
+def read_tsv(path: Path) -> list[dict[str, str]]:
     if not path.exists():
         raise FileNotFoundError(f"TSV not found: {path}")
     with path.open("r", encoding="utf-8-sig", newline="") as handle:
@@ -138,7 +167,7 @@ def serializable_row(row: dict[str, Any]) -> dict[str, Any]:
     return {key: value for key, value in row.items() if not key.startswith("_")}
 
 
-def ordered_fields(rows: Sequence[dict[str, Any]]) -> list[str]:
+def ordered_fieldnames(rows: Sequence[dict[str, Any]]) -> list[str]:
     fields: list[str] = []
     seen: set[str] = set()
     for row in rows:
@@ -150,19 +179,18 @@ def ordered_fields(rows: Sequence[dict[str, Any]]) -> list[str]:
     return fields
 
 
-def tsv_value(value: Any) -> Any:
+def clean_for_table(value: Any) -> Any:
     if isinstance(value, (list, tuple, dict)):
         return json.dumps(value, ensure_ascii=False)
     return value
 
 
 def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         path.write_text("", encoding="utf-8")
         return
 
-    fields = ordered_fields(rows)
+    fields = ordered_fieldnames(rows)
     with path.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(
             handle,
@@ -172,11 +200,12 @@ def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
         )
         writer.writeheader()
         for row in rows:
-            writer.writerow({field: tsv_value(row.get(field, "")) for field in fields})
+            writer.writerow(
+                {field: clean_for_table(row.get(field, "")) for field in fields}
+            )
 
 
 def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
         for row in rows:
             handle.write(
@@ -189,11 +218,10 @@ def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
             )
 
 
-def write_json(path: Path, obj: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_json(path: Path, data: dict[str, Any]) -> None:
     with path.open("w", encoding="utf-8") as handle:
         json.dump(
-            obj,
+            data,
             handle,
             ensure_ascii=False,
             indent=2,
@@ -202,9 +230,7 @@ def write_json(path: Path, obj: dict[str, Any]) -> None:
         handle.write("\n")
 
 
-# ============================================================
 # Conversion helpers
-# ============================================================
 
 
 def as_bool(value: Any) -> bool:
@@ -239,7 +265,7 @@ def safe_int(value: Any) -> Optional[int]:
     return int(number)
 
 
-def normalise_id(value: Any) -> str:
+def normalize_id(value: Any) -> str:
     if isinstance(value, int):
         return str(value)
     if isinstance(value, float) and value.is_integer():
@@ -254,7 +280,7 @@ def normalise_id(value: Any) -> str:
 def trajectory_key(row: dict[str, Any]) -> tuple[str, str, str]:
     return (
         str(row["model_key"]),
-        normalise_id(row["id"]),
+        normalize_id(row["id"]),
         str(row["language"]),
     )
 
@@ -263,31 +289,7 @@ def proportion(num: int, den: int) -> Optional[float]:
     return None if den == 0 else num / den
 
 
-# ============================================================
 # Raw trajectory validation
-# ============================================================
-
-REQUIRED_RAW_FIELDS = {
-    "id",
-    "model_key",
-    "model_name",
-    "language",
-    "semantic_group",
-    "subgroup",
-    "relation",
-    "layer",
-    "num_layers",
-    "layer_name",
-    "target",
-    "target_token_id",
-    "target_rank",
-    "target_in_top10",
-    "final_prediction_token_id",
-    "final_prediction_text",
-    "final_prediction_is_target",
-    "topk_token_ids",
-    "topk_texts",
-}
 
 
 def validate_raw_schema(rows: Sequence[dict[str, Any]]) -> None:
@@ -359,9 +361,7 @@ def group_raw_trajectories(
     return dict(grouped)
 
 
-# ============================================================
 # Top-10 history
-# ============================================================
 
 
 def first_true_layer(
@@ -499,7 +499,7 @@ def build_near_miss_case(
     case = {
         "model_key": str(final["model_key"]),
         "model_name": final.get("model_name", ""),
-        "id": normalise_id(final["id"]),
+        "id": normalize_id(final["id"]),
         "language": str(final["language"]),
         "semantic_group": str(final["semantic_group"]),
         "subgroup": str(final["subgroup"]),
@@ -572,16 +572,11 @@ def build_near_miss_case(
     return case
 
 
-# ============================================================
 # Existing trajectory table merge / cross-check
-# ============================================================
 
 
 def find_default_trajectory() -> Optional[Path]:
-    for path in DEFAULT_TRAJECTORY_CANDIDATES:
-        if path.exists():
-            return path
-    return None
+    return DEFAULT_TRAJECTORY_PATH if DEFAULT_TRAJECTORY_PATH.exists() else None
 
 
 def build_trajectory_index(
@@ -663,32 +658,7 @@ def merge_trajectory_metadata(
     }
 
 
-# ============================================================
 # Summaries
-# ============================================================
-
-GROUPING_SPECS: list[tuple[str, Callable[[dict[str, Any]], str]]] = [
-    ("overall", lambda row: "all"),
-    ("model", lambda row: str(row["model_key"])),
-    ("language", lambda row: str(row["language"])),
-    ("semantic_group", lambda row: str(row["semantic_group"])),
-    (
-        "model_language",
-        lambda row: f"{row['model_key']}|{row['language']}",
-    ),
-    (
-        "model_semantic_group",
-        lambda row: f"{row['model_key']}|{row['semantic_group']}",
-    ),
-    (
-        "language_semantic_group",
-        lambda row: f"{row['language']}|{row['semantic_group']}",
-    ),
-    (
-        "model_language_semantic_group",
-        lambda row: f"{row['model_key']}|{row['language']}|{row['semantic_group']}",
-    ),
-]
 
 
 def make_summary(
@@ -818,9 +788,7 @@ def make_history_summary(
     return output
 
 
-# ============================================================
 # Deterministic qualitative sample
-# ============================================================
 
 
 def sample_score(row: dict[str, Any], seed: int) -> str:
@@ -877,14 +845,27 @@ def representative_sample(
     return selected
 
 
-# ============================================================
 # CLI
-# ============================================================
 
 
-def parse_args(
-    argv: Optional[Sequence[str]] = None,
-) -> argparse.Namespace:
+def resolve_inputs(args: argparse.Namespace) -> list[Path]:
+    if args.input:
+        return list(args.input)
+
+    paths = [
+        args.input_dir / model_key / args.input_filename for model_key in args.model
+    ]
+
+    missing = [path for path in paths if not path.exists()]
+    if missing:
+        raise FileNotFoundError(
+            "Missing raw Logit Lens inputs:\n  "
+            + "\n  ".join(str(path) for path in missing)
+        )
+    return paths
+
+
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Analyze final gold-target ranks 11--30 among main Logit Lens "
@@ -898,106 +879,123 @@ def parse_args(
         help="Explicit logit_lens_by_layer.jsonl files.",
     )
     parser.add_argument(
+        "--input-dir",
         "--base_input_dir",
+        "--base-input-dir",
         type=Path,
-        default=DEFAULT_BASE_INPUT_DIR,
+        default=DEFAULT_INPUT_DIR,
     )
     parser.add_argument(
+        "--model",
         "--models",
         nargs="+",
-        default=DEFAULT_MODELS,
+        choices=["all", *MODEL_KEYS],
+        default=None,
     )
     parser.add_argument(
+        "--input-filename",
         "--input_filename",
-        default=DEFAULT_INPUT_FILENAME,
+        dest="input_filename",
+        default=INPUT_FILENAME,
     )
     parser.add_argument(
         "--trajectory",
         type=Path,
         default=None,
         help=(
-            "Optional all-model trajectory TSV. If omitted, common project "
-            "locations are auto-detected."
+            "Optional trajectory TSV. If omitted, the default combined trajectory "
+            "file is used when available."
         ),
     )
     parser.add_argument(
+        "--no-trajectory-merge",
         "--no_trajectory_merge",
+        dest="no_trajectory_merge",
         action="store_true",
         help="Skip trajectory-table merge/cross-check.",
     )
     parser.add_argument(
+        "--output-dir",
         "--output_dir",
+        dest="output_dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
     )
     parser.add_argument(
+        "--rank-min",
         "--rank_min",
+        dest="rank_min",
         type=int,
         default=RANK_MIN,
     )
     parser.add_argument(
+        "--rank-max",
         "--rank_max",
+        dest="rank_max",
         type=int,
         default=RANK_MAX,
     )
     parser.add_argument(
+        "--min-consecutive",
         "--min_consecutive",
+        dest="min_consecutive",
         type=int,
-        default=MIN_CONSECUTIVE,
+        default=DEFAULT_MIN_CONSECUTIVE,
     )
     parser.add_argument(
+        "--expected-final-rows-per-model",
         "--expected_final_rows_per_model",
+        dest="expected_final_rows_per_model",
         type=int,
         default=EXPECTED_FINAL_ROWS_PER_MODEL,
         help="Set to 0 to disable the 1040-row validation.",
     )
     parser.add_argument(
+        "--sample-per-stratum",
         "--sample_per_stratum",
+        dest="sample_per_stratum",
         type=int,
         default=DEFAULT_SAMPLE_PER_STRATUM,
     )
     parser.add_argument(
+        "--sampling-seed",
         "--sampling_seed",
+        dest="sampling_seed",
         type=int,
         default=DEFAULT_SAMPLING_SEED,
     )
 
-    args, unknown = parser.parse_known_args(argv)
-    if unknown:
-        print(
-            "Ignoring unrecognized runtime arguments: " + " ".join(unknown),
-            file=sys.stderr,
-        )
-    return args
+    parser.add_argument(
+        "--overwrite", action="store_true", help="Replace existing output files."
+    )
+    return parser
 
 
-def resolve_inputs(args: argparse.Namespace) -> list[Path]:
-    if args.input:
-        return [Path(path) for path in args.input]
-
-    paths = [
-        Path(args.base_input_dir) / model / args.input_filename for model in args.models
-    ]
-
-    missing = [path for path in paths if not path.exists()]
-    if missing:
-        raise FileNotFoundError(
-            "Missing raw Logit Lens inputs:\n  "
-            + "\n  ".join(str(path) for path in missing)
-        )
-    return paths
-
-
-# ============================================================
 # Main
-# ============================================================
 
 
 def main(
     argv: Optional[Sequence[str]] = None,
 ) -> int:
-    args = parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    explicit_models = args.model is not None
+    if args.model and "all" in args.model and args.model != ["all"]:
+        parser.error("--model all cannot be combined with individual models.")
+    if args.model and len(args.model) != len(set(args.model)):
+        parser.error("Duplicate model keys.")
+    args.model = (
+        list(MODEL_KEYS)
+        if args.model in (None, ["all"])
+        else [model_key for model_key in MODEL_KEYS if model_key in args.model]
+    )
+    if args.sample_per_stratum < 0 or args.expected_final_rows_per_model < 0:
+        parser.error("Sample size and expected trajectory count must be non-negative.")
+    if args.no_trajectory_merge and args.trajectory is not None:
+        parser.error("--trajectory and --no-trajectory-merge are mutually exclusive.")
 
+    if (args.rank_min, args.rank_max) != (RANK_MIN, RANK_MAX):
+        parser.error("This analysis uses fixed rank bins 11–15, 16–20, and 21–30.")
     if args.rank_min <= 10:
         raise ValueError("--rank_min should be >10 for a Target@10 near miss.")
     if args.rank_max < args.rank_min:
@@ -1006,22 +1004,62 @@ def main(
         raise ValueError("--min_consecutive must be >=1.")
 
     input_paths = resolve_inputs(args)
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = args.output_dir
 
     all_raw_rows: list[dict[str, Any]] = []
     raw_rows_by_file: dict[str, int] = {}
 
     for path in input_paths:
-        print(f"Loading {path} ...", file=sys.stderr)
-        rows = load_jsonl(path)
+        rows = read_jsonl(path)
         validate_raw_schema(rows)
+        if not args.input and {str(row["model_key"]) for row in rows} != {
+            path.parent.name
+        }:
+            raise ValueError(f"Unexpected model key in {path}")
         raw_rows_by_file[str(path)] = len(rows)
         all_raw_rows.extend(rows)
 
     trajectories = group_raw_trajectories(all_raw_rows)
 
     model_trajectory_counts = Counter(key[0] for key in trajectories)
+
+    observed_models = set(model_trajectory_counts)
+    if not observed_models.issubset(MODEL_KEYS):
+        raise ValueError(
+            f"Unsupported model keys: {sorted(observed_models - set(MODEL_KEYS))}"
+        )
+    if (explicit_models or not args.input) and observed_models != set(args.model):
+        raise ValueError(
+            f"Requested models {args.model} differ from input models {sorted(observed_models)}."
+        )
+    if observed_models != set(MODEL_KEYS):
+        output_dir /= "__".join(
+            model for model in MODEL_KEYS if model in observed_models
+        )
+    if (
+        args.expected_final_rows_per_model != EXPECTED_FINAL_ROWS_PER_MODEL
+        or args.min_consecutive != DEFAULT_MIN_CONSECUTIVE
+        or args.sample_per_stratum != DEFAULT_SAMPLE_PER_STRATUM
+        or args.sampling_seed != DEFAULT_SAMPLING_SEED
+        or args.no_trajectory_merge
+        or (
+            args.trajectory is not None
+            and args.trajectory.resolve() != DEFAULT_TRAJECTORY_PATH.resolve()
+        )
+    ):
+        if args.output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve():
+            parser.error(
+                "Use a separate --output-dir for nonstandard analysis settings."
+            )
+
+    existing = [
+        output_dir / name for name in OUTPUT_FILENAMES if (output_dir / name).exists()
+    ]
+    if existing and not args.overwrite:
+        parser.error(
+            "Existing outputs; use --overwrite or a different --output-dir: "
+            + ", ".join(str(path) for path in existing)
+        )
 
     if args.expected_final_rows_per_model > 0:
         bad = {
@@ -1067,12 +1105,12 @@ def main(
 
     if not args.no_trajectory_merge:
         if args.trajectory is not None:
-            trajectory_path = Path(args.trajectory)
+            trajectory_path = args.trajectory
         else:
             trajectory_path = find_default_trajectory()
 
         if trajectory_path is not None:
-            trajectory_rows = load_tsv(trajectory_path)
+            trajectory_rows = read_tsv(trajectory_path)
             trajectory_index = build_trajectory_index(trajectory_rows)
             merge_report = merge_trajectory_metadata(
                 cases,
@@ -1099,11 +1137,7 @@ def main(
     )
 
     # Stable sort for review tables.
-    model_order = {
-        "qwen3_0_6b": 0,
-        "qwen3_4b": 1,
-        "qwen3_14b": 2,
-    }
+    model_order = {model_key: index for index, model_key in enumerate(MODEL_KEYS)}
     cases.sort(
         key=lambda row: (
             model_order.get(str(row["model_key"]), 99),
@@ -1115,6 +1149,7 @@ def main(
     )
 
     # Write outputs.
+    output_dir.mkdir(parents=True, exist_ok=True)
     write_tsv(
         output_dir / "final_rank_near_miss_cases.tsv",
         cases,
@@ -1146,11 +1181,13 @@ def main(
     total_near = len(cases)
 
     by_model = {}
-    for model in sorted(model_trajectory_counts, key=lambda x: model_order.get(x, 99)):
-        model_final = [row for row in final_rows if str(row["model_key"]) == model]
-        model_cases = [row for row in cases if str(row["model_key"]) == model]
+    for model_key in sorted(
+        model_trajectory_counts, key=lambda x: model_order.get(x, 99)
+    ):
+        model_final = [row for row in final_rows if str(row["model_key"]) == model_key]
+        model_cases = [row for row in cases if str(row["model_key"]) == model_key]
         model_failures = sum(not as_bool(row["target_in_top10"]) for row in model_final)
-        by_model[model] = {
+        by_model[model_key] = {
             "n_final_trajectories": len(model_final),
             "target_at10_failure_count": model_failures,
             "near_miss_rank_11_30_count": len(model_cases),
@@ -1257,42 +1294,23 @@ def main(
         report,
     )
 
-    print("\n========================================")
-    print("Final-rank near-miss analysis")
-    print("========================================")
-    print(f"Final trajectories:       {total_final}")
-    print(f"Target@10 failures:       {total_failures}")
-    print(f"Rank 11--30 near misses:  {total_near}")
-    print(f"Near-miss rate overall:  {100 * total_near / total_final:.2f}%")
-    print(f"Share of @10 failures:   {100 * total_near / total_failures:.2f}%")
-
-    print("\nBy model:")
-    for model, stats in by_model.items():
+    for model_key, stats in by_model.items():
         print(
-            f"  {model}: "
-            f"near={stats['near_miss_rank_11_30_count']}, "
-            f"failures={stats['target_at10_failure_count']}, "
-            f"share="
-            f"{100 * stats['near_miss_share_of_target_at10_failures']:.2f}%"
+            f"{model_key}: {stats['n_final_trajectories']} trajectories, "
+            f"{stats['target_at10_failure_count']} Target@10 failures, "
+            f"{stats['near_miss_rank_11_30_count']} near misses"
         )
-
-    print("\nHistory among near misses:")
-    for category, count in Counter(
-        str(row["history_category"]) for row in cases
-    ).items():
-        print(f"  {category}: {count}")
-
+    print(
+        f"Total: {total_final} trajectories, {total_near} near misses, {len(sample_rows)} sampled"
+    )
     if trajectory_merge_report.get("used"):
-        print(f"\nTrajectory merge: {trajectory_merge_report['path']}")
-        print(
-            f"  missing near-miss keys: {trajectory_merge_report['missing_case_keys']}"
-        )
-        print(
-            "  cross-check mismatches: "
-            f"{trajectory_merge_report['crosscheck_mismatch_counts']}"
-        )
-
-    print(f"\nOutputs: {output_dir}")
+        missing = trajectory_merge_report["missing_case_keys"]
+        mismatches = trajectory_merge_report["crosscheck_mismatch_counts"]
+        if missing or mismatches:
+            print(
+                f"Warning: trajectory cross-check: {missing} missing, {mismatches} mismatches"
+            )
+    print(f"Output: {output_dir}")
     return 0
 
 

@@ -1,0 +1,331 @@
+﻿id	subgroup	mapping_rule	model_key	model_name	language	subject	prefix	gold	gold_token_id	gold_token	gold_token_surface	broader_category	broader_token_id	broader_token	broader_token_surface	prediction_position	prediction_token_id	prediction_token	gold_prefix_matches_full_before_target	broader_prefix_matches_full_before_target	valid_for_eq2
+132	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	eagle	An eagle is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+132	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	鹰	鹰是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+132	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	eagle	An eagle is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+132	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	鹰	鹰是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+132	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	eagle	An eagle is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+132	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	鹰	鹰是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+133	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	owl	An owl is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+133	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	猫头鹰	猫头鹰是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	3	101158	æĺ¯ä¸Ģç§į	True	True	True
+133	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	owl	An owl is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+133	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	猫头鹰	猫头鹰是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	3	101158	æĺ¯ä¸Ģç§į	True	True	True
+133	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	owl	An owl is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+133	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	猫头鹰	猫头鹰是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	3	101158	æĺ¯ä¸Ģç§į	True	True	True
+134	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	penguin	A penguin is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+134	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	企鹅	企鹅是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+134	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	penguin	A penguin is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+134	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	企鹅	企鹅是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+134	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	penguin	A penguin is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+134	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	企鹅	企鹅是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+135	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	pigeon	A pigeon is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+135	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	鸽子	鸽子是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+135	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	pigeon	A pigeon is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+135	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	鸽子	鸽子是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+135	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	pigeon	A pigeon is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+135	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	鸽子	鸽子是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+136	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	seagull	A seagull is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	7	315	Ġof	False	False	True
+136	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	海鸥	海鸥是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+136	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	seagull	A seagull is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	7	315	Ġof	False	False	True
+136	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	海鸥	海鸥是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+136	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	seagull	A seagull is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	7	315	Ġof	False	False	True
+136	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	海鸥	海鸥是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+137	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	sparrow	A sparrow is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+137	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	麻雀	麻雀是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+137	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	sparrow	A sparrow is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+137	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	麻雀	麻雀是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+137	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	sparrow	A sparrow is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+137	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	麻雀	麻雀是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+138	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	swan	A swan is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+138	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	天鹅	天鹅是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+138	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	swan	A swan is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+138	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	天鹅	天鹅是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+138	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	swan	A swan is a type of 	bird	11958	Ġbird	 bird	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+138	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	天鹅	天鹅是一种	鸟	100462	é¸Ł	鸟	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+139	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	seahorse	A seahorse is a type of 	fish	7640	Ġfish	 fish	animal	9864	Ġanimal	 animal	7	315	Ġof	False	False	True
+139	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	海马	海马是一种	鱼	100655	é±¼	鱼	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+139	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	seahorse	A seahorse is a type of 	fish	7640	Ġfish	 fish	animal	9864	Ġanimal	 animal	7	315	Ġof	False	False	True
+139	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	海马	海马是一种	鱼	100655	é±¼	鱼	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+139	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	seahorse	A seahorse is a type of 	fish	7640	Ġfish	 fish	animal	9864	Ġanimal	 animal	7	315	Ġof	False	False	True
+139	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	海马	海马是一种	鱼	100655	é±¼	鱼	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+140	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	loach	A loach is a type of 	fish	7640	Ġfish	 fish	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+140	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	泥鳅	泥鳅是一种	鱼	100655	é±¼	鱼	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+140	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	loach	A loach is a type of 	fish	7640	Ġfish	 fish	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+140	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	泥鳅	泥鳅是一种	鱼	100655	é±¼	鱼	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+140	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	loach	A loach is a type of 	fish	7640	Ġfish	 fish	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+140	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	泥鳅	泥鳅是一种	鱼	100655	é±¼	鱼	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+141	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	ray	A ray is a type of 	fish	7640	Ġfish	 fish	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+141	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	鳐	鳐是一种	鱼	100655	é±¼	鱼	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+141	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	ray	A ray is a type of 	fish	7640	Ġfish	 fish	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+141	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	鳐	鳐是一种	鱼	100655	é±¼	鱼	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+141	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	ray	A ray is a type of 	fish	7640	Ġfish	 fish	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+141	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	鳐	鳐是一种	鱼	100655	é±¼	鱼	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+142	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	ant	An ant is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+142	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	蚂蚁	蚂蚁是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+142	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	ant	An ant is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+142	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	蚂蚁	蚂蚁是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+142	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	ant	An ant is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+142	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	蚂蚁	蚂蚁是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+143	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	butterfly	A butterfly is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+143	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	蝴蝶	蝴蝶是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+143	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	butterfly	A butterfly is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+143	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	蝴蝶	蝴蝶是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+143	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	butterfly	A butterfly is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+143	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	蝴蝶	蝴蝶是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+144	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	mosquito	A mosquito is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+144	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	蚊子	蚊子是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+144	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	mosquito	A mosquito is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+144	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	蚊子	蚊子是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+144	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	mosquito	A mosquito is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+144	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	蚊子	蚊子是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+145	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	bee	A bee is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+145	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	蜜蜂	蜜蜂是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+145	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	bee	A bee is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+145	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	蜜蜂	蜜蜂是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+145	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	bee	A bee is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+145	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	蜜蜂	蜜蜂是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+146	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	termite	A termite is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+146	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	白蚁	白蚁是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+146	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	termite	A termite is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+146	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	白蚁	白蚁是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+146	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	termite	A termite is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	6	315	Ġof	False	False	True
+146	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	白蚁	白蚁是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+147	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	grasshopper	A grasshopper is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	7	315	Ġof	False	False	True
+147	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	蚱蜢	蚱蜢是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+147	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	grasshopper	A grasshopper is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	7	315	Ġof	False	False	True
+147	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	蚱蜢	蚱蜢是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+147	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	grasshopper	A grasshopper is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	7	315	Ġof	False	False	True
+147	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	蚱蜢	蚱蜢是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+148	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	en	cricket	A cricket is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+148	animal_taxonomy	animal_taxonomy_to_animal	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	蟋蟀	蟋蟀是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+148	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	en	cricket	A cricket is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+148	animal_taxonomy	animal_taxonomy_to_animal	qwen3_4b	Qwen/Qwen3-4B	zh	蟋蟀	蟋蟀是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+148	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	en	cricket	A cricket is a type of 	insect	25989	Ġinsect	 insect	animal	9864	Ġanimal	 animal	5	315	Ġof	False	False	True
+148	animal_taxonomy	animal_taxonomy_to_animal	qwen3_14b	Qwen/Qwen3-14B	zh	蟋蟀	蟋蟀是一种	昆虫	118093	æĺĨèĻ«	昆虫	动物	101239	åĬ¨çī©	动物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+149	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	carbon	Carbon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	3	11483	Ġchemical	False	False	True
+149	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	碳	碳是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+149	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	carbon	Carbon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	3	11483	Ġchemical	False	False	True
+149	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	碳	碳是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+149	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	carbon	Carbon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	3	11483	Ġchemical	False	False	True
+149	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	碳	碳是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+150	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	hydrogen	Hydrogen is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+150	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	氢	氢是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+150	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	hydrogen	Hydrogen is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+150	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	氢	氢是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+150	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	hydrogen	Hydrogen is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+150	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	氢	氢是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+151	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	oxygen	Oxygen is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+151	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	氧	氧是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+151	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	oxygen	Oxygen is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+151	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	氧	氧是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+151	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	oxygen	Oxygen is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+151	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	氧	氧是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+152	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	nitrogen	Nitrogen is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+152	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	氮	氮是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+152	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	nitrogen	Nitrogen is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+152	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	氮	氮是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+152	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	nitrogen	Nitrogen is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+152	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	氮	氮是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+153	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	silicon	Silicon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+153	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	硅	硅是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+153	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	silicon	Silicon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+153	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	硅	硅是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+153	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	silicon	Silicon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+153	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	硅	硅是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+154	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	helium	Helium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+154	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	氦	氦是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+154	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	helium	Helium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+154	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	氦	氦是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+154	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	helium	Helium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+154	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	氦	氦是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+155	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	neon	Neon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+155	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	氖	氖是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+155	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	neon	Neon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+155	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	氖	氖是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+155	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	neon	Neon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+155	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	氖	氖是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+156	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	argon	Argon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+156	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	氩	氩是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+156	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	argon	Argon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+156	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	氩	氩是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+156	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	argon	Argon is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+156	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	氩	氩是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+157	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	iron	Iron is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	3	11483	Ġchemical	False	False	True
+157	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	铁	铁是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+157	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	iron	Iron is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	3	11483	Ġchemical	False	False	True
+157	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	铁	铁是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+157	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	iron	Iron is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	3	11483	Ġchemical	False	False	True
+157	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	铁	铁是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+158	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	copper	Copper is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+158	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	铜	铜是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+158	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	copper	Copper is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+158	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	铜	铜是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+158	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	copper	Copper is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+158	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	铜	铜是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+159	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	sodium	Sodium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+159	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	钠	钠是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+159	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	sodium	Sodium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+159	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	钠	钠是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+159	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	sodium	Sodium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+159	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	钠	钠是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+160	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	potassium	Potassium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+160	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	钾	钾是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+160	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	potassium	Potassium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+160	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	钾	钾是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+160	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	potassium	Potassium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+160	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	钾	钾是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+161	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	calcium	Calcium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+161	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	钙	钙是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+161	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	calcium	Calcium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+161	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	钙	钙是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+161	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	calcium	Calcium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+161	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	钙	钙是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+162	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	magnesium	Magnesium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+162	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	镁	镁是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+162	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	magnesium	Magnesium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+162	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	镁	镁是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+162	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	magnesium	Magnesium is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+162	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	镁	镁是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+163	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	aluminum	Aluminum is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+163	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	铝	铝是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+163	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	aluminum	Aluminum is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+163	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	铝	铝是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+163	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	aluminum	Aluminum is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	4	11483	Ġchemical	False	False	True
+163	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	铝	铝是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+164	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	sulfur	Sulfur is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+164	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	硫	硫是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+164	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	sulfur	Sulfur is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+164	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	硫	硫是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+164	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	sulfur	Sulfur is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+164	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	硫	硫是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+165	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	phosphorus	Phosphorus is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+165	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	磷	磷是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+165	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	phosphorus	Phosphorus is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+165	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	磷	磷是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+165	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	phosphorus	Phosphorus is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+165	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	磷	磷是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+166	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	en	chlorine	Chlorine is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+166	chemical_element_taxonomy	chemical_element_to_substance	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	氯	氯是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+166	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	en	chlorine	Chlorine is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+166	chemical_element_taxonomy	chemical_element_to_substance	qwen3_4b	Qwen/Qwen3-4B	zh	氯	氯是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+166	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	en	chlorine	Chlorine is a chemical 	element	2392	Ġelement	 element	substance	19699	Ġsubstance	 substance	5	11483	Ġchemical	False	False	True
+166	chemical_element_taxonomy	chemical_element_to_substance	qwen3_14b	Qwen/Qwen3-14B	zh	氯	氯是一种化学	元素	102268	åħĥç´ł	元素	物质	101252	çī©è´¨	物质	2	102264	åĮĸåŃ¦	True	True	True
+234	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	peach	A peach is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+234	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	桃子	桃子是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+234	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	peach	A peach is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+234	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	桃子	桃子是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+234	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	peach	A peach is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+234	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	桃子	桃子是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+235	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	pineapple	A pineapple is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+235	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	菠萝	菠萝是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+235	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	pineapple	A pineapple is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+235	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	菠萝	菠萝是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+235	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	pineapple	A pineapple is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+235	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	菠萝	菠萝是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+236	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	banana	A banana is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+236	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	香蕉	香蕉是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+236	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	banana	A banana is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+236	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	香蕉	香蕉是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+236	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	banana	A banana is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+236	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	香蕉	香蕉是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+237	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	orange	An orange is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+237	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	橙子	橙子是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+237	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	orange	An orange is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+237	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	橙子	橙子是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+237	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	orange	An orange is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+237	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	橙子	橙子是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+238	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	lemon	A lemon is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+238	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	柠檬	柠檬是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+238	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	lemon	A lemon is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+238	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	柠檬	柠檬是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+238	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	lemon	A lemon is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+238	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	柠檬	柠檬是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+239	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	grape	A grape is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+239	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	葡萄	葡萄是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+239	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	grape	A grape is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+239	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	葡萄	葡萄是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+239	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	grape	A grape is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+239	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	葡萄	葡萄是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+240	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	cherry	A cherry is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+240	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	樱桃	樱桃是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+240	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	cherry	A cherry is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+240	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	樱桃	樱桃是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+240	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	cherry	A cherry is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+240	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	樱桃	樱桃是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+241	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	pear	A pear is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+241	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	梨	梨是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+241	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	pear	A pear is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+241	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	梨	梨是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+241	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	pear	A pear is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+241	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	梨	梨是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+242	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	plum	A plum is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+242	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	李子	李子是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+242	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	plum	A plum is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+242	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	李子	李子是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+242	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	plum	A plum is a type of 	fruit	13779	Ġfruit	 fruit	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+242	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	李子	李子是一种	水果	104618	æ°´æŀľ	水果	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+243	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	carrot	A carrot is a type of 	vegetable	35481	Ġvegetable	 vegetable	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+243	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	胡萝卜	胡萝卜是一种	蔬菜	104451	èĶ¬èıľ	蔬菜	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+243	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	carrot	A carrot is a type of 	vegetable	35481	Ġvegetable	 vegetable	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+243	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	胡萝卜	胡萝卜是一种	蔬菜	104451	èĶ¬èıľ	蔬菜	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+243	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	carrot	A carrot is a type of 	vegetable	35481	Ġvegetable	 vegetable	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+243	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	胡萝卜	胡萝卜是一种	蔬菜	104451	èĶ¬èıľ	蔬菜	食物	102153	é£Łçī©	食物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+244	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	broccoli	Broccoli is a type of 	vegetable	35481	Ġvegetable	 vegetable	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+244	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	西兰花	西兰花是一种	蔬菜	104451	èĶ¬èıľ	蔬菜	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+244	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	broccoli	Broccoli is a type of 	vegetable	35481	Ġvegetable	 vegetable	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+244	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	西兰花	西兰花是一种	蔬菜	104451	èĶ¬èıľ	蔬菜	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+244	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	broccoli	Broccoli is a type of 	vegetable	35481	Ġvegetable	 vegetable	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+244	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	西兰花	西兰花是一种	蔬菜	104451	èĶ¬èıľ	蔬菜	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+245	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	en	zucchini	Zucchini is a type of 	vegetable	35481	Ġvegetable	 vegetable	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+245	food_taxonomy	food_taxonomy_to_food	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	西葫芦	西葫芦是一种	蔬菜	104451	èĶ¬èıľ	蔬菜	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+245	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	en	zucchini	Zucchini is a type of 	vegetable	35481	Ġvegetable	 vegetable	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+245	food_taxonomy	food_taxonomy_to_food	qwen3_4b	Qwen/Qwen3-4B	zh	西葫芦	西葫芦是一种	蔬菜	104451	èĶ¬èıľ	蔬菜	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+245	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	en	zucchini	Zucchini is a type of 	vegetable	35481	Ġvegetable	 vegetable	food	3607	Ġfood	 food	5	315	Ġof	False	False	True
+245	food_taxonomy	food_taxonomy_to_food	qwen3_14b	Qwen/Qwen3-14B	zh	西葫芦	西葫芦是一种	蔬菜	104451	èĶ¬èıľ	蔬菜	食物	102153	é£Łçī©	食物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+252	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	en	hibiscus	A hibiscus is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	8	315	Ġof	False	False	True
+252	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	木槿	木槿是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+252	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	en	hibiscus	A hibiscus is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	8	315	Ġof	False	False	True
+252	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	zh	木槿	木槿是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+252	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	en	hibiscus	A hibiscus is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	8	315	Ġof	False	False	True
+252	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	zh	木槿	木槿是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+253	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	en	iris	An iris is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	5	315	Ġof	False	False	True
+253	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	鸢尾	鸢尾是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+253	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	en	iris	An iris is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	5	315	Ġof	False	False	True
+253	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	zh	鸢尾	鸢尾是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+253	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	en	iris	An iris is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	5	315	Ġof	False	False	True
+253	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	zh	鸢尾	鸢尾是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+254	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	en	rose	A rose is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	5	315	Ġof	False	False	True
+254	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	玫瑰	玫瑰是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+254	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	en	rose	A rose is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	5	315	Ġof	False	False	True
+254	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	zh	玫瑰	玫瑰是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+254	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	en	rose	A rose is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	5	315	Ġof	False	False	True
+254	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	zh	玫瑰	玫瑰是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+255	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	en	tulip	A tulip is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+255	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	郁金香	郁金香是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	3	101158	æĺ¯ä¸Ģç§į	True	True	True
+255	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	en	tulip	A tulip is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+255	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	zh	郁金香	郁金香是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	3	101158	æĺ¯ä¸Ģç§į	True	True	True
+255	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	en	tulip	A tulip is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+255	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	zh	郁金香	郁金香是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	3	101158	æĺ¯ä¸Ģç§į	True	True	True
+256	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	en	daisy	A daisy is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+256	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	雏菊	雏菊是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+256	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	en	daisy	A daisy is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+256	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	zh	雏菊	雏菊是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+256	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	en	daisy	A daisy is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+256	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	zh	雏菊	雏菊是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+257	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	en	lily	A lily is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+257	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	百合	百合是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+257	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	en	lily	A lily is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+257	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	zh	百合	百合是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+257	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	en	lily	A lily is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+257	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	zh	百合	百合是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+258	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	en	daffodil	A daffodil is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	8	315	Ġof	False	False	True
+258	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	水仙	水仙是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+258	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	en	daffodil	A daffodil is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	8	315	Ġof	False	False	True
+258	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	zh	水仙	水仙是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+258	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	en	daffodil	A daffodil is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	8	315	Ġof	False	False	True
+258	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	zh	水仙	水仙是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	2	101158	æĺ¯ä¸Ģç§į	True	True	True
+259	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	en	peony	A peony is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+259	plant_taxonomy	flower_to_plant	qwen3_0_6b	Qwen/Qwen3-0.6B	zh	牡丹	牡丹是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+259	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	en	peony	A peony is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+259	plant_taxonomy	flower_to_plant	qwen3_4b	Qwen/Qwen3-4B	zh	牡丹	牡丹是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	1	101158	æĺ¯ä¸Ģç§į	True	True	True
+259	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	en	peony	A peony is a type of 	flower	22351	Ġflower	 flower	plant	6008	Ġplant	 plant	6	315	Ġof	False	False	True
+259	plant_taxonomy	flower_to_plant	qwen3_14b	Qwen/Qwen3-14B	zh	牡丹	牡丹是一种	花	99232	èĬ±	花	植物	104155	æ¤įçī©	植物	1	101158	æĺ¯ä¸Ģç§į	True	True	True

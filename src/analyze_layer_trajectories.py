@@ -1,21 +1,3 @@
-"""
-Recommended command
--------------------
-
-    python src/analyze_layer_trajectories.py \
-        --base_input_dir data/logit_lens/full \
-        --base_output_dir results/analysis/trajectories \
-        --models qwen3_0_6b qwen3_4b qwen3_14b \
-        --min_consecutive 3
-
-A single file can also be analyzed:
-
-    python src/analyze_layer_trajectories.py \
-        --input data/logit_lens/full/qwen3_0_6b/logit_lens_by_layer.jsonl \
-        --output_dir data/analysis/full/qwen3_0_6b \
-        --min_consecutive 3
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -30,23 +12,22 @@ from statistics import median
 from typing import Any, Callable, Iterable, Optional, Sequence
 
 
-# ============================================================
-# Default configuration
-# ============================================================
-
-DEFAULT_BASE_INPUT_DIR = Path("data/logit_lens/full")
-DEFAULT_BASE_OUTPUT_DIR = Path("data/analysis/full")
-
-DEFAULT_MODEL_KEYS = [
-    "qwen3_0_6b",
-    "qwen3_4b",
-    "qwen3_14b",
-]
-
-DEFAULT_INPUT_FILENAME = "logit_lens_by_layer.jsonl"
+DEFAULT_INPUT_DIR = Path("data/logit_lens/full")
+DEFAULT_OUTPUT_DIR = Path("results/analysis/trajectory")
+MODEL_KEYS = ("qwen3_0_6b", "qwen3_4b", "qwen3_14b")
+INPUT_FILENAME = "logit_lens_by_layer.jsonl"
 DEFAULT_MIN_CONSECUTIVE = 3
 DEFAULT_EXAMPLES_PER_PATTERN = 3
 DEFAULT_SAMPLING_SEED = 42
+
+OUTPUT_FILENAMES = (
+    "layer_trajectory_examples.tsv",
+    "layer_trajectory_examples.jsonl",
+    "layer_trajectory_summary.tsv",
+    "trajectory_pattern_counts.tsv",
+    "representative_trajectory_examples.tsv",
+)
+COMBINED_OUTPUT_FILENAMES = tuple(f"all_models_{name}" for name in OUTPUT_FILENAMES)
 
 K_VALUES = (1, 5, 10)
 
@@ -74,13 +55,10 @@ OPTIONAL_METADATA_FIELDS = (
 )
 
 
-# ============================================================
 # I/O helpers
-# ============================================================
 
 
-def load_jsonl(path: Path) -> list[dict[str, Any]]:
-    """Load a JSONL file."""
+def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         raise FileNotFoundError(f"Input JSONL not found: {path}")
 
@@ -111,9 +89,7 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def write_jsonl(rows: Sequence[dict[str, Any]], path: Path) -> None:
-    """Write dictionaries as UTF-8 JSONL."""
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
 
     with path.open("w", encoding="utf-8") as handle:
         for row in rows:
@@ -128,7 +104,6 @@ def write_jsonl(rows: Sequence[dict[str, Any]], path: Path) -> None:
 
 
 def ordered_fieldnames(rows: Sequence[dict[str, Any]]) -> list[str]:
-    """Return fields in first-seen order."""
     seen: set[str] = set()
     fields: list[str] = []
 
@@ -141,9 +116,7 @@ def ordered_fieldnames(rows: Sequence[dict[str, Any]]) -> list[str]:
     return fields
 
 
-def write_tsv(rows: Sequence[dict[str, Any]], path: Path) -> None:
-    """Write dictionaries as a UTF-8 tab-separated table."""
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
 
     if not rows:
         path.write_text("", encoding="utf-8")
@@ -166,9 +139,7 @@ def write_tsv(rows: Sequence[dict[str, Any]], path: Path) -> None:
         writer.writerows(rows)
 
 
-# ============================================================
 # Validation and conversion helpers
-# ============================================================
 
 
 def as_bool(value: Any) -> bool:
@@ -197,7 +168,6 @@ def as_bool(value: Any) -> bool:
 
 
 def safe_float(value: Any) -> Optional[float]:
-    """Convert a value to a finite float, returning None otherwise."""
     if value is None:
         return None
 
@@ -213,7 +183,6 @@ def safe_float(value: Any) -> Optional[float]:
 
 
 def safe_mean(values: Iterable[Optional[float]]) -> Optional[float]:
-    """Mean of finite, non-None values."""
     cleaned = [value for value in values if value is not None and math.isfinite(value)]
 
     if not cleaned:
@@ -223,7 +192,6 @@ def safe_mean(values: Iterable[Optional[float]]) -> Optional[float]:
 
 
 def safe_median(values: Iterable[Optional[float]]) -> Optional[float]:
-    """Median of finite, non-None values."""
     cleaned = [value for value in values if value is not None and math.isfinite(value)]
 
     if not cleaned:
@@ -233,7 +201,6 @@ def safe_median(values: Iterable[Optional[float]]) -> Optional[float]:
 
 
 def rate(rows: Sequence[dict[str, Any]], key: str) -> Optional[float]:
-    """Rate of truthy values for a field."""
     values = [as_bool(row[key]) for row in rows if key in row and row[key] is not None]
 
     if not values:
@@ -246,7 +213,6 @@ def validate_required_fields(
     rows: Sequence[dict[str, Any]],
     input_path: Path,
 ) -> None:
-    """Validate the fields required for trajectory analysis."""
     required = {
         "id",
         "model_key",
@@ -271,16 +237,13 @@ def validate_required_fields(
         raise ValueError(f"Missing required fields in {input_path}: {missing}")
 
 
-# ============================================================
 # Boolean trajectory helpers
-# ============================================================
 
 
 def first_true_layer(
     values: Sequence[bool],
     layers: Sequence[int],
 ) -> Optional[int]:
-    """Return the first layer whose value is True."""
     for value, layer in zip(values, layers):
         if value:
             return int(layer)
@@ -292,7 +255,6 @@ def last_true_layer(
     values: Sequence[bool],
     layers: Sequence[int],
 ) -> Optional[int]:
-    """Return the last layer whose value is True."""
     for value, layer in reversed(list(zip(values, layers))):
         if value:
             return int(layer)
@@ -364,7 +326,6 @@ def first_stable_to_end_layer(
 
 
 def max_true_run_length(values: Sequence[bool]) -> int:
-    """Return the maximum consecutive run length of True values."""
     best = 0
     current = 0
 
@@ -379,7 +340,6 @@ def max_true_run_length(values: Sequence[bool]) -> int:
 
 
 def count_true_runs(values: Sequence[bool]) -> int:
-    """Count separate True runs."""
     runs = 0
     previous = False
 
@@ -393,7 +353,6 @@ def count_true_runs(values: Sequence[bool]) -> int:
 
 
 def true_then_lost(values: Sequence[bool]) -> bool:
-    """Return True when a True value is followed later by False."""
     seen_true = False
 
     for value in values:
@@ -409,7 +368,6 @@ def compare_first_onsets(
     target_layer: Optional[int],
     final_layer: Optional[int],
 ) -> str:
-    """Compare first Top-k onset layers without a persistence criterion."""
     if target_layer is None and final_layer is None:
         return "neither_detected"
 
@@ -461,7 +419,6 @@ def make_pattern_label(
     final_exact_gold: bool,
     relation: str,
 ) -> str:
-    """Keep exact-gold convergence separate from two-token competition."""
     if final_exact_gold:
         return "exact_gold_convergence"
 
@@ -472,16 +429,13 @@ def layer_fraction(
     layer: Optional[int],
     final_layer: int,
 ) -> Optional[float]:
-    """Normalize a layer index by the final layer index."""
     if layer is None or final_layer <= 0:
         return None
 
     return float(layer / final_layer)
 
 
-# ============================================================
 # Per-example analysis
-# ============================================================
 
 
 def group_layer_rows(
@@ -512,7 +466,6 @@ def group_layer_rows(
 def validate_example_rows(
     example_rows: Sequence[dict[str, Any]],
 ) -> None:
-    """Run within-example sanity checks."""
     if not example_rows:
         raise ValueError("Cannot validate an empty example trajectory.")
 
@@ -580,7 +533,6 @@ def analyze_one_example(
     example_rows: Sequence[dict[str, Any]],
     min_consecutive: int,
 ) -> dict[str, Any]:
-    """Convert one full layer trajectory into one analysis row."""
     validate_example_rows(example_rows)
 
     rows = sorted(
@@ -620,9 +572,7 @@ def analyze_one_example(
         "min_consecutive": min_consecutive,
     }
 
-    # Preserve text/dataset metadata when logit_lens.py already stores it.
-    # A separate annotation-preparation script can also merge these fields
-    # from the original bilingual dataset later.
+    # Preserve optional dataset metadata.
     for field in OPTIONAL_METADATA_FIELDS:
         if field in first_row and field not in output:
             output[field] = first_row.get(field)
@@ -751,8 +701,7 @@ def analyze_one_example(
         relation=output["sustained_onset_relation_top10"],
     )
 
-    # Backward-compatible alias. Unlike the old script, this is now a
-    # PURE strict-sustained label and never falls back to first onset.
+    # Strict sustained onset only; no fallback to first onset.
     output["primary_pattern_top10"] = output["strict_sustained_pattern_top10"]
 
     # Convenient non-exclusive trajectory tags.
@@ -768,7 +717,6 @@ def analyze_rows(
     rows: Sequence[dict[str, Any]],
     min_consecutive: int,
 ) -> list[dict[str, Any]]:
-    """Analyze all example trajectories in one raw JSONL file."""
     buckets = group_layer_rows(rows)
     analyses: list[dict[str, Any]] = []
 
@@ -783,13 +731,10 @@ def analyze_rows(
     return analyses
 
 
-# ============================================================
 # Aggregation of trajectory-level rows
-# ============================================================
 
 
 def make_groupings() -> list[tuple[str, Callable[[dict[str, Any]], str]]]:
-    """Return summary grouping definitions."""
     return [
         (
             "overall",
@@ -844,7 +789,6 @@ def summarize_bucket(
     model_key: str,
     rows: Sequence[dict[str, Any]],
 ) -> dict[str, Any]:
-    """Summarize one bucket of trajectory-level examples."""
     summary: dict[str, Any] = {
         "grouping": grouping,
         "group": group_value,
@@ -903,7 +847,6 @@ def summarize_bucket(
 def aggregate_trajectory_rows(
     rows: Sequence[dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    """Create grouped trajectory summaries."""
     buckets: dict[
         tuple[str, str, str],
         list[dict[str, Any]],
@@ -943,7 +886,6 @@ def aggregate_trajectory_rows(
 def make_pattern_counts(
     rows: Sequence[dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    """Count first-onset and strict-sustained Top-10 patterns."""
     grouping_specs = [
         ("overall", lambda row: "all"),
         ("language", lambda row: str(row["language"])),
@@ -1017,7 +959,6 @@ def _stable_sample_score(
     row: dict[str, Any],
     seed: int,
 ) -> str:
-    """Return a deterministic pseudo-random score independent of row order."""
     payload = "|".join(
         [
             str(seed),
@@ -1107,80 +1048,33 @@ def select_representative_examples(
     return selected
 
 
-# ============================================================
 # Reporting
-# ============================================================
 
 
-def print_model_report(
-    model_key: str,
-    rows: Sequence[dict[str, Any]],
-) -> None:
-    """Print a concise trajectory-analysis report."""
-    n = len(rows)
-    exact_count = sum(as_bool(row["final_prediction_is_target"]) for row in rows)
-    non_gold_count = n - exact_count
-
-    print("\n========================================")
-    print(f"Trajectory analysis: {model_key}")
-    print("========================================")
-    print(f"Examples: {n}")
-    print(f"Final exact-gold: {exact_count}")
-    print(f"Final non-gold:   {non_gold_count}")
-
-    for title, pattern_column in [
-        ("First-onset Top-10 patterns", "first_onset_pattern_top10"),
-        (
-            "Strict-sustained Top-10 patterns",
-            "strict_sustained_pattern_top10",
-        ),
-    ]:
-        print(f"\n{title}:")
-        counts: dict[str, int] = defaultdict(int)
-        for row in rows:
-            counts[str(row[pattern_column])] += 1
-        for pattern, count in sorted(
-            counts.items(),
-            key=lambda item: (-item[1], item[0]),
-        ):
-            print(f"  {pattern}: {count} ({count / n:.3f})")
-
-    print("\nNon-exclusive Top-10 tags:")
-
-    for key in [
-        "gold_before_final_top10",
-        "final_before_gold_top10",
-        "ever_coaccessible_top10",
-        "gold_top10_then_lost",
-        "gold_never_top10",
-    ]:
-        metric_rate = rate(rows, key)
-
-        print(
-            f"  {key}: {metric_rate:.4f}"
-            if metric_rate is not None
-            else f"  {key}: n/a"
-        )
+def print_model_report(model_key: str, rows: Sequence[dict[str, Any]]) -> None:
+    exact = sum(as_bool(row["final_prediction_is_target"]) for row in rows)
+    print(
+        f"{model_key}: {len(rows)} trajectories, {exact} exact-gold, "
+        f"{len(rows) - exact} non-gold"
+    )
 
 
-# ============================================================
 # Main processing
-# ============================================================
 
 
-def process_one_file(
+def run_model(
     input_path: Path,
     output_dir: Path,
     min_consecutive: int,
     examples_per_pattern: int,
     sampling_seed: int,
+    expected_model: Optional[str] = None,
 ) -> tuple[
     list[dict[str, Any]],
     list[dict[str, Any]],
     list[dict[str, Any]],
 ]:
-    """Analyze one raw model file and save per-model outputs."""
-    raw_rows = load_jsonl(input_path)
+    raw_rows = read_jsonl(input_path)
     validate_required_fields(raw_rows, input_path)
 
     trajectory_rows = analyze_rows(
@@ -1194,6 +1088,10 @@ def process_one_file(
         raise ValueError(f"Expected one model in {input_path}, found: {model_keys}")
 
     model_key = model_keys[0]
+    if expected_model is not None and model_key != expected_model:
+        raise ValueError(
+            f"Expected {expected_model} in {input_path}, found {model_key}"
+        )
     summary_rows = aggregate_trajectory_rows(trajectory_rows)
     pattern_rows = make_pattern_counts(trajectory_rows)
     representative_rows = select_representative_examples(
@@ -1205,235 +1103,200 @@ def process_one_file(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     write_tsv(
-        trajectory_rows,
         output_dir / "layer_trajectory_examples.tsv",
+        trajectory_rows,
     )
     write_jsonl(
-        trajectory_rows,
         output_dir / "layer_trajectory_examples.jsonl",
+        trajectory_rows,
     )
     write_tsv(
-        summary_rows,
         output_dir / "layer_trajectory_summary.tsv",
+        summary_rows,
     )
     write_tsv(
-        pattern_rows,
         output_dir / "trajectory_pattern_counts.tsv",
+        pattern_rows,
     )
     write_tsv(
-        representative_rows,
         output_dir / "representative_trajectory_examples.tsv",
+        representative_rows,
     )
 
     print_model_report(
         model_key=model_key,
         rows=trajectory_rows,
     )
-    print(f"\nSaved trajectory outputs to: {output_dir}")
 
     return trajectory_rows, summary_rows, pattern_rows
 
 
-def build_argument_parser() -> argparse.ArgumentParser:
-    """Build CLI argument parser."""
-    parser = argparse.ArgumentParser(
-        description=(
-            "Analyze per-example layer trajectories from logit_lens_by_layer.jsonl."
+# CLI
+
+
+def check_outputs(output_dir: Path, filenames: Sequence[str], overwrite: bool) -> None:
+    existing = [output_dir / name for name in filenames if (output_dir / name).exists()]
+    if existing and not overwrite:
+        raise FileExistsError(
+            "Existing outputs; use --overwrite or a different --output-dir: "
+            + ", ".join(str(path) for path in existing)
         )
-    )
 
-    parser.add_argument(
-        "--input",
-        type=Path,
-        default=None,
-        help=(
-            "Analyze one explicit JSONL file. When provided, "
-            "--base_input_dir and --models are ignored."
-        ),
-    )
 
-    parser.add_argument(
-        "--output_dir",
-        type=Path,
-        default=None,
-        help=(
-            "Output directory for single-file mode. "
-            "If omitted, a directory is inferred."
-        ),
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Analyze layer-wise Logit Lens trajectories."
     )
-
     parser.add_argument(
+        "--model", "--models", nargs="+", default=["all"], choices=[*MODEL_KEYS, "all"]
+    )
+    parser.add_argument(
+        "--input-dir",
         "--base_input_dir",
+        "--base-input-dir",
         type=Path,
-        default=DEFAULT_BASE_INPUT_DIR,
+        default=DEFAULT_INPUT_DIR,
     )
-
     parser.add_argument(
+        "--output-dir",
+        "--output_dir",
         "--base_output_dir",
+        "--base-output-dir",
         type=Path,
-        default=DEFAULT_BASE_OUTPUT_DIR,
+        default=DEFAULT_OUTPUT_DIR,
+        help="Output root (exact output directory in --input mode if customized).",
     )
-
+    parser.add_argument("--input", type=Path, help="Analyze one explicit JSONL file.")
     parser.add_argument(
-        "--models",
-        nargs="+",
-        default=DEFAULT_MODEL_KEYS,
+        "--overwrite", action="store_true", help="Replace existing output files."
     )
-
+    parser.add_argument("--input-filename", "--input_filename", default=INPUT_FILENAME)
     parser.add_argument(
-        "--input_filename",
-        default=DEFAULT_INPUT_FILENAME,
-    )
-
-    parser.add_argument(
+        "--min-consecutive",
         "--min_consecutive",
         type=int,
         default=DEFAULT_MIN_CONSECUTIVE,
     )
-
     parser.add_argument(
+        "--examples-per-pattern",
         "--examples_per_pattern",
         type=int,
         default=DEFAULT_EXAMPLES_PER_PATTERN,
     )
-
     parser.add_argument(
-        "--sampling_seed",
-        type=int,
-        default=DEFAULT_SAMPLING_SEED,
-        help=("Seed used for deterministic representative-example sampling."),
+        "--sampling-seed", "--sampling_seed", type=int, default=DEFAULT_SAMPLING_SEED
     )
-
     parser.add_argument(
-        "--require_all_models",
-        action="store_true",
-        help=(
-            "Raise an error when a configured model input is missing. "
-            "By default, missing model files are skipped."
-        ),
+        "--require-all-models", "--require_all_models", action="store_true"
     )
-
     return parser
 
 
-def main() -> None:
-    args = build_argument_parser().parse_args()
-
-    if args.min_consecutive <= 0:
-        raise ValueError("--min_consecutive must be positive.")
-
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.min_consecutive < 1:
+        parser.error("--min-consecutive must be positive")
     if args.examples_per_pattern < 0:
-        raise ValueError("--examples_per_pattern must be non-negative.")
+        parser.error("--examples-per-pattern must be non-negative")
+    if "all" in args.model and args.model != ["all"]:
+        parser.error("--model all cannot be combined with individual models")
 
-    all_trajectory_rows: list[dict[str, Any]] = []
-    all_summary_rows: list[dict[str, Any]] = []
-    all_pattern_rows: list[dict[str, Any]] = []
-    all_representative_rows: list[dict[str, Any]] = []
+    output_dir = args.output_dir
+    nonstandard = (
+        args.min_consecutive != DEFAULT_MIN_CONSECUTIVE
+        or args.examples_per_pattern != DEFAULT_EXAMPLES_PER_PATTERN
+        or args.sampling_seed != DEFAULT_SAMPLING_SEED
+    )
+    if nonstandard and (
+        output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve()
+        or DEFAULT_OUTPUT_DIR.resolve() in output_dir.resolve().parents
+    ):
+        parser.error("Nonstandard analysis requires a separate --output-dir.")
 
-    # --------------------------------------------------------
-    # Single-file mode
-    # --------------------------------------------------------
-
+    settings = dict(
+        min_consecutive=args.min_consecutive,
+        examples_per_pattern=args.examples_per_pattern,
+        sampling_seed=args.sampling_seed,
+    )
+    model_keys = [
+        key for key in MODEL_KEYS if args.model == ["all"] or key in args.model
+    ]
     if args.input is not None:
-        input_path = args.input
+        observed = {str(row["model_key"]) for row in read_jsonl(args.input)}
+        if len(observed) != 1 or not observed.issubset(model_keys):
+            parser.error(
+                f"Expected one selected model in --input, found {sorted(observed)}"
+            )
+        model_key = next(iter(observed))
+        if output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve():
+            output_dir = output_dir / model_key
+        check_outputs(output_dir, OUTPUT_FILENAMES, args.overwrite)
+        run_model(args.input, output_dir, expected_model=model_key, **settings)
+        print(f"Output: {output_dir}")
+        return 0
 
-        if args.output_dir is not None:
-            output_dir = args.output_dir
-        else:
-            output_dir = args.base_output_dir / input_path.parent.name
+    inputs = [(key, args.input_dir / key / args.input_filename) for key in model_keys]
+    missing = [path for _, path in inputs if not path.is_file()]
+    if missing and (args.require_all_models or args.model != ["all"]):
+        raise FileNotFoundError(f"Missing model inputs: {missing}")
 
-        (
-            trajectory_rows,
-            summary_rows,
-            pattern_rows,
-        ) = process_one_file(
-            input_path=input_path,
-            output_dir=output_dir,
-            min_consecutive=args.min_consecutive,
-            examples_per_pattern=args.examples_per_pattern,
-            sampling_seed=args.sampling_seed,
-        )
+    for model_key, input_path in inputs:
+        if input_path.is_file():
+            check_outputs(output_dir / model_key, OUTPUT_FILENAMES, args.overwrite)
+    if set(model_keys) == set(MODEL_KEYS) and not missing:
+        check_outputs(output_dir, COMBINED_OUTPUT_FILENAMES, args.overwrite)
 
-        all_trajectory_rows.extend(trajectory_rows)
-        all_summary_rows.extend(summary_rows)
-        all_pattern_rows.extend(pattern_rows)
-
-        return
-
-    # --------------------------------------------------------
-    # Multi-model mode
-    # --------------------------------------------------------
-
-    for model_key in args.models:
-        input_path = args.base_input_dir / model_key / args.input_filename
-
-        if not input_path.exists():
-            message = f"Missing model input, skipping: {input_path}"
-
-            if args.require_all_models:
-                raise FileNotFoundError(message)
-
-            print(message)
+    all_trajectory_rows = []
+    all_summary_rows = []
+    all_pattern_rows = []
+    for model_key, input_path in inputs:
+        if not input_path.is_file():
+            print(f"Warning: missing input, skipping {model_key}: {input_path}")
             continue
-
-        output_dir = args.base_output_dir / model_key
-
-        (
-            trajectory_rows,
-            summary_rows,
-            pattern_rows,
-        ) = process_one_file(
-            input_path=input_path,
-            output_dir=output_dir,
-            min_consecutive=args.min_consecutive,
-            examples_per_pattern=args.examples_per_pattern,
-            sampling_seed=args.sampling_seed,
+        trajectories, summaries, patterns = run_model(
+            input_path,
+            args.output_dir / model_key,
+            expected_model=model_key,
+            **settings,
         )
-
-        all_trajectory_rows.extend(trajectory_rows)
-        all_summary_rows.extend(summary_rows)
-        all_pattern_rows.extend(pattern_rows)
+        all_trajectory_rows.extend(trajectories)
+        all_summary_rows.extend(summaries)
+        all_pattern_rows.extend(patterns)
 
     if not all_trajectory_rows:
         raise FileNotFoundError("No model inputs were processed.")
 
-    # Combined cross-model outputs.
-    args.base_output_dir.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    # Only a complete three-model run may replace the cross-model outputs.
+    if set(model_keys) != set(MODEL_KEYS) or missing:
+        print("Combined outputs unchanged (incomplete model selection).")
+        print(f"Output: {output_dir}")
+        return 0
 
+    output_dir.mkdir(parents=True, exist_ok=True)
     write_tsv(
-        all_trajectory_rows,
-        args.base_output_dir / "all_models_layer_trajectory_examples.tsv",
+        output_dir / "all_models_layer_trajectory_examples.tsv", all_trajectory_rows
     )
     write_jsonl(
+        output_dir / "all_models_layer_trajectory_examples.jsonl", all_trajectory_rows
+    )
+    write_tsv(output_dir / "all_models_layer_trajectory_summary.tsv", all_summary_rows)
+    write_tsv(output_dir / "all_models_trajectory_pattern_counts.tsv", all_pattern_rows)
+    representatives = select_representative_examples(
         all_trajectory_rows,
-        args.base_output_dir / "all_models_layer_trajectory_examples.jsonl",
+        args.examples_per_pattern,
+        args.sampling_seed,
     )
     write_tsv(
-        all_summary_rows,
-        args.base_output_dir / "all_models_layer_trajectory_summary.tsv",
+        output_dir / "all_models_representative_trajectory_examples.tsv",
+        representatives,
     )
-    write_tsv(
-        all_pattern_rows,
-        args.base_output_dir / "all_models_trajectory_pattern_counts.tsv",
+    print(
+        f"Total: {len(all_trajectory_rows)} trajectories across {len(model_keys)} models"
     )
-    all_representative_rows = select_representative_examples(
-        all_trajectory_rows,
-        examples_per_pattern=args.examples_per_pattern,
-        sampling_seed=args.sampling_seed,
-    )
-    write_tsv(
-        all_representative_rows,
-        args.base_output_dir / "all_models_representative_trajectory_examples.tsv",
-    )
-
-    print("\n========================================")
-    print("Done")
-    print("========================================")
-    print(f"Combined outputs saved to: {args.base_output_dir}")
+    print(f"Output: {output_dir}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

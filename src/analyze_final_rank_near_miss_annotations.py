@@ -1,22 +1,15 @@
-"""
-Recommended command
--------------------
-python src/analyze_final_rank_near_miss_annotations.py \
-  --input results/analysis/final_rank_near_misses/final_rank_near_miss_review.tsv \
-  --output_dir results/analysis/final_rank_near_misses/annotation_summary
-"""
-
 from __future__ import annotations
 
 import argparse
 import csv
 import json
-import math
-import sys
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Iterable, Optional, Sequence
+from typing import Any, Optional, Sequence
 
+
+DEFAULT_OUTPUT_DIR = Path("results/analysis/final_rank_near_misses/annotation_summary")
+DEFAULT_EXAMPLES_PER_LABEL = 3
 
 FINE_LABELS = [
     "equivalent_in_top10",
@@ -69,56 +62,19 @@ DIMENSIONS = [
 ]
 
 
-def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description=(
-            "Summarize manual semantic-support annotations for "
-            "final-rank 11--30 near-miss cases."
-        )
-    )
-    parser.add_argument(
-        "--input",
-        type=Path,
-        required=True,
-        help="Annotated final_rank_near_miss_review.tsv",
-    )
-    parser.add_argument(
-        "--output_dir",
-        type=Path,
-        default=Path("data/analysis/final_rank_near_misses/annotation_summary"),
-    )
-    parser.add_argument(
-        "--allow_unlabeled",
-        action="store_true",
-        help=(
-            "Allow blank manual_label/manual_note rows. "
-            "Blank rows are excluded from annotation statistics."
-        ),
-    )
-    parser.add_argument(
-        "--allow_unknown_labels",
-        action="store_true",
-        help=(
-            "Allow labels outside the predefined annotation schema. "
-            "They will receive coarse_label='unmapped'."
-        ),
-    )
-    parser.add_argument(
-        "--examples_per_label",
-        type=int,
-        default=3,
-        help="Maximum examples exported per fine-grained label.",
-    )
-    args, unknown = parser.parse_known_args(argv)
-    if unknown:
-        print(
-            "Ignoring unrecognized runtime arguments: " + " ".join(unknown),
-            file=sys.stderr,
-        )
-    return args
+OUTPUT_FILENAMES = (
+    "annotation_label_counts.tsv",
+    "annotation_coarse_counts.tsv",
+    *(filename for _, filename in DIMENSIONS),
+    "annotation_examples.tsv",
+    "annotation_summary.json",
+)
 
 
-def load_tsv(path: Path) -> list[dict[str, str]]:
+# I/O helpers
+
+
+def read_tsv(path: Path) -> list[dict[str, str]]:
     if not path.exists():
         raise FileNotFoundError(f"Input TSV not found: {path}")
     with path.open("r", encoding="utf-8-sig", newline="") as handle:
@@ -132,7 +88,6 @@ def load_tsv(path: Path) -> list[dict[str, str]]:
 
 
 def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         path.write_text("", encoding="utf-8")
         return
@@ -156,18 +111,20 @@ def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
         writer.writerows(rows)
 
 
-def write_json(path: Path, obj: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_json(path: Path, data: dict[str, Any]) -> None:
     with path.open("w", encoding="utf-8") as handle:
-        json.dump(obj, handle, ensure_ascii=False, indent=2, allow_nan=False)
+        json.dump(data, handle, ensure_ascii=False, indent=2, allow_nan=False)
         handle.write("\n")
 
 
-def pct(count: int, total: int) -> Optional[float]:
+# Validation helpers
+
+
+def proportion(count: int, total: int) -> Optional[float]:
     return None if total == 0 else count / total
 
 
-def normalise_text(value: Any) -> str:
+def normalize_text(value: Any) -> str:
     return "" if value is None else str(value).strip()
 
 
@@ -191,16 +148,16 @@ def validate_and_prepare(
 
     for line_no, row in enumerate(rows, start=2):
         key = (
-            normalise_text(row.get("model_key")),
-            normalise_text(row.get("id")),
-            normalise_text(row.get("language")),
+            normalize_text(row.get("model_key")),
+            normalize_text(row.get("id")),
+            normalize_text(row.get("language")),
         )
         if key in seen_keys:
             raise ValueError(f"Duplicate model/id/language key at row {line_no}: {key}")
         seen_keys.add(key)
 
-        label = normalise_text(row.get("manual_label"))
-        note = normalise_text(row.get("manual_note"))
+        label = normalize_text(row.get("manual_label"))
+        note = normalize_text(row.get("manual_note"))
 
         if not label:
             unlabeled.append(row)
@@ -226,15 +183,15 @@ def validate_and_prepare(
     if unlabeled and not allow_unlabeled:
         preview = [
             (
-                normalise_text(row.get("model_key")),
-                normalise_text(row.get("id")),
-                normalise_text(row.get("language")),
+                normalize_text(row.get("model_key")),
+                normalize_text(row.get("id")),
+                normalize_text(row.get("language")),
             )
             for row in unlabeled[:10]
         ]
         raise ValueError(
             f"{len(unlabeled)} rows have blank manual_label. "
-            f"Preview: {preview}. Use --allow_unlabeled only for drafts."
+            f"Preview: {preview}. Use --allow-unlabeled only for drafts."
         )
 
     if unknown_labels and not allow_unknown_labels:
@@ -244,13 +201,16 @@ def validate_and_prepare(
                 f"{label} (n={count})"
                 for label, count in sorted(unknown_labels.items())
             )
-            + ". Fix the labels or rerun with --allow_unknown_labels."
+            + ". Fix the labels or rerun with --allow-unknown-labels."
         )
 
     if not annotated:
         raise ValueError("No annotated rows available for analysis.")
 
     return annotated, unlabeled
+
+
+# Aggregation
 
 
 def count_table(
@@ -270,7 +230,7 @@ def count_table(
                 "label": label,
                 "count": count,
                 "total_annotated": total,
-                "proportion": pct(count, total),
+                "proportion": proportion(count, total),
             }
         )
         seen.add(label)
@@ -282,7 +242,7 @@ def count_table(
                 "label": label,
                 "count": count,
                 "total_annotated": total,
-                "proportion": pct(count, total),
+                "proportion": proportion(count, total),
             }
         )
 
@@ -295,7 +255,7 @@ def dimension_table(
 ) -> list[dict[str, Any]]:
     buckets: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in rows:
-        buckets[normalise_text(row.get(dimension))].append(row)
+        buckets[normalize_text(row.get(dimension))].append(row)
 
     output: list[dict[str, Any]] = []
     for value, bucket in sorted(buckets.items()):
@@ -309,7 +269,7 @@ def dimension_table(
 
         for label in FINE_LABELS:
             base[f"{label}_count"] = fine_counts.get(label, 0)
-            base[f"{label}_prop"] = pct(
+            base[f"{label}_prop"] = proportion(
                 fine_counts.get(label, 0),
                 len(bucket),
             )
@@ -317,18 +277,18 @@ def dimension_table(
         extra_fine = sorted(set(fine_counts) - set(FINE_LABELS))
         for label in extra_fine:
             base[f"{label}_count"] = fine_counts[label]
-            base[f"{label}_prop"] = pct(fine_counts[label], len(bucket))
+            base[f"{label}_prop"] = proportion(fine_counts[label], len(bucket))
 
         for label in COARSE_LABELS:
             base[f"{label}_count"] = coarse_counts.get(label, 0)
-            base[f"{label}_prop"] = pct(
+            base[f"{label}_prop"] = proportion(
                 coarse_counts.get(label, 0),
                 len(bucket),
             )
 
         if "unmapped" in coarse_counts:
             base["unmapped_count"] = coarse_counts["unmapped"]
-            base["unmapped_prop"] = pct(
+            base["unmapped_prop"] = proportion(
                 coarse_counts["unmapped"],
                 len(bucket),
             )
@@ -336,6 +296,9 @@ def dimension_table(
         output.append(base)
 
     return output
+
+
+# Representative examples
 
 
 def make_examples(
@@ -367,9 +330,9 @@ def make_examples(
             key=lambda row: (
                 int_or_large(row.get("final_gold_rank")),
                 int_or_large(row.get("best_rank_across_layers")),
-                normalise_text(row.get("model_key")),
-                normalise_text(row.get("language")),
-                normalise_text(row.get("id")),
+                normalize_text(row.get("model_key")),
+                normalize_text(row.get("language")),
+                normalize_text(row.get("id")),
             ),
         )
 
@@ -405,7 +368,7 @@ def nested_counts(
 ) -> dict[str, dict[str, Any]]:
     buckets: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in rows:
-        buckets[normalise_text(row.get(field))].append(row)
+        buckets[normalize_text(row.get(field))].append(row)
 
     result: dict[str, dict[str, Any]] = {}
     for value, bucket in sorted(buckets.items()):
@@ -419,10 +382,63 @@ def nested_counts(
     return result
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
-    args = parse_args(argv)
+# CLI
 
-    rows = load_tsv(args.input)
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Summarize manual annotations for final-rank 11--30 near misses."
+    )
+    parser.add_argument(
+        "--input",
+        type=Path,
+        required=True,
+        help="Annotated final_rank_near_miss_review.tsv.",
+    )
+    parser.add_argument(
+        "--output-dir", "--output_dir", type=Path, default=DEFAULT_OUTPUT_DIR
+    )
+    parser.add_argument(
+        "--allow-unlabeled",
+        "--allow_unlabeled",
+        action="store_true",
+        help="Exclude blank labels; permit labeled rows with blank notes.",
+    )
+    parser.add_argument(
+        "--allow-unknown-labels",
+        "--allow_unknown_labels",
+        action="store_true",
+        help="Map unknown labels to 'unmapped'.",
+    )
+    parser.add_argument(
+        "--examples-per-label",
+        "--examples_per_label",
+        type=int,
+        default=DEFAULT_EXAMPLES_PER_LABEL,
+        help="Maximum examples per fine-grained label (0 disables export rows).",
+    )
+    parser.add_argument(
+        "--overwrite", action="store_true", help="Replace existing analysis outputs."
+    )
+    return parser
+
+
+# Main
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.examples_per_label < 0:
+        parser.error("--examples-per-label must be non-negative")
+    if (
+        args.allow_unlabeled
+        or args.allow_unknown_labels
+        or args.examples_per_label != DEFAULT_EXAMPLES_PER_LABEL
+    ) and (args.output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve()):
+        parser.error("Nonstandard analysis requires a separate --output-dir")
+
+    rows = read_tsv(args.input)
     annotated, unlabeled = validate_and_prepare(
         rows,
         allow_unlabeled=args.allow_unlabeled,
@@ -430,6 +446,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     )
 
     output_dir = args.output_dir
+    existing = [
+        output_dir / name for name in OUTPUT_FILENAMES if (output_dir / name).exists()
+    ]
+    if existing and not args.overwrite:
+        raise FileExistsError(
+            "Existing analysis outputs; use --overwrite or a different --output-dir: "
+            + ", ".join(str(path) for path in existing)
+        )
     output_dir.mkdir(parents=True, exist_ok=True)
 
     fine_counts = count_table(
@@ -515,7 +539,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "required_columns_present": True,
             "unique_model_id_language_keys": True,
             "manual_labels_nonblank_for_analyzed_rows": True,
-            "manual_notes_nonblank_for_analyzed_rows": True,
+            "manual_notes_nonblank_for_analyzed_rows": all(
+                bool(row["manual_note"]) for row in annotated
+            ),
             "labels_match_schema_unless_overridden": not args.allow_unknown_labels,
         },
         "outputs": {
@@ -536,30 +562,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         report,
     )
 
-    print("\n========================================")
-    print("Near-miss annotation summary")
-    print("========================================")
-    print(f"Input rows:       {len(rows)}")
-    print(f"Annotated rows:   {len(annotated)}")
-    print(f"Unlabeled rows:   {len(unlabeled)}")
-
-    print("\nFine-grained labels:")
-    for label in FINE_LABELS:
-        count = fine_counter.get(label, 0)
-        print(f"  {label:40s} {count:3d}  ({100 * count / len(annotated):5.1f}%)")
-
-    print("\nCoarse semantic support:")
+    print(
+        f"Near-miss annotations: {len(annotated)}/{len(rows)} analyzed, "
+        f"{len(unlabeled)} unlabeled"
+    )
     for label in COARSE_LABELS:
-        count = coarse_counter.get(label, 0)
-        print(f"  {label:30s} {count:3d}  ({100 * count / len(annotated):5.1f}%)")
-
+        print(f"  {label}: {coarse_counter.get(label, 0)}")
+    if coarse_counter.get("unmapped"):
+        print(f"  unmapped: {coarse_counter['unmapped']}")
     if unlabeled:
-        print(
-            "\nWARNING: unlabeled rows were excluded because "
-            "--allow_unlabeled was used."
-        )
-
-    print(f"\nOutputs: {output_dir}")
+        print("Warning: unlabeled rows excluded from statistics.")
+    if any(not row["manual_note"] for row in annotated):
+        print("Warning: some analyzed rows have blank manual notes.")
+    print(f"Output: {output_dir}")
     return 0
 
 

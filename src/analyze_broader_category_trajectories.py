@@ -1,31 +1,34 @@
-"""
-Recommended command
--------------------
-python src/analyze_broader_category_trajectories.py \
-  --base_input_dir data/logit_lens/broader_category \
-  --output_dir results/analysis/full/broader_category/trajectory_analysis \
-  --models qwen3_0_6b qwen3_4b qwen3_14b \
-  --min_consecutive 3
-"""
-
 from __future__ import annotations
 
 import argparse
 import csv
 import json
 import statistics
-import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Callable, Optional, Sequence
 
-DEFAULT_BASE_INPUT_DIR = Path("data/logit_lens/broader_category")
-DEFAULT_OUTPUT_DIR = Path("data/analysis/full/broader_category/trajectory_analysis")
-DEFAULT_MODELS = ["qwen3_0_6b", "qwen3_4b", "qwen3_14b"]
-DEFAULT_INPUT_FILENAME = "broader_category_by_layer.jsonl"
+DEFAULT_INPUT_DIR = Path("data/logit_lens/broader_category")
+DEFAULT_OUTPUT_DIR = Path("results/analysis/broader_category")
+MODEL_KEYS = ("qwen3_0_6b", "qwen3_4b", "qwen3_14b")
+INPUT_FILENAME = "broader_category_by_layer.jsonl"
 DEFAULT_MIN_CONSECUTIVE = 3
 K_VALUES = (1, 5, 10)
 PRIMARY_K = 10
+
+OUTPUT_FILENAMES = (
+    "broader_category_layerwise.tsv",
+    "broader_category_trajectories.tsv",
+    "broader_category_trajectories.jsonl",
+    "broader_category_pattern_counts.tsv",
+    "broader_category_onset_summary.tsv",
+    "broader_category_layerwise_summary.tsv",
+    "broader_category_final_layer_summary.tsv",
+    "broader_before_gold_top10.tsv",
+    "bilingual_pair_top10_comparison.tsv",
+    "bilingual_language_comparison_summary.tsv",
+    "broader_category_analysis_report.json",
+)
 
 PATTERN_ORDER = (
     "broader_before_gold",
@@ -98,9 +101,7 @@ META_FIELDS = (
 )
 
 
-# ---------------------------------------------------------------------
 # I/O
-# ---------------------------------------------------------------------
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -124,15 +125,13 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def write_json(path: Path, obj: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_json(path: Path, data: dict[str, Any]) -> None:
     with path.open("w", encoding="utf-8") as f:
-        json.dump(obj, f, ensure_ascii=False, indent=2, allow_nan=False)
+        json.dump(data, f, ensure_ascii=False, indent=2, allow_nan=False)
         f.write("\n")
 
 
 def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         for row in rows:
             clean = {k: v for k, v in row.items() if not k.startswith("_")}
@@ -140,7 +139,6 @@ def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
 
 
 def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
     if not rows:
         path.write_text("", encoding="utf-8")
         return
@@ -164,9 +162,7 @@ def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
             w.writerow(out)
 
 
-# ---------------------------------------------------------------------
 # Generic helpers
-# ---------------------------------------------------------------------
 
 
 def norm_id(x: Any) -> str:
@@ -189,9 +185,7 @@ def frac(layer: Optional[int], num_layers: int) -> Optional[float]:
     return None if layer is None or num_layers <= 0 else layer / num_layers
 
 
-# ---------------------------------------------------------------------
 # Validation / grouping
-# ---------------------------------------------------------------------
 
 
 def validate_rows(rows: Sequence[dict[str, Any]]) -> None:
@@ -294,9 +288,7 @@ def group_trajectories(
     return dict(grouped)
 
 
-# ---------------------------------------------------------------------
 # Onset / trajectory logic
-# ---------------------------------------------------------------------
 
 
 def first_true(rows: Sequence[dict[str, Any]], field: str) -> Optional[int]:
@@ -433,9 +425,7 @@ def build_trajectory(
     return out
 
 
-# ---------------------------------------------------------------------
 # Aggregation
-# ---------------------------------------------------------------------
 
 
 def grouping_specs() -> list[tuple[str, Callable[[dict[str, Any]], str]]]:
@@ -675,9 +665,7 @@ def aggregate_final(rows: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
-# ---------------------------------------------------------------------
 # Matched EN/ZH comparison
-# ---------------------------------------------------------------------
 
 
 def bilingual_pairs(rows: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -797,9 +785,7 @@ def aggregate_bilingual(rows: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
-# ---------------------------------------------------------------------
 # Compact layer-wise table
-# ---------------------------------------------------------------------
 
 
 def compact_layerwise(rows: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -854,35 +840,45 @@ def compact_layerwise(rows: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
-# ---------------------------------------------------------------------
 # CLI
-# ---------------------------------------------------------------------
 
 
-def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
-    p = argparse.ArgumentParser(
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
         description="Analyze specific-gold vs broader-category Logit Lens trajectories."
     )
-    p.add_argument("--input", nargs="+", type=Path)
-    p.add_argument("--base_input_dir", type=Path, default=DEFAULT_BASE_INPUT_DIR)
-    p.add_argument("--models", nargs="+", default=DEFAULT_MODELS)
-    p.add_argument("--input_filename", default=DEFAULT_INPUT_FILENAME)
-    p.add_argument("--output_dir", type=Path, default=DEFAULT_OUTPUT_DIR)
-    p.add_argument("--min_consecutive", type=int, default=DEFAULT_MIN_CONSECUTIVE)
-    args, unknown = p.parse_known_args(argv)
-    if unknown:
-        print(
-            "Ignoring unrecognized runtime arguments: " + " ".join(unknown),
-            file=sys.stderr,
-        )
-    return args
+    parser.add_argument("--input", nargs="+", type=Path)
+    parser.add_argument(
+        "--input-dir",
+        "--base_input_dir",
+        "--base-input-dir",
+        type=Path,
+        default=DEFAULT_INPUT_DIR,
+    )
+    parser.add_argument(
+        "--model", "--models", nargs="+", choices=["all", *MODEL_KEYS], default=None
+    )
+    parser.add_argument("--input-filename", "--input_filename", default=INPUT_FILENAME)
+    parser.add_argument(
+        "--output-dir", "--output_dir", type=Path, default=DEFAULT_OUTPUT_DIR
+    )
+    parser.add_argument(
+        "--min-consecutive",
+        "--min_consecutive",
+        type=int,
+        default=DEFAULT_MIN_CONSECUTIVE,
+    )
+    parser.add_argument(
+        "--overwrite", action="store_true", help="Replace existing analysis outputs."
+    )
+    return parser
 
 
-def resolve_inputs(args: argparse.Namespace) -> list[Path]:
+def resolve_inputs(args: argparse.Namespace, model_keys: Sequence[str]) -> list[Path]:
     if args.input:
-        return [Path(x) for x in args.input]
+        return list(args.input)
     paths = [
-        Path(args.base_input_dir) / model / args.input_filename for model in args.models
+        args.input_dir / model_key / args.input_filename for model_key in model_keys
     ]
     missing = [p for p in paths if not p.exists()]
     if missing:
@@ -893,26 +889,56 @@ def resolve_inputs(args: argparse.Namespace) -> list[Path]:
     return paths
 
 
-# ---------------------------------------------------------------------
 # Main
-# ---------------------------------------------------------------------
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
-    args = parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
     if args.min_consecutive < 1:
-        raise ValueError("--min_consecutive must be >=1")
+        parser.error("--min-consecutive must be positive")
+    if args.model and "all" in args.model and args.model != ["all"]:
+        parser.error("--model all cannot be combined with individual models")
+    if (
+        args.min_consecutive != DEFAULT_MIN_CONSECUTIVE
+        and args.output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve()
+    ):
+        parser.error("Nonstandard analysis requires a separate --output-dir")
 
-    inputs = resolve_inputs(args)
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
+    model_keys = [
+        key for key in MODEL_KEYS if args.model in (None, ["all"]) or key in args.model
+    ]
+    inputs = resolve_inputs(args, model_keys)
     layer_rows = []
     for path in inputs:
-        print(f"Loading {path} ...", file=sys.stderr)
-        layer_rows.extend(load_jsonl(path))
+        rows = load_jsonl(path)
+        if not args.input and {str(row.get("model_key")) for row in rows} != {
+            path.parent.name
+        }:
+            raise ValueError(f"Unexpected model key in {path}")
+        layer_rows.extend(rows)
 
     validate_rows(layer_rows)
+    observed_models = {str(row["model_key"]) for row in layer_rows}
+    if args.input and args.model is None:
+        model_keys = [key for key in MODEL_KEYS if key in observed_models]
+    if observed_models != set(model_keys):
+        raise ValueError(
+            f"Input models {sorted(observed_models)} do not match selected models {model_keys}"
+        )
+
+    output_dir = args.output_dir
+    if set(model_keys) != set(MODEL_KEYS):
+        output_dir = output_dir / "__".join(model_keys)
+    existing = [
+        output_dir / name for name in OUTPUT_FILENAMES if (output_dir / name).exists()
+    ]
+    if existing and not args.overwrite:
+        raise FileExistsError(
+            "Existing analysis outputs; use --overwrite or a different --output-dir: "
+            + ", ".join(str(path) for path in existing)
+        )
+
     trajectories = group_trajectories(layer_rows)
     traj_rows = [
         build_trajectory(rows, args.min_consecutive)
@@ -936,6 +962,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ]
     pair_rows = bilingual_pairs(traj_rows)
     pair_summary = aggregate_bilingual(pair_rows)
+
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     write_tsv(output_dir / "broader_category_layerwise.tsv", layer_compact)
     write_tsv(output_dir / "broader_category_trajectories.tsv", traj_rows)
@@ -1064,14 +1092,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     }
     write_json(output_dir / "broader_category_analysis_report.json", report)
 
-    print(f"Wrote outputs to: {output_dir}")
-    print(f"Trajectory units: {len(traj_rows)}")
-    print(f"Model counts: {dict(model_counts)}")
-    print(f"Bilingual matched pairs: {len(pair_rows)}")
-    print(f"Top-10 both sustained: {len(both)}")
-    print(f"Top-10 broader before gold: {b_before}")
-    print(f"Top-10 gold before broader: {g_before}")
-    print(f"Top-10 same onset: {same}")
+    for model_key in model_keys:
+        print(
+            f"{model_key}: {model_counts[model_key]} trajectories, "
+            f"{sum(row['model_key'] == model_key for row in pair_rows)} bilingual pairs"
+        )
+    print(f"Total: {len(traj_rows)} trajectories, {len(pair_rows)} bilingual pairs")
+    print(
+        f"Top-10 among {len(both)} both-sustained: {b_before} broader first, {g_before} gold first, {same} same onset"
+    )
+    print(f"Output: {output_dir}")
     return 0
 
 

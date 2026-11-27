@@ -1,18 +1,14 @@
-"""
-python src/logit_lens_translation_equivalent.py \
-    --models qwen3_0_6b qwen3_4b qwen3_14b
-
-"""
-
 from __future__ import annotations
 
-from pathlib import Path
 import argparse
 import csv
+import gc
 import json
 import math
 import os
+import sys
 from collections import Counter, defaultdict
+from pathlib import Path
 from typing import Any, Optional, Sequence
 
 import torch
@@ -20,20 +16,26 @@ import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
-# ============================================================
-# Config
-# ============================================================
-
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-BASE_ALIGNMENT_DIR = Path("data/alignment")
-BASE_OUTPUT_DIR = Path("data/logit_lens/translation_equivalent")
+DEFAULT_INPUT_DIR = Path("data/alignment")
+DEFAULT_OUTPUT_DIR = Path("data/logit_lens/translation_equivalent")
 
-MODELS = {
+MODEL_REGISTRY = {
     "qwen3_0_6b": "Qwen/Qwen3-0.6B",
     "qwen3_4b": "Qwen/Qwen3-4B",
     "qwen3_14b": "Qwen/Qwen3-14B",
 }
+
+MODEL_KEYS = tuple(MODEL_REGISTRY)
+INPUT_FILENAME = "token_alignment.jsonl"
+OUTPUT_FILENAMES = (
+    "translation_equivalent_by_layer.jsonl",
+    "translation_equivalent_by_layer_compact.tsv",
+    "translation_equivalent_token_validation.tsv",
+    "translation_equivalent.rejected.jsonl",
+    "translation_equivalent_extraction_report.json",
+)
 
 # Keep the projection definition identical to the frozen main experiment.
 APPLY_FINAL_NORM = True
@@ -41,19 +43,69 @@ TOP_K = 10
 COMPUTE_PROB = True
 STORE_TOPK = True
 
-# Set to a small integer only for debugging. This limit is applied AFTER
-# English/Chinese pairing, so a debug run still has valid pairs.
-MAX_EXAMPLES: Optional[int] = None
-PROGRESS_EVERY = 50
 
-# Keep False first. If a large model does not fit on one GPU and accelerate is
-# installed/configured, this can be changed to True.
-USE_DEVICE_MAP_AUTO = False
+VALIDATION_FIELDS = (
+    "model_key",
+    "id",
+    "semantic_group",
+    "subgroup",
+    "relation",
+    "zh_gold",
+    "zh_gold_token_id",
+    "en_equivalent",
+    "en_equivalent_token_id",
+    "en_equivalent_stored_token",
+    "en_equivalent_stored_surface",
+    "en_equivalent_decoded_single_token",
+    "en_equivalent_tokenizer_token",
+    "english_alignment_prediction_position",
+    "english_alignment_next_token_id",
+    "token_id_in_vocab",
+    "next_token_exists",
+    "next_token_matches_target_token_id",
+    "explicit_span_single_token_valid",
+    "span_validation_note",
+    "decoded_nonempty",
+    "decoded_matches_target_after_strip",
+    "same_vocab_token_as_zh_gold",
+    "valid_for_eq1",
+)
 
 
-# ============================================================
-# I/O helpers
-# ============================================================
+COMPACT_FIELDS = (
+    "id",
+    "semantic_group",
+    "subgroup",
+    "relation",
+    "language",
+    "model_key",
+    "layer",
+    "layer_name",
+    "num_layers",
+    "layer_fraction",
+    "zh_gold",
+    "zh_gold_token_id",
+    "en_equivalent",
+    "en_equivalent_token_id",
+    "zh_gold_rank",
+    "en_equivalent_rank",
+    "rank_difference_en_minus_zh",
+    "zh_gold_logit",
+    "en_equivalent_logit",
+    "logit_difference_en_minus_zh",
+    "zh_gold_prob",
+    "en_equivalent_prob",
+    "zh_gold_in_top1",
+    "zh_gold_in_top5",
+    "zh_gold_in_top10",
+    "en_equivalent_in_top1",
+    "en_equivalent_in_top5",
+    "en_equivalent_in_top10",
+    "layer_top1_text",
+    "final_prediction_text",
+    "final_prediction_is_zh_gold",
+    "final_prediction_is_en_equivalent",
+)
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -78,7 +130,6 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 
 def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
         for row in rows:
             handle.write(json.dumps(row, ensure_ascii=False, allow_nan=False) + "\n")
@@ -89,7 +140,6 @@ def write_tsv(
     rows: Sequence[dict[str, Any]],
     fieldnames: Sequence[str],
 ) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(
             handle,
@@ -109,15 +159,9 @@ def write_tsv(
 
 
 def write_json(path: Path, data: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
         json.dump(data, handle, ensure_ascii=False, indent=2, allow_nan=False)
         handle.write("\n")
-
-
-# ============================================================
-# Device / model helpers
-# ============================================================
 
 
 def get_device_and_dtype() -> tuple[torch.device, torch.dtype]:
@@ -132,11 +176,10 @@ def get_device_and_dtype() -> tuple[torch.device, torch.dtype]:
     return torch.device("cpu"), torch.float32
 
 
-def load_model_and_tokenizer(model_name: str):
+def load_model_and_tokenizer(model_name: str, device_map_auto: bool):
     device, dtype = get_device_and_dtype()
 
-    print(f"Device: {device}")
-    print(f"Dtype: {dtype}")
+    print(f"  Device: {device}, dtype: {dtype}", flush=True)
 
     tokenizer = AutoTokenizer.from_pretrained(
         model_name,
@@ -144,7 +187,7 @@ def load_model_and_tokenizer(model_name: str):
         trust_remote_code=True,
     )
 
-    if USE_DEVICE_MAP_AUTO:
+    if device_map_auto:
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
             torch_dtype=dtype,
@@ -191,13 +234,7 @@ def project_hidden_to_logits(
     layer_idx: int,
     last_layer_idx: int,
 ) -> torch.Tensor:
-    """
-    Plain Logit Lens projection, kept identical to the main experiment.
-
-    - embedding layer: no final norm
-    - intermediate layers: final norm + lm_head
-    - final layer: handled separately with outputs.logits
-    """
+    """Embedding: lm_head; intermediate: final norm + lm_head; final: outputs.logits."""
     h = hidden_state.unsqueeze(0).unsqueeze(0)
 
     should_apply_norm = (
@@ -220,19 +257,8 @@ def project_hidden_to_logits(
     return lm_head(h).squeeze(0).squeeze(0).float()
 
 
-# ============================================================
-# Logit / rank helpers
-# ============================================================
-
-
 def rank_of_token(logits: torch.Tensor, token_id: int) -> tuple[int, float]:
-    """
-    1-based full-vocabulary rank, identical to the main experiment.
-
-    rank = 1 means no vocabulary token has a strictly larger logit.
-    Ties therefore receive the same numerical rank. Actual Target@k membership
-    is computed separately from torch.topk.
-    """
+    """Full-vocabulary rank (1-based); ties share rank. Top-k membership is separate."""
     token_logit = logits[int(token_id)]
     rank = int((logits > token_logit).sum().item()) + 1
     return rank, float(token_logit.item())
@@ -263,11 +289,6 @@ def safe_float(value: Any) -> Optional[float]:
     return value
 
 
-# ============================================================
-# Pairing and tokenizer/alignment validation
-# ============================================================
-
-
 def normalize_id(value: Any) -> str:
     return str(value)
 
@@ -275,13 +296,9 @@ def normalize_id(value: Any) -> str:
 def build_language_pairs(
     rows: Sequence[dict[str, Any]],
     model_key: str,
+    max_examples: Optional[int] = None,
 ) -> list[tuple[dict[str, Any], dict[str, Any]]]:
-    """
-    Return (English row, Chinese row) pairs keyed by example id.
-
-    The same canonical model-specific alignment file is used for both
-    languages. Duplicate language rows for one id are treated as errors.
-    """
+    """Pair English and Chinese alignment rows by example ID within each model."""
     buckets: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
 
     for row in rows:
@@ -317,8 +334,8 @@ def build_language_pairs(
         for example_id in sorted(buckets)
     ]
 
-    if MAX_EXAMPLES is not None:
-        pairs = pairs[:MAX_EXAMPLES]
+    if max_examples is not None:
+        pairs = pairs[:max_examples]
 
     return pairs
 
@@ -326,13 +343,7 @@ def build_language_pairs(
 def optional_single_token_span_check(
     row: dict[str, Any], token_id: int
 ) -> tuple[bool, str]:
-    """
-    Use any explicit target-span token-id field if the alignment file has one.
-
-    Different versions of the alignment pipeline may use different names, so
-    several common names are checked. If none is present, this check is marked
-    as not available rather than treated as a failure.
-    """
+    """Validate explicit target-span IDs when available."""
     candidate_fields = (
         "target_span_token_ids",
         "target_token_ids",
@@ -364,15 +375,7 @@ def validate_english_equivalent_alignment(
     zh_row: dict[str, Any],
     tokenizer,
 ) -> dict[str, Any]:
-    """
-    Validate the paired English gold token that will operationalize the
-    translation-equivalent vocabulary item under the Chinese prompt.
-
-    Important operational definition:
-    The English equivalent token ID is the canonical target_token_id from the
-    paired English alignment row for the SAME model and example. We do not
-    retokenize an artificial Chinese+English mixed sentence.
-    """
+    """Use the paired English alignment token ID, without retokenizing mixed text."""
     example_id = normalize_id(en_row.get("id"))
     if example_id != normalize_id(zh_row.get("id")):
         raise ValueError("English/Chinese pair has mismatched ids.")
@@ -473,11 +476,6 @@ def validate_pairs(
     return rows
 
 
-# ============================================================
-# One-example EQ1 Logit Lens extraction
-# ============================================================
-
-
 @torch.inference_mode()
 def run_translation_equivalent_logit_lens(
     zh_row: dict[str, Any],
@@ -487,17 +485,7 @@ def run_translation_equivalent_logit_lens(
     final_norm,
     lm_head,
 ) -> list[dict[str, Any]]:
-    """
-    Run the plain Logit Lens on ONE CHINESE prompt while tracking two tokens:
-
-        1. the predefined Chinese gold token;
-        2. the paired English gold token, treated as the English
-           translation-equivalent vocabulary item.
-
-    The projection and rank definitions are intentionally identical to the
-    frozen main experiment. The only new measurement is the second tracked
-    token under the same Chinese hidden state.
-    """
+    """Track both lexical targets in the same Chinese prompt hidden states."""
     if str(zh_row.get("language")) != "zh":
         raise ValueError("EQ1 extraction must be run on a Chinese alignment row.")
     if str(en_row.get("language")) != "en":
@@ -659,9 +647,7 @@ def run_translation_equivalent_logit_lens(
             "final_prediction_is_en_equivalent": final_prediction_is_en_equivalent,
         }
 
-        # Compatibility aliases for downstream code that expects the main
-        # experiment's gold-target field names. These aliases always refer to
-        # the CHINESE gold token in this EQ1 file.
+        # Main-experiment aliases refer to the Chinese gold token.
         result.update(
             {
                 "target": zh_row["target"],
@@ -686,15 +672,9 @@ def run_translation_equivalent_logit_lens(
     return results
 
 
-# ============================================================
-# Per-model run
-# ============================================================
-
-
-def run_for_model(model_key: str, model_name: str) -> None:
-    alignment_path = BASE_ALIGNMENT_DIR / model_key / "token_alignment.jsonl"
-    output_dir = BASE_OUTPUT_DIR / model_key
-    output_dir.mkdir(parents=True, exist_ok=True)
+def run_model(model_key: str, model_name: str, args):
+    alignment_path = args.input_dir / model_key / INPUT_FILENAME
+    output_dir = args.output_dir / model_key
 
     raw_jsonl = output_dir / "translation_equivalent_by_layer.jsonl"
     compact_tsv = output_dir / "translation_equivalent_by_layer_compact.tsv"
@@ -703,57 +683,24 @@ def run_for_model(model_key: str, model_name: str) -> None:
     report_json = output_dir / "translation_equivalent_extraction_report.json"
 
     alignment_rows = read_jsonl(alignment_path)
-    pairs = build_language_pairs(alignment_rows, model_key)
+    pairs = build_language_pairs(alignment_rows, model_key, args.max_rows)
+    if not pairs:
+        raise ValueError(f"No complete EN/ZH pairs for {model_key} in {alignment_path}")
 
-    print("\n========================================")
-    print(f"Model: {model_key} -> {model_name}")
-    print(f"Alignment path: {alignment_path}")
-    print(f"Complete EN/ZH pairs: {len(pairs)}")
-    print(f"Chinese prompts to run: {len(pairs)}")
-    print(f"Output dir: {output_dir}")
-    print("========================================")
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    model, tokenizer = load_model_and_tokenizer(model_name)
+    print(f"{model_key}: processing {len(pairs)} Chinese prompts", flush=True)
+    model, tokenizer = load_model_and_tokenizer(model_name, args.device_map_auto)
     final_norm = get_final_norm(model)
     lm_head = model.get_output_embeddings()
 
     if lm_head is None:
         raise RuntimeError("model.get_output_embeddings() returned None.")
     if APPLY_FINAL_NORM and final_norm is None:
-        print("Warning: final norm not found. Using lm_head only.")
-
-    # ------------------------------------------------------------
-    # Validate the paired English equivalent token BEFORE extraction.
-    # ------------------------------------------------------------
+        raise RuntimeError("Final norm not found; refusing to change the readout.")
     validation_rows = validate_pairs(pairs, tokenizer)
 
-    validation_fields = [
-        "model_key",
-        "id",
-        "semantic_group",
-        "subgroup",
-        "relation",
-        "zh_gold",
-        "zh_gold_token_id",
-        "en_equivalent",
-        "en_equivalent_token_id",
-        "en_equivalent_stored_token",
-        "en_equivalent_stored_surface",
-        "en_equivalent_decoded_single_token",
-        "en_equivalent_tokenizer_token",
-        "english_alignment_prediction_position",
-        "english_alignment_next_token_id",
-        "token_id_in_vocab",
-        "next_token_exists",
-        "next_token_matches_target_token_id",
-        "explicit_span_single_token_valid",
-        "span_validation_note",
-        "decoded_nonempty",
-        "decoded_matches_target_after_strip",
-        "same_vocab_token_as_zh_gold",
-        "valid_for_eq1",
-    ]
-    write_tsv(validation_tsv, validation_rows, validation_fields)
+    write_tsv(validation_tsv, validation_rows, VALIDATION_FIELDS)
 
     all_results: list[dict[str, Any]] = []
     rejected: list[dict[str, Any]] = []
@@ -769,6 +716,8 @@ def run_for_model(model_key: str, model_name: str) -> None:
                 lm_head=lm_head,
             )
             all_results.extend(rows)
+        except torch.cuda.OutOfMemoryError:
+            raise
         except Exception as exc:
             rejected.append(
                 {
@@ -782,12 +731,8 @@ def run_for_model(model_key: str, model_name: str) -> None:
                 }
             )
 
-        if idx % PROGRESS_EVERY == 0:
-            print(
-                f"Processed {idx}/{len(pairs)} Chinese prompts; "
-                f"layer rows so far: {len(all_results)}; "
-                f"rejected: {len(rejected)}"
-            )
+        if args.progress_every and idx % args.progress_every == 0:
+            print(f"  {idx}/{len(pairs)} Chinese prompts", flush=True)
 
         if torch.cuda.is_available() and idx % 100 == 0:
             torch.cuda.empty_cache()
@@ -795,41 +740,7 @@ def run_for_model(model_key: str, model_name: str) -> None:
     write_jsonl(raw_jsonl, all_results)
     write_jsonl(rejected_jsonl, rejected)
 
-    compact_fields = [
-        "id",
-        "semantic_group",
-        "subgroup",
-        "relation",
-        "language",
-        "model_key",
-        "layer",
-        "layer_name",
-        "num_layers",
-        "layer_fraction",
-        "zh_gold",
-        "zh_gold_token_id",
-        "en_equivalent",
-        "en_equivalent_token_id",
-        "zh_gold_rank",
-        "en_equivalent_rank",
-        "rank_difference_en_minus_zh",
-        "zh_gold_logit",
-        "en_equivalent_logit",
-        "logit_difference_en_minus_zh",
-        "zh_gold_prob",
-        "en_equivalent_prob",
-        "zh_gold_in_top1",
-        "zh_gold_in_top5",
-        "zh_gold_in_top10",
-        "en_equivalent_in_top1",
-        "en_equivalent_in_top5",
-        "en_equivalent_in_top10",
-        "layer_top1_text",
-        "final_prediction_text",
-        "final_prediction_is_zh_gold",
-        "final_prediction_is_en_equivalent",
-    ]
-    write_tsv(compact_tsv, all_results, compact_fields)
+    write_tsv(compact_tsv, all_results, COMPACT_FIELDS)
 
     validation_invalid = sum(not bool(row["valid_for_eq1"]) for row in validation_rows)
 
@@ -877,56 +788,125 @@ def run_for_model(model_key: str, model_name: str) -> None:
     }
     write_json(report_json, report)
 
-    print("\nDone for model:", model_key)
-    print(f"Chinese prompts: {len(pairs)}")
-    print(f"Layer rows: {len(all_results)}")
-    print(f"Rejected: {len(rejected)}")
-    print(f"Raw JSONL: {raw_jsonl}")
-    print(f"Compact TSV: {compact_tsv}")
-    print(f"Validation TSV: {validation_tsv}")
-    print(f"Report JSON: {report_json}")
-
-    del model
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
+    print(
+        f"{model_key}: {len(pairs) - len(rejected)} processed, "
+        f"{len(rejected)} rejected, {len(all_results)} layer rows",
+        flush=True,
+    )
+    if rejected:
+        print(f"  Rejections: {rejected_jsonl}", file=sys.stderr)
+    return len(pairs) - len(rejected), len(rejected), len(all_results)
 
 
-# ============================================================
-# CLI
-# ============================================================
-
-
-def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
+def build_parser():
     parser = argparse.ArgumentParser(
-        description=(
-            "Run EQ1 Logit Lens extraction on Chinese prompts while tracking "
-            "both the Chinese gold token and the paired English equivalent."
-        )
+        description="Track Chinese gold and paired English equivalent tokens under Chinese prompts."
     )
     parser.add_argument(
+        "--model",
         "--models",
         nargs="+",
-        choices=sorted(MODELS),
-        default=list(MODELS),
-        help=(
-            "Model keys to run. Default: all three Qwen3 models. "
-            "For limited GPU memory, run one model at a time."
-        ),
+        choices=["all", *MODEL_KEYS],
+        default=["qwen3_0_6b"],
     )
-    return parser.parse_args(argv)
+    parser.add_argument(
+        "--input-dir",
+        "--alignment-dir",
+        "--alignment_dir",
+        type=Path,
+        default=DEFAULT_INPUT_DIR,
+    )
+    parser.add_argument(
+        "--output-dir", "--output_dir", type=Path, default=DEFAULT_OUTPUT_DIR
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Allow replacing existing output files.",
+    )
+    parser.add_argument(
+        "--max-rows",
+        "--max-examples",
+        type=int,
+        default=None,
+        help="Smoke test: limit complete EN/ZH pairs per model.",
+    )
+    parser.add_argument("--top-k", type=int, default=10)
+    parser.add_argument("--no-prob", action="store_true")
+    parser.add_argument("--no-store-topk", action="store_true")
+    parser.add_argument("--device-map-auto", action="store_true")
+    parser.add_argument(
+        "--progress-every",
+        type=int,
+        default=100,
+        help="Progress interval; 0 disables progress messages.",
+    )
+    return parser
 
 
-def main(argv: Optional[Sequence[str]] = None) -> None:
-    args = parse_args(argv)
-    BASE_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+def main(argv=None):
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.max_rows is not None and args.max_rows < 1:
+        parser.error("--max-rows must be positive")
+    if args.top_k < 10:
+        parser.error("--top-k must be at least 10")
+    if args.progress_every < 0:
+        parser.error("--progress-every must be nonnegative")
+    if "all" in args.model and len(args.model) != 1:
+        parser.error("Use all alone or specify individual model keys")
+    if (
+        args.max_rows is not None
+        or args.top_k != 10
+        or args.no_prob
+        or args.no_store_topk
+    ) and args.output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve():
+        parser.error(
+            "Use a separate --output-dir for smoke tests or nonstandard extraction settings"
+        )
 
-    for model_key in args.models:
-        run_for_model(model_key, MODELS[model_key])
+    global TOP_K, COMPUTE_PROB, STORE_TOPK
+    TOP_K = args.top_k
+    COMPUTE_PROB = not args.no_prob
+    STORE_TOPK = not args.no_store_topk
+    model_keys = (
+        list(MODEL_KEYS)
+        if args.model == ["all"]
+        else [key for key in MODEL_KEYS if key in args.model]
+    )
+    for model_key in model_keys:
+        input_path = args.input_dir / model_key / INPUT_FILENAME
+        if not input_path.is_file():
+            parser.error(f"Alignment file not found: {input_path}")
+        model_dir = args.output_dir / model_key
+        existing = [
+            model_dir / name for name in OUTPUT_FILENAMES if (model_dir / name).exists()
+        ]
+        if existing and not args.overwrite:
+            parser.error(
+                f"Output already exists: {existing[0]}. "
+                "Use --overwrite or a separate --output-dir."
+            )
 
-    print("\n================ Overall ================")
-    print(f"Active models: {', '.join(args.models)}")
-    print(f"Base output dir: {BASE_OUTPUT_DIR}")
+    totals = [0, 0, 0]
+    for model_key in model_keys:
+        try:
+            counts = run_model(model_key, MODEL_REGISTRY[model_key], args)
+            totals = [a + b for a, b in zip(totals, counts)]
+        finally:
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            elif torch.backends.mps.is_available():
+                torch.mps.empty_cache()
+    if len(model_keys) > 1:
+        print(
+            f"Total: {totals[0]} processed, {totals[1]} rejected, {totals[2]} layer rows"
+        )
+
+    print(f"Output: {args.output_dir}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

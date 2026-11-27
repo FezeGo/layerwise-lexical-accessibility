@@ -1,0 +1,88 @@
+{
+  "analysis": "build_broader_category_mapping",
+  "purpose": "Create the manually specified broader-category mapping review dataset for EQ2 without automatic hypernym inference.",
+  "input": "data/dataset/fullspan_dataset.jsonl",
+  "included_subgroups": [
+    "animal_taxonomy",
+    "chemical_element_taxonomy",
+    "food_taxonomy",
+    "plant_taxonomy"
+  ],
+  "mapping_status": "manually_defined_broader_category",
+  "mapping_rules": {
+    "animal_taxonomy": {
+      "expected_count": 17,
+      "en_map": {
+        "bird": "animal",
+        "fish": "animal",
+        "insect": "animal"
+      },
+      "zh_map": {
+        "鸟": "动物",
+        "鱼": "动物",
+        "昆虫": "动物"
+      },
+      "rule_label": "animal_taxonomy_to_animal"
+    },
+    "chemical_element_taxonomy": {
+      "expected_count": 18,
+      "en_map": {
+        "element": "substance"
+      },
+      "zh_map": {
+        "元素": "物质"
+      },
+      "rule_label": "chemical_element_to_substance"
+    },
+    "food_taxonomy": {
+      "expected_count": 12,
+      "en_map": {
+        "fruit": "food",
+        "vegetable": "food"
+      },
+      "zh_map": {
+        "水果": "食物",
+        "蔬菜": "食物"
+      },
+      "rule_label": "food_taxonomy_to_food"
+    },
+    "plant_taxonomy": {
+      "expected_count": 8,
+      "en_map": {
+        "flower": "plant"
+      },
+      "zh_map": {
+        "花": "植物"
+      },
+      "rule_label": "flower_to_plant"
+    }
+  },
+  "validation": {
+    "expected_total": 55,
+    "observed_total": 55,
+    "counts_by_subgroup": {
+      "animal_taxonomy": 17,
+      "chemical_element_taxonomy": 18,
+      "food_taxonomy": 12,
+      "plant_taxonomy": 8
+    },
+    "expected_counts_by_subgroup": {
+      "animal_taxonomy": 17,
+      "chemical_element_taxonomy": 18,
+      "food_taxonomy": 12,
+      "plant_taxonomy": 8
+    },
+    "all_counts_match": true,
+    "gold_broader_distinct": true
+  },
+  "manual_review_required": true,
+  "manual_review_fields": [
+    "manual_keep",
+    "manual_note"
+  ],
+  "outputs": {
+    "review_tsv": "data/broader_category/broader_category_mapping_review.tsv",
+    "review_jsonl": "data/broader_category/broader_category_mapping_review.jsonl",
+    "build_report_json": "data/broader_category/broader_category_mapping_build_report.json"
+  }
+}

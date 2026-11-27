@@ -1,0 +1,88 @@
+{
+  "analysis": "validate_broader_category_tokenization",
+  "purpose": "Validate gold and manually defined broader-category single-token directions using the same full-span alignment convention as the frozen main experiment.",
+  "input": "data/broader_category/broader_category_mapping_review.jsonl",
+  "output_dir": "data/alignment/broader_category",
+  "models": {
+    "qwen3_0_6b": "Qwen/Qwen3-0.6B",
+    "qwen3_4b": "Qwen/Qwen3-4B",
+    "qwen3_14b": "Qwen/Qwen3-14B"
+  },
+  "languages": [
+    "en",
+    "zh"
+  ],
+  "validity_definition": {
+    "target_is_single_token_in_full_sentence_span": true,
+    "leading_whitespace_in_target_token_surface_allowed": true,
+    "trailing_punctuation_or_extra_surface_rejected": true,
+    "gold_and_broader_context_tokens_must_match": true,
+    "prediction_position_must_match": true,
+    "prediction_token_id_must_match": true,
+    "gold_and_broader_token_ids_must_be_distinct": true,
+    "prefix_only_tokenization_match_is_diagnostic_only": true
+  },
+  "manual_review_filter": {
+    "require_manual_keep_yes": false,
+    "manual_keep_counts_in_input": {
+      "<blank>": 55
+    }
+  },
+  "counts": {
+    "mapping_rows_loaded": 55,
+    "candidate_mapping_rows": 55,
+    "expected_language_attempts": 330,
+    "successful_language_alignments": 330,
+    "rejected_language_alignments": 0,
+    "final_valid_bilingual_pairs_all_models": 55,
+    "invalid_bilingual_pairs": 0,
+    "canonical_alignment_rows": 330
+  },
+  "successful_alignments_by_model": {
+    "qwen3_0_6b": 110,
+    "qwen3_4b": 110,
+    "qwen3_14b": 110
+  },
+  "successful_alignments_by_model_language": {
+    "qwen3_0_6b": {
+      "en": 55,
+      "zh": 55
+    },
+    "qwen3_4b": {
+      "en": 55,
+      "zh": 55
+    },
+    "qwen3_14b": {
+      "en": 55,
+      "zh": 55
+    }
+  },
+  "final_valid_pairs_by_subgroup": {
+    "animal_taxonomy": 17,
+    "chemical_element_taxonomy": 18,
+    "food_taxonomy": 12,
+    "plant_taxonomy": 8
+  },
+  "invalid_pair_ids": [],
+  "rejections_by_reason_type": {},
+  "prefix_only_diagnostics": {
+    "gold_prefix_matches_full_before_target": {
+      "False": 165,
+      "True": 165
+    },
+    "broader_prefix_matches_full_before_target": {
+      "False": 165,
+      "True": 165
+    },
+    "note": "These prefix-only matches are diagnostics and are not part of the full-span validity criterion."
+  },
+  "outputs": {
+    "validation_tsv": "data/alignment/broader_category/broader_category_tokenization_validation.tsv",
+    "canonical_alignment_jsonl": "data/alignment/broader_category/broader_category_alignment.jsonl",
+    "canonical_alignment_compact_tsv": "data/alignment/broader_category/broader_category_alignment_compact.tsv",
+    "valid_pairs_tsv": "data/alignment/broader_category/broader_category_valid_pairs.tsv",
+    "valid_pairs_jsonl": "data/alignment/broader_category/broader_category_valid_pairs.jsonl",
+    "rejected_jsonl": "data/alignment/broader_category/broader_category_tokenization_rejected.jsonl",
+    "report_json": "data/alignment/broader_category/broader_category_tokenization_report.json"
+  }
+}

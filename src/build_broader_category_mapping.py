@@ -8,7 +8,14 @@ from pathlib import Path
 from typing import Any, Optional, Sequence
 
 
-DEFAULT_OUTPUT_DIR = Path("data/analysis/full/broader_category")
+DEFAULT_INPUT_PATH = Path("data/dataset/fullspan_dataset.jsonl")
+DEFAULT_OUTPUT_DIR = Path("data/broader_category")
+
+OUTPUT_FILENAMES = (
+    "broader_category_mapping_review.tsv",
+    "broader_category_mapping_review.jsonl",
+    "broader_category_mapping_build_report.json",
+)
 
 RULES: dict[str, dict[str, Any]] = {
     "animal_taxonomy": {
@@ -55,7 +62,7 @@ REQUIRED_FIELDS = {
 }
 
 
-def load_dataset(path: Path) -> list[dict[str, Any]]:
+def read_dataset(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         raise FileNotFoundError(f"Input dataset not found: {path}")
 
@@ -115,8 +122,7 @@ def load_dataset(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def write_tsv(rows: Sequence[dict[str, Any]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
     if not rows:
         path.write_text("", encoding="utf-8")
         return
@@ -128,17 +134,15 @@ def write_tsv(rows: Sequence[dict[str, Any]], path: Path) -> None:
         writer.writerows(rows)
 
 
-def write_jsonl(rows: Sequence[dict[str, Any]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
     with path.open("w", encoding="utf-8") as f:
         for row in rows:
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+            f.write(json.dumps(row, ensure_ascii=False, allow_nan=False) + "\n")
 
 
-def write_json(data: dict[str, Any], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_json(path: Path, data: dict[str, Any]) -> None:
     with path.open("w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=2, allow_nan=False)
         f.write("\n")
 
 
@@ -305,44 +309,57 @@ def validate_output(mapping_rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def parse_args(
-    argv: Optional[Sequence[str]] = None,
-) -> argparse.Namespace:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Build the manually specified broader-category mapping review dataset for EQ2."
     )
     parser.add_argument(
         "--input",
         type=Path,
-        required=True,
+        default=DEFAULT_INPUT_PATH,
         help="Frozen bilingual dataset (.jsonl, .json, or .tsv).",
     )
     parser.add_argument(
+        "--output-dir",
         "--output_dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
     )
 
-    args, _unknown = parser.parse_known_args(argv)
-    return args
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Replace existing output files, including manual review fields.",
+    )
+    return parser
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
-    args = parse_args(argv)
+    args = build_parser().parse_args(argv)
 
-    dataset_rows = load_dataset(Path(args.input))
+    dataset_rows = read_dataset(args.input)
     mapping_rows = build_mapping(dataset_rows)
     validation = validate_output(mapping_rows)
 
-    output_dir = Path(args.output_dir)
+    output_dir = args.output_dir
+    review_tsv, review_jsonl, report_json = (
+        output_dir / filename for filename in OUTPUT_FILENAMES
+    )
+
+    existing = [
+        output_dir / filename
+        for filename in OUTPUT_FILENAMES
+        if (output_dir / filename).exists()
+    ]
+    if existing and not args.overwrite:
+        raise FileExistsError(
+            "Existing mapping outputs; use a different --output-dir or "
+            "explicitly pass --overwrite: " + ", ".join(str(path) for path in existing)
+        )
+
     output_dir.mkdir(parents=True, exist_ok=True)
-
-    review_tsv = output_dir / "broader_category_mapping_review.tsv"
-    review_jsonl = output_dir / "broader_category_mapping_review.jsonl"
-    report_json = output_dir / "broader_category_mapping_build_report.json"
-
-    write_tsv(mapping_rows, review_tsv)
-    write_jsonl(mapping_rows, review_jsonl)
+    write_tsv(review_tsv, mapping_rows)
+    write_jsonl(review_jsonl, mapping_rows)
 
     report = {
         "analysis": "build_broader_category_mapping",
@@ -371,18 +388,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "build_report_json": str(report_json),
         },
     }
-    write_json(report, report_json)
+    write_json(report_json, report)
 
-    print("\nBroader-category mapping build complete.")
-    print(f"Input dataset rows: {len(dataset_rows)}")
-    print(f"EQ2 review rows: {len(mapping_rows)}")
-    for subgroup in RULES:
-        print(f"  {subgroup}: {validation['counts_by_subgroup'][subgroup]}")
-
-    print(f"\nReview TSV: {review_tsv}")
-    print(f"Review JSONL: {review_jsonl}")
-    print(f"Report: {report_json}")
-    print("\nNext: manually review all 55 rows and fill manual_keep/manual_note.")
+    print(
+        f"Broader-category mapping: {len(mapping_rows)}/{len(dataset_rows)} dataset rows"
+    )
+    print(f"Output: {output_dir}")
+    print("Review manual_keep and manual_note before freezing the mapping.")
     return 0
 
 

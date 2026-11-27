@@ -8,19 +8,38 @@ from pathlib import Path
 from typing import Any, Optional, Sequence
 
 
-DEFAULT_BASE_INPUT_DIR = Path("data/logit_lens/translation_equivalent")
-DEFAULT_VALIDATION_TSV = Path(
-    "data/analysis/full/translation_equivalent/token_variant_validation/"
+DEFAULT_INPUT_DIR = Path("data/logit_lens/translation_equivalent")
+DEFAULT_VALIDATION_PATH = Path(
+    "results/analysis/translation_equivalent/token_variant_validation/"
     "translation_equivalent_token_variant_validation.tsv"
 )
 DEFAULT_OUTPUT_DIR = Path(
-    "data/analysis/full/translation_equivalent/no_space_sensitivity"
+    "results/analysis/translation_equivalent/no_space_sensitivity"
 )
 
-DEFAULT_MODELS = ["qwen3_0_6b", "qwen3_4b", "qwen3_14b"]
-DEFAULT_INPUT_FILENAME = "translation_equivalent_by_layer.jsonl"
+MODEL_KEYS = ("qwen3_0_6b", "qwen3_4b", "qwen3_14b")
+INPUT_FILENAME = "translation_equivalent_by_layer.jsonl"
 DEFAULT_MIN_CONSECUTIVE = 3
 K_VALUES = (1, 5, 10)
+
+OUTPUT_FILENAMES = (
+    "no_space_sensitivity_layerwise.tsv",
+    "no_space_sensitivity_trajectories.tsv",
+    "no_space_sensitivity_trajectories.jsonl",
+    "no_space_sensitivity_pattern_counts.tsv",
+    "no_space_sensitivity_variant_comparison.tsv",
+    "no_space_sensitivity_changed_cases.tsv",
+    "no_space_sensitivity_report.json",
+)
+
+PATTERN_ORDER = (
+    "english_before_chinese",
+    "chinese_before_english",
+    "same_onset",
+    "english_only_sustained",
+    "chinese_only_sustained",
+    "neither_sustained",
+)
 
 REQUIRED_EXTRACTION_FIELDS = {
     "id",
@@ -54,12 +73,7 @@ REQUIRED_VALIDATION_FIELDS = {
 }
 
 
-# ============================================================
-# I/O
-# ============================================================
-
-
-def load_jsonl(path: Path) -> list[dict[str, Any]]:
+def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         raise FileNotFoundError(f"Input JSONL not found: {path}")
 
@@ -99,11 +113,10 @@ def optional_int(value: Any) -> Optional[int]:
     text = str(value).strip()
     if text == "":
         return None
-    # Handles values such as "10063" or "10063.0".
     return int(float(text))
 
 
-def load_validation_tsv(path: Path) -> list[dict[str, Any]]:
+def read_validation_tsv(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         raise FileNotFoundError(f"Validation TSV not found: {path}")
 
@@ -140,8 +153,7 @@ def clean_for_table(value: Any) -> Any:
     return value
 
 
-def write_tsv(rows: Sequence[dict[str, Any]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
     if not rows:
         path.write_text("", encoding="utf-8")
         return
@@ -159,26 +171,19 @@ def write_tsv(rows: Sequence[dict[str, Any]], path: Path) -> None:
             writer.writerow({key: clean_for_table(row.get(key, "")) for key in fields})
 
 
-def write_jsonl(rows: Sequence[dict[str, Any]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
     with path.open("w", encoding="utf-8") as handle:
         for row in rows:
             handle.write(json.dumps(row, ensure_ascii=False, allow_nan=False) + "\n")
 
 
-def write_json(data: dict[str, Any], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_json(path: Path, data: dict[str, Any]) -> None:
     with path.open("w", encoding="utf-8") as handle:
         json.dump(data, handle, ensure_ascii=False, indent=2, allow_nan=False)
         handle.write("\n")
 
 
-# ============================================================
-# Helpers
-# ============================================================
-
-
-def normalise_id(value: Any) -> str:
+def normalize_id(value: Any) -> str:
     return str(value)
 
 
@@ -274,7 +279,6 @@ def classify_variant_change(
     if leading_pattern == no_space_pattern:
         return "unchanged"
 
-    # Directional conclusion categories are useful for the robustness question.
     directional = {
         "english_before_chinese": "english_earlier",
         "chinese_before_english": "chinese_earlier",
@@ -302,17 +306,12 @@ def classify_variant_change(
     return "changed"
 
 
-# ============================================================
-# Validation subset
-# ============================================================
-
-
 def build_no_space_subset(
     validation_rows: Sequence[dict[str, Any]],
-    models: Sequence[str],
+    model_keys: Sequence[str],
 ) -> dict[tuple[str, str], dict[str, Any]]:
     subset: dict[tuple[str, str], dict[str, Any]] = {}
-    allowed_models = set(models)
+    allowed_models = set(model_keys)
 
     for row in validation_rows:
         model_key = str(row["model_key"])
@@ -345,13 +344,13 @@ def build_no_space_subset(
                 f"the same ID for model={model_key}, id={row['id']}"
             )
 
-        key = (model_key, normalise_id(row["id"]))
+        key = (model_key, normalize_id(row["id"]))
         if key in subset:
             raise ValueError(f"Duplicate validation key: {key}")
 
         subset[key] = {
             "model_key": model_key,
-            "id": normalise_id(row["id"]),
+            "id": normalize_id(row["id"]),
             "en_equivalent": str(row["en_equivalent"]),
             "leading_space_token_id": tracked_token_id,
             "no_space_token_id": no_space_token_id,
@@ -369,17 +368,14 @@ def build_no_space_subset(
     return subset
 
 
-# ============================================================
-# Raw extraction loading and checks
-# ============================================================
-
-
-def resolve_input_paths(args: argparse.Namespace) -> list[Path]:
+def resolve_input_paths(
+    args: argparse.Namespace, model_keys: Sequence[str]
+) -> list[Path]:
     if args.input:
-        return [Path(path) for path in args.input]
+        return list(args.input)
 
     paths = [
-        Path(args.base_input_dir) / model / args.input_filename for model in args.models
+        args.input_dir / model_key / args.input_filename for model_key in model_keys
     ]
     missing = [path for path in paths if not path.exists()]
     if missing:
@@ -416,7 +412,7 @@ def build_subset_layerwise_rows(
 
         key = (
             str(raw["model_key"]),
-            normalise_id(raw["id"]),
+            normalize_id(raw["id"]),
         )
         if key not in subset:
             continue
@@ -467,7 +463,7 @@ def build_subset_layerwise_rows(
         row = {
             "model_key": str(raw["model_key"]),
             "model_name": raw.get("model_name", ""),
-            "id": normalise_id(raw["id"]),
+            "id": normalize_id(raw["id"]),
             "semantic_group": raw.get("semantic_group", meta.get("semantic_group", "")),
             "subgroup": raw.get("subgroup", meta.get("subgroup", "")),
             "relation": raw.get("relation", meta.get("relation", "")),
@@ -506,7 +502,7 @@ def build_subset_layerwise_rows(
     output.sort(
         key=lambda r: (
             str(r["model_key"]),
-            normalise_id(r["id"]),
+            normalize_id(r["id"]),
             int(r["layer"]),
         )
     )
@@ -521,7 +517,7 @@ def group_layerwise_rows(
     for row in rows:
         key = (
             str(row["model_key"]),
-            normalise_id(row["id"]),
+            normalize_id(row["id"]),
         )
         grouped[key].append(row)
 
@@ -541,11 +537,6 @@ def group_layerwise_rows(
             )
 
     return dict(grouped)
-
-
-# ============================================================
-# Trajectory analysis
-# ============================================================
 
 
 def build_trajectory_summary(
@@ -656,20 +647,6 @@ def build_trajectory_summary(
         )
 
     return summary
-
-
-# ============================================================
-# Aggregation
-# ============================================================
-
-PATTERN_ORDER = (
-    "english_before_chinese",
-    "chinese_before_english",
-    "same_onset",
-    "english_only_sustained",
-    "chinese_only_sustained",
-    "neither_sustained",
-)
 
 
 def aggregate_pattern_counts(
@@ -809,87 +786,101 @@ def aggregate_variant_comparison(
     return output
 
 
-# ============================================================
-# Main
-# ============================================================
-
-
-def parse_args(
-    argv: Optional[Sequence[str]] = None,
-) -> argparse.Namespace:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description=(
-            "Run no-space English token sensitivity analysis from existing "
-            "EQ1 Top-10 outputs."
-        )
+        description="Analyze no-space English token sensitivity from saved EQ1 Top-k outputs."
     )
     parser.add_argument(
-        "--input",
-        nargs="+",
-        type=Path,
-        help=(
-            "Explicit translation_equivalent_by_layer.jsonl files. "
-            "If omitted, paths are built from --base_input_dir."
-        ),
+        "--input", nargs="+", type=Path, help="Explicit extraction JSONL files."
     )
     parser.add_argument(
+        "--input-dir",
         "--base_input_dir",
+        "--base-input-dir",
         type=Path,
-        default=DEFAULT_BASE_INPUT_DIR,
+        default=DEFAULT_INPUT_DIR,
     )
+    parser.add_argument("--input-filename", "--input_filename", default=INPUT_FILENAME)
     parser.add_argument(
-        "--input_filename",
-        default=DEFAULT_INPUT_FILENAME,
-    )
-    parser.add_argument(
+        "--validation-tsv",
         "--validation_tsv",
         type=Path,
-        default=DEFAULT_VALIDATION_TSV,
+        default=DEFAULT_VALIDATION_PATH,
     )
     parser.add_argument(
-        "--output_dir",
-        type=Path,
-        default=DEFAULT_OUTPUT_DIR,
+        "--output-dir", "--output_dir", type=Path, default=DEFAULT_OUTPUT_DIR
     )
     parser.add_argument(
+        "--model",
         "--models",
         nargs="+",
-        choices=DEFAULT_MODELS,
-        default=DEFAULT_MODELS,
+        choices=["all", *MODEL_KEYS],
+        default=None,
+        help="Model keys (default: all; inferred for explicit inputs).",
     )
     parser.add_argument(
+        "--min-consecutive",
         "--min_consecutive",
         type=int,
         default=DEFAULT_MIN_CONSECUTIVE,
     )
+    parser.add_argument(
+        "--overwrite", action="store_true", help="Replace existing output files."
+    )
+    return parser
 
-    # Notebook / Colab friendly.
-    args, _unknown = parser.parse_known_args(argv)
-    return args
 
-
-def main(
-    argv: Optional[Sequence[str]] = None,
-) -> int:
-    args = parse_args(argv)
-
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
     if args.min_consecutive < 1:
-        raise ValueError("--min_consecutive must be >= 1")
+        parser.error("--min-consecutive must be positive")
+    explicit_models = args.model is not None
+    if args.model is None or "all" in args.model:
+        if args.model is not None and args.model != ["all"]:
+            parser.error("--model all cannot be combined with individual models")
+        model_keys = list(MODEL_KEYS)
+    else:
+        model_keys = [key for key in MODEL_KEYS if key in args.model]
 
-    validation_rows = load_validation_tsv(Path(args.validation_tsv))
+    input_paths = resolve_input_paths(args, model_keys)
+    all_extraction_rows = []
+    for path in input_paths:
+        all_extraction_rows.extend(read_jsonl(path))
+    observed_models = {str(row["model_key"]) for row in all_extraction_rows}
+    if args.input and not explicit_models:
+        model_keys = [key for key in MODEL_KEYS if key in observed_models]
+    if observed_models != set(model_keys):
+        raise ValueError(
+            f"Input models {sorted(observed_models)} do not match selected models {model_keys}"
+        )
+
+    # Keep partial runs separate from the canonical combined outputs.
+    output_dir = args.output_dir
+    if args.min_consecutive != DEFAULT_MIN_CONSECUTIVE and (
+        output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve()
+        or DEFAULT_OUTPUT_DIR.resolve() in output_dir.resolve().parents
+    ):
+        parser.error("Nonstandard analysis requires a separate --output-dir.")
+    if set(model_keys) != set(MODEL_KEYS):
+        output_dir = output_dir / "__".join(model_keys)
+
+    existing = [
+        output_dir / name for name in OUTPUT_FILENAMES if (output_dir / name).exists()
+    ]
+    if existing and not args.overwrite:
+        parser.error(
+            "Existing outputs; use --overwrite or a different --output-dir: "
+            + ", ".join(str(path) for path in existing)
+        )
+
+    validation_rows = read_validation_tsv(args.validation_tsv)
     subset = build_no_space_subset(
         validation_rows,
-        args.models,
+        model_keys,
     )
 
     subset_counts = Counter(model_key for model_key, _ in subset)
-
-    input_paths = resolve_input_paths(args)
-
-    all_extraction_rows: list[dict[str, Any]] = []
-    for path in input_paths:
-        print(f"Loading {path}")
-        all_extraction_rows.extend(load_jsonl(path))
 
     layerwise_rows = build_subset_layerwise_rows(
         all_extraction_rows,
@@ -927,43 +918,42 @@ def main(
         if any(row[f"variant_pattern_change_top{k}"] != "unchanged" for k in K_VALUES)
     ]
 
-    output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     write_tsv(
-        layerwise_rows,
         output_dir / "no_space_sensitivity_layerwise.tsv",
+        layerwise_rows,
     )
     write_tsv(
-        trajectory_rows,
         output_dir / "no_space_sensitivity_trajectories.tsv",
+        trajectory_rows,
     )
     write_jsonl(
-        trajectory_rows,
         output_dir / "no_space_sensitivity_trajectories.jsonl",
+        trajectory_rows,
     )
     write_tsv(
-        pattern_counts,
         output_dir / "no_space_sensitivity_pattern_counts.tsv",
+        pattern_counts,
     )
     write_tsv(
-        variant_comparison,
         output_dir / "no_space_sensitivity_variant_comparison.tsv",
+        variant_comparison,
     )
     write_tsv(
-        changed_cases,
         output_dir / "no_space_sensitivity_changed_cases.tsv",
+        changed_cases,
     )
 
     top10_by_model: dict[str, Any] = {}
 
-    for model in args.models:
-        rows = [r for r in trajectory_rows if str(r["model_key"]) == model]
+    for model_key in model_keys:
+        rows = [r for r in trajectory_rows if str(r["model_key"]) == model_key]
         leading_counts = Counter(str(r["leading_space_pattern_top10"]) for r in rows)
         no_space_counts = Counter(str(r["no_space_pattern_top10"]) for r in rows)
         change_counts = Counter(str(r["variant_pattern_change_top10"]) for r in rows)
 
-        top10_by_model[model] = {
+        top10_by_model[model_key] = {
             "n": len(rows),
             "leading_space_pattern_counts": dict(leading_counts),
             "no_space_pattern_counts": dict(no_space_counts),
@@ -989,7 +979,7 @@ def main(
         ),
         "input_files": [str(path) for path in input_paths],
         "validation_tsv": str(args.validation_tsv),
-        "models": list(args.models),
+        "models": list(model_keys),
         "min_consecutive": args.min_consecutive,
         "subset_definition": (
             "Examples where the no-space English equivalent is a clean "
@@ -1022,31 +1012,18 @@ def main(
     }
 
     write_json(
-        report,
         output_dir / "no_space_sensitivity_report.json",
+        report,
     )
 
-    print("\nDone.")
-    print(f"Subset counts by model: {dict(subset_counts)}")
-    print(f"Trajectory units: {len(trajectory_rows)}")
-    print(f"Changed cases at any k: {len(changed_cases)}")
-    print(f"Outputs: {output_dir}")
-
-    for model in args.models:
-        info = top10_by_model[model]
-        print(f"\n{model} (n={info['n']})")
-        print(
-            "  leading-space Top-10 patterns:",
-            info["leading_space_pattern_counts"],
-        )
-        print(
-            "  no-space Top-10 patterns:",
-            info["no_space_pattern_counts"],
-        )
-        print(
-            "  pattern changes:",
-            info["pattern_change_counts"],
-        )
+    for model_key in model_keys:
+        info = top10_by_model[model_key]
+        changed = sum(row["model_key"] == model_key for row in changed_cases)
+        print(f"{model_key}: {info['n']} trajectories, {changed} changed at any k")
+    print(
+        f"Total: {len(trajectory_rows)} trajectories, {len(changed_cases)} changed at any k"
+    )
+    print(f"Output: {output_dir}")
 
     return 0
 

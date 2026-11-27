@@ -1,29 +1,32 @@
-"""
-python src/analyze_translation_equivalent_trajectories.py \
-    --base_input_dir data/logit_lens/translation_equivalent \
-    --output_dir results/analysis/translation_equivalent \
-    --models qwen3_0_6b qwen3_4b qwen3_14b \
-    --min_consecutive 3
-"""
-
 from __future__ import annotations
 
 import argparse
 import csv
 import json
 import statistics
-import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Callable, Optional, Sequence
 
 
-DEFAULT_BASE_INPUT_DIR = Path("data/logit_lens/translation_equivalent")
-DEFAULT_OUTPUT_DIR = Path("data/analysis/full/translation_equivalent")
-DEFAULT_MODELS = ["qwen3_0_6b", "qwen3_4b", "qwen3_14b"]
-DEFAULT_INPUT_FILENAME = "translation_equivalent_by_layer.jsonl"
+DEFAULT_INPUT_DIR = Path("data/logit_lens/translation_equivalent")
+DEFAULT_OUTPUT_DIR = Path("results/analysis/translation_equivalent")
+MODEL_KEYS = ("qwen3_0_6b", "qwen3_4b", "qwen3_14b")
+INPUT_FILENAME = "translation_equivalent_by_layer.jsonl"
 DEFAULT_MIN_CONSECUTIVE = 3
 K_VALUES = (1, 5, 10)
+
+OUTPUT_FILENAMES = (
+    "translation_equivalent_layerwise.tsv",
+    "translation_equivalent_trajectories.tsv",
+    "translation_equivalent_trajectories.jsonl",
+    "translation_equivalent_pattern_counts.tsv",
+    "translation_equivalent_onset_summary.tsv",
+    "translation_equivalent_layerwise_summary.tsv",
+    "translation_equivalent_final_layer_summary.tsv",
+    "english_before_chinese_gold.tsv",
+    "translation_equivalent_report.json",
+)
 
 REQUIRED_FIELDS = {
     "id",
@@ -84,12 +87,10 @@ PATTERN_ORDER = (
 )
 
 
-# ---------------------------------------------------------------------------
 # I/O
-# ---------------------------------------------------------------------------
 
 
-def load_jsonl(path: Path) -> list[dict[str, Any]]:
+def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         raise FileNotFoundError(f"Input JSONL not found: {path}")
 
@@ -135,8 +136,7 @@ def clean_for_table(value: Any) -> Any:
     return value
 
 
-def write_tsv(rows: Sequence[dict[str, Any]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_tsv(path: Path, rows: Sequence[dict[str, Any]]) -> None:
     if not rows:
         path.write_text("", encoding="utf-8")
         return
@@ -156,27 +156,23 @@ def write_tsv(rows: Sequence[dict[str, Any]], path: Path) -> None:
             )
 
 
-def write_jsonl(rows: Sequence[dict[str, Any]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_jsonl(path: Path, rows: Sequence[dict[str, Any]]) -> None:
     with path.open("w", encoding="utf-8") as handle:
         for row in rows:
             clean = {k: v for k, v in row.items() if not k.startswith("_")}
             handle.write(json.dumps(clean, ensure_ascii=False, allow_nan=False) + "\n")
 
 
-def write_json(data: dict[str, Any], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def write_json(path: Path, data: dict[str, Any]) -> None:
     with path.open("w", encoding="utf-8") as handle:
         json.dump(data, handle, ensure_ascii=False, indent=2, allow_nan=False)
         handle.write("\n")
 
 
-# ---------------------------------------------------------------------------
 # Generic helpers
-# ---------------------------------------------------------------------------
 
 
-def normalise_id(value: Any) -> str:
+def normalize_id(value: Any) -> str:
     return str(value)
 
 
@@ -204,9 +200,7 @@ def safe_fraction(layer: Optional[int], num_layers: int) -> Optional[float]:
     return layer / num_layers
 
 
-# ---------------------------------------------------------------------------
 # Validation and grouping
-# ---------------------------------------------------------------------------
 
 
 def validate_row_schema(rows: Sequence[dict[str, Any]]) -> None:
@@ -263,7 +257,7 @@ def group_trajectories(
 ) -> dict[tuple[str, str], list[dict[str, Any]]]:
     grouped: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
-        key = (str(row["model_key"]), normalise_id(row["id"]))
+        key = (str(row["model_key"]), normalize_id(row["id"]))
         grouped[key].append(row)
 
     for key, trajectory in grouped.items():
@@ -317,9 +311,7 @@ def group_trajectories(
     return dict(grouped)
 
 
-# ---------------------------------------------------------------------------
 # Onset helpers
-# ---------------------------------------------------------------------------
 
 
 def first_true_layer(rows: Sequence[dict[str, Any]], field: str) -> Optional[int]:
@@ -396,9 +388,7 @@ def classify_sustained_pattern(
     return "neither_sustained"
 
 
-# ---------------------------------------------------------------------------
 # Trajectory-level analysis
-# ---------------------------------------------------------------------------
 
 
 def build_trajectory_summary(
@@ -501,9 +491,7 @@ def build_trajectory_summary(
     return summary
 
 
-# ---------------------------------------------------------------------------
 # Aggregation helpers
-# ---------------------------------------------------------------------------
 
 
 def grouping_specs() -> list[tuple[str, Callable[[dict[str, Any]], str]]]:
@@ -808,9 +796,7 @@ def aggregate_final_layer_summary(
     return output
 
 
-# ---------------------------------------------------------------------------
 # Input resolution and CLI
-# ---------------------------------------------------------------------------
 
 
 def resolve_input_paths(args: argparse.Namespace) -> list[Path]:
@@ -818,7 +804,7 @@ def resolve_input_paths(args: argparse.Namespace) -> list[Path]:
         return [Path(path) for path in args.input]
 
     paths = [
-        Path(args.base_input_dir) / model / args.input_filename for model in args.models
+        args.input_dir / model_key / args.input_filename for model_key in args.model
     ]
     missing = [path for path in paths if not path.exists()]
     if missing:
@@ -829,93 +815,101 @@ def resolve_input_paths(args: argparse.Namespace) -> list[Path]:
     return paths
 
 
-def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description=(
-            "Analyze direct Chinese-gold vs English translation-equivalent "
-            "Logit Lens measurements under Chinese prompts."
-        )
+        description="Analyze Chinese gold and English translation-equivalent trajectories."
     )
     parser.add_argument(
-        "--input",
-        nargs="+",
-        type=Path,
-        help="Explicit translation_equivalent_by_layer.jsonl files.",
+        "--input", nargs="+", type=Path, help="Explicit extraction JSONL files."
     )
     parser.add_argument(
+        "--input-dir",
         "--base_input_dir",
+        "--base-input-dir",
         type=Path,
-        default=DEFAULT_BASE_INPUT_DIR,
-        help=f"Base extraction directory (default: {DEFAULT_BASE_INPUT_DIR}).",
+        default=DEFAULT_INPUT_DIR,
+    )
+    parser.add_argument("--input-filename", "--input_filename", default=INPUT_FILENAME)
+    parser.add_argument(
+        "--output-dir", "--output_dir", type=Path, default=DEFAULT_OUTPUT_DIR
     )
     parser.add_argument(
+        "--model",
         "--models",
         nargs="+",
-        default=DEFAULT_MODELS,
-        help="Model directory keys used with --base_input_dir.",
+        choices=["all", *MODEL_KEYS],
+        default=None,
+        help="Model keys (default: all; inferred for explicit inputs).",
     )
     parser.add_argument(
-        "--input_filename",
-        default=DEFAULT_INPUT_FILENAME,
-        help=f"Input filename per model (default: {DEFAULT_INPUT_FILENAME}).",
-    )
-    parser.add_argument(
-        "--output_dir",
-        type=Path,
-        default=DEFAULT_OUTPUT_DIR,
-        help=f"Analysis output directory (default: {DEFAULT_OUTPUT_DIR}).",
-    )
-    parser.add_argument(
+        "--min-consecutive",
         "--min_consecutive",
         type=int,
         default=DEFAULT_MIN_CONSECUTIVE,
-        help=(
-            "Consecutive Top-k memberships required for strict sustained onset "
-            f"(default: {DEFAULT_MIN_CONSECUTIVE})."
-        ),
     )
-
-    # Colab/Jupyter kernels inject arguments such as `-f kernel.json`.
-    # parse_known_args keeps this script runnable both as a .py file and inside
-    # a notebook cell without changing the analysis logic.
-    args, unknown = parser.parse_known_args(argv)
-    if unknown:
-        print(
-            "Ignoring unrecognized runtime arguments: " + " ".join(unknown),
-            file=sys.stderr,
-        )
-    return args
+    parser.add_argument(
+        "--overwrite", action="store_true", help="Replace existing analysis outputs."
+    )
+    return parser
 
 
-# ---------------------------------------------------------------------------
 # Main
-# ---------------------------------------------------------------------------
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
-    args = parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
     if args.min_consecutive < 1:
-        raise ValueError("--min_consecutive must be at least 1")
+        parser.error("--min-consecutive must be positive")
+    explicit_models = args.model is not None
+    if args.model is None or "all" in args.model:
+        if args.model is not None and args.model != ["all"]:
+            parser.error("--model all cannot be combined with individual models")
+        args.model = list(MODEL_KEYS)
+    else:
+        args.model = [key for key in MODEL_KEYS if key in args.model]
 
     input_paths = resolve_input_paths(args)
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    all_layer_rows: list[dict[str, Any]] = []
+    all_layer_rows = []
     for path in input_paths:
-        print(f"Loading {path} ...", file=sys.stderr)
-        all_layer_rows.extend(load_jsonl(path))
+        all_layer_rows.extend(read_jsonl(path))
 
     validate_row_schema(all_layer_rows)
+    observed_models = {str(row["model_key"]) for row in all_layer_rows}
+    if args.input and not explicit_models:
+        args.model = [key for key in MODEL_KEYS if key in observed_models]
+    if observed_models != set(args.model):
+        raise ValueError(
+            f"Input models {sorted(observed_models)} do not match selected models {args.model}"
+        )
+
+    # Keep partial runs separate from canonical combined outputs.
+    model_keys = args.model
+    output_dir = args.output_dir
+    if args.min_consecutive != DEFAULT_MIN_CONSECUTIVE and (
+        output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve()
+    ):
+        parser.error("Nonstandard analysis requires a separate --output-dir.")
+    if set(model_keys) != set(MODEL_KEYS):
+        output_dir = output_dir / "__".join(model_keys)
+
+    existing = [
+        output_dir / name for name in OUTPUT_FILENAMES if (output_dir / name).exists()
+    ]
+    if existing and not args.overwrite:
+        raise FileExistsError(
+            "Existing analysis outputs; use a different --output-dir or "
+            "explicitly pass --overwrite: " + ", ".join(map(str, existing))
+        )
+
     trajectories = group_trajectories(all_layer_rows)
 
     trajectory_rows = [
         build_trajectory_summary(rows, args.min_consecutive)
         for _, rows in sorted(trajectories.items())
     ]
-    trajectory_rows.sort(key=lambda r: (str(r["model_key"]), normalise_id(r["id"])))
+    trajectory_rows.sort(key=lambda r: (str(r["model_key"]), normalize_id(r["id"])))
 
-    # Derived tables.
     pattern_counts = aggregate_pattern_counts(trajectory_rows)
     onset_summary = aggregate_onset_summary(trajectory_rows)
     layerwise_summary = aggregate_layerwise_summary(all_layer_rows)
@@ -927,15 +921,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if r["translation_sustained_pattern_top10"] == "english_before_chinese"
     ]
 
-    # Keep a compact layerwise table containing the direct measurements used by
-    # the analysis, rather than duplicating every diagnostic field from raw JSONL.
+    # Keep only direct measurements used in the analysis.
     compact_layerwise_rows: list[dict[str, Any]] = []
     for row in all_layer_rows:
         compact_layerwise_rows.append(
             {
                 "model_key": row["model_key"],
                 "model_name": row.get("model_name", ""),
-                "id": normalise_id(row["id"]),
+                "id": normalize_id(row["id"]),
                 "semantic_group": row.get("semantic_group", ""),
                 "subgroup": row.get("subgroup", ""),
                 "relation": row.get("relation", ""),
@@ -972,45 +965,46 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         )
 
     compact_layerwise_rows.sort(
-        key=lambda r: (str(r["model_key"]), normalise_id(r["id"]), int(r["layer"]))
+        key=lambda r: (str(r["model_key"]), normalize_id(r["id"]), int(r["layer"]))
     )
 
-    # Write canonical EQ1 analysis outputs.
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     write_tsv(
-        compact_layerwise_rows,
         output_dir / "translation_equivalent_layerwise.tsv",
+        compact_layerwise_rows,
     )
     write_tsv(
-        trajectory_rows,
         output_dir / "translation_equivalent_trajectories.tsv",
+        trajectory_rows,
     )
     write_jsonl(
-        trajectory_rows,
         output_dir / "translation_equivalent_trajectories.jsonl",
+        trajectory_rows,
     )
     write_tsv(
-        pattern_counts,
         output_dir / "translation_equivalent_pattern_counts.tsv",
+        pattern_counts,
     )
     write_tsv(
-        onset_summary,
         output_dir / "translation_equivalent_onset_summary.tsv",
+        onset_summary,
     )
     write_tsv(
-        layerwise_summary,
         output_dir / "translation_equivalent_layerwise_summary.tsv",
+        layerwise_summary,
     )
     write_tsv(
-        final_layer_summary,
         output_dir / "translation_equivalent_final_layer_summary.tsv",
+        final_layer_summary,
     )
     write_tsv(
-        english_before_top10,
         output_dir / "english_before_chinese_gold.tsv",
+        english_before_top10,
     )
 
     model_counts = Counter(str(r["model_key"]) for r in trajectory_rows)
-    expected_per_model = {model: model_counts.get(model, 0) for model in args.models}
+    expected_per_model = {model: model_counts.get(model, 0) for model in model_keys}
     top10_patterns_by_model = {
         model: dict(
             Counter(
@@ -1063,15 +1057,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             "english_before_chinese_top10": "english_before_chinese_gold.tsv",
         },
     }
-    write_json(report, output_dir / "translation_equivalent_report.json")
+    write_json(output_dir / "translation_equivalent_report.json", report)
 
-    print(f"Wrote EQ1 analysis outputs to: {output_dir}")
-    print(f"Trajectory units: {len(trajectory_rows)}")
-    print(f"Model counts: {dict(model_counts)}")
+    for model_key in model_keys:
+        count = top10_patterns_by_model[model_key].get("english_before_chinese", 0)
+        print(
+            f"{model_key}: {model_counts[model_key]} trajectories, {count} English-before-Chinese at Top-10"
+        )
     print(
-        "English-equivalent sustained before Chinese gold at Top-10: "
-        f"{len(english_before_top10)}"
+        f"Total: {len(trajectory_rows)} trajectories, {len(english_before_top10)} English-before-Chinese at Top-10"
     )
+    print(f"Output: {output_dir}")
     return 0
 
 

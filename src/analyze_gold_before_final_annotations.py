@@ -1,9 +1,3 @@
-"""
-python src/analyze_gold_before_final_annotations.py \
-  data/annotation/gold_before_final_annotations_final.tsv \
-  --output-dir results/analysis/annotation/analysis_round
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -11,10 +5,13 @@ import json
 import sys
 from collections import Counter
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Mapping, Sequence
+from typing import Any, Sequence
 
 import pandas as pd
 
+
+DEFAULT_OUTPUT_DIR = Path("results/analysis/gold_before_final/annotation_summary")
+DEFAULT_EXPECTED_ROWS = 433
 
 COMPLETION_ORDER = [
     "standalone_content_candidate",
@@ -84,11 +81,11 @@ DIMENSIONS = {
 }
 
 
-MODEL_ORDER = [
+MODEL_KEYS = (
     "qwen3_0_6b",
     "qwen3_4b",
     "qwen3_14b",
-]
+)
 
 LANGUAGE_ORDER = [
     "en",
@@ -103,39 +100,45 @@ SEMANTIC_GROUP_ORDER = [
 ]
 
 VALUE_ORDERS = {
-    "model_key": MODEL_ORDER,
+    "model_key": MODEL_KEYS,
     "language": LANGUAGE_ORDER,
     "semantic_group": SEMANTIC_GROUP_ORDER,
 }
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description=(
-            "Create first-round descriptive tables for finalized "
-            "gold-before-final annotations."
-        )
-    )
-    parser.add_argument(
-        "input_file",
-        type=Path,
-        help="Finalized TSV or CSV annotation file.",
-    )
-    parser.add_argument(
-        "--output-dir",
-        type=Path,
-        default=None,
-        help=(
-            "Directory for analysis outputs. Default: <input directory>/analysis_round1"
-        ),
-    )
-    parser.add_argument(
-        "--expected-rows",
-        type=int,
-        default=433,
-        help="Expected number of rows. Default: 433.",
-    )
-    return parser.parse_args()
+CROSS_GROUPS = (
+    "by_model_language",
+    "by_model_semantic_group",
+    "by_language_semantic_group",
+    "by_model_language_semantic_group",
+)
+DISTRIBUTION_STEMS = (
+    "annotation_completion",
+    "annotation_semantic_all",
+    "annotation_semantic_evaluable",
+    "annotation_broad_semantic_all",
+    "annotation_broad_semantic_evaluable",
+    "annotation_surface_variant",
+)
+OUTPUT_FILENAMES = (
+    "annotation_analysis_validation.json",
+    "annotation_analysis_report.json",
+    "annotation_overview.tsv",
+    *(
+        f"annotation_sample_composition_{name}.tsv"
+        for name in ("by_language", "by_model", "by_semantic_group", *CROSS_GROUPS)
+    ),
+    *(
+        f"{stem}_{scope}.tsv"
+        for stem in DISTRIBUTION_STEMS
+        for scope in ("overall", *(f"by_{name}" for name in DIMENSIONS))
+    ),
+    *(
+        f"annotation_{family}_{scope}.tsv"
+        for family in ("completion", "semantic_evaluable")
+        for scope in CROSS_GROUPS
+    ),
+)
 
 
 def read_input(path: Path) -> pd.DataFrame:
@@ -167,12 +170,22 @@ def read_input(path: Path) -> pd.DataFrame:
     return df
 
 
+def write_tsv(path: Path, df: pd.DataFrame) -> None:
+    df.to_csv(path, sep="\t", index=False, encoding="utf-8-sig")
+
+
+def write_json(path: Path, data: dict[str, Any]) -> None:
+    with path.open("w", encoding="utf-8") as handle:
+        json.dump(data, handle, ensure_ascii=False, indent=2, allow_nan=False)
+        handle.write("\n")
+
+
 def validate_input(
     df: pd.DataFrame,
     expected_rows: int | None,
-) -> Dict[str, Any]:
-    errors: List[str] = []
-    warnings: List[str] = []
+) -> dict[str, Any]:
+    errors: list[str] = []
+    warnings: list[str] = []
 
     missing_columns = sorted(REQUIRED_COLUMNS - set(df.columns))
     if missing_columns:
@@ -223,6 +236,12 @@ def validate_input(
         if unexpected:
             errors.append("Unexpected surface-variant labels: " + ", ".join(unexpected))
 
+    for column, allowed in VALUE_ORDERS.items():
+        if column in df.columns:
+            unexpected = sorted(set(df[column]) - set(allowed))
+            if unexpected:
+                errors.append(f"Unexpected values in {column}: {unexpected}")
+
     unresolved_count = 0
 
     # Cross-field checks.
@@ -241,6 +260,15 @@ def validate_input(
             errors.append(
                 f"{len(mismatch_1)} non-evaluable completion rows have a "
                 "semantic relation other than not_applicable."
+            )
+
+        missing_relation = df[
+            (df["final_completion_form"] == "standalone_content_candidate")
+            & (df["final_semantic_relation"] == "not_applicable")
+        ]
+        if len(missing_relation):
+            errors.append(
+                f"{len(missing_relation)} standalone content candidates lack an evaluable relation."
             )
 
         mismatch_2 = df[
@@ -307,12 +335,7 @@ def tidy_distribution(
     group_column: str | None = None,
     group_name: str = "overall",
 ) -> pd.DataFrame:
-    """
-    Return a complete tidy distribution table, including zero-count labels.
-
-    Output columns:
-        <group_name>, label, n, denominator, percent
-    """
+    """Include zero-count labels in each distribution."""
     if group_column is None:
         denominator = int(len(df))
         counts = df[label_column].value_counts().to_dict()
@@ -335,7 +358,7 @@ def tidy_distribution(
     group_values = sorted(
         value for value in df[group_column].unique().tolist() if value != ""
     )
-    rows: List[Dict[str, Any]] = []
+    rows: list[dict[str, Any]] = []
 
     for group_value in group_values:
         subset = df[df[group_column] == group_value]
@@ -359,7 +382,7 @@ def tidy_distribution(
     return pd.DataFrame(rows)
 
 
-def ordered_values(df: pd.DataFrame, column: str) -> List[str]:
+def ordered_values(df: pd.DataFrame, column: str) -> list[str]:
     observed = {value for value in df[column].astype(str).tolist() if value != ""}
     preferred = VALUE_ORDERS.get(column, [])
     ordered = [value for value in preferred if value in observed]
@@ -370,7 +393,7 @@ def ordered_values(df: pd.DataFrame, column: str) -> List[str]:
 def observed_group_combinations(
     df: pd.DataFrame,
     group_columns: Sequence[str],
-) -> List[tuple[str, ...]]:
+) -> list[tuple[str, ...]]:
     combinations = {
         tuple(str(value) for value in row)
         for row in df[list(group_columns)].itertuples(index=False, name=None)
@@ -383,7 +406,7 @@ def observed_group_combinations(
     }
 
     def sort_key(combo: tuple[str, ...]) -> tuple[Any, ...]:
-        key: List[Any] = []
+        key: list[Any] = []
         for column, value in zip(group_columns, combo):
             key.extend([rank_maps[column].get(value, 10**9), value])
         return tuple(key)
@@ -397,11 +420,11 @@ def tidy_distribution_multi(
     label_order: Sequence[str],
     group_columns: Sequence[str],
 ) -> pd.DataFrame:
-    rows: List[Dict[str, Any]] = []
+    rows: list[dict[str, Any]] = []
 
     for combination in observed_group_combinations(df, group_columns):
         mask = pd.Series(True, index=df.index)
-        group_values: Dict[str, str] = {}
+        group_values: dict[str, str] = {}
 
         for column, value in zip(group_columns, combination):
             mask &= df[column] == value
@@ -413,7 +436,7 @@ def tidy_distribution_multi(
 
         for label in label_order:
             n = int(counts.get(label, 0))
-            row: Dict[str, Any] = dict(group_values)
+            row: dict[str, Any] = dict(group_values)
             row.update(
                 {
                     "label": label,
@@ -438,7 +461,7 @@ def tidy_distribution_multi(
 def write_completion_cross_tables(
     df: pd.DataFrame,
     output_dir: Path,
-) -> Dict[str, str]:
+) -> dict[str, str]:
     specifications = {
         "by_model_language": ["model_key", "language"],
         "by_model_semantic_group": ["model_key", "semantic_group"],
@@ -450,7 +473,7 @@ def write_completion_cross_tables(
         ],
     }
 
-    output_paths: Dict[str, str] = {}
+    output_paths: dict[str, str] = {}
     for name, group_columns in specifications.items():
         table = tidy_distribution_multi(
             df=df,
@@ -459,7 +482,7 @@ def write_completion_cross_tables(
             group_columns=group_columns,
         )
         path = output_dir / f"annotation_completion_{name}.tsv"
-        write_tsv(table, path)
+        write_tsv(path, table)
         output_paths[name] = str(path)
 
     return output_paths
@@ -468,14 +491,8 @@ def write_completion_cross_tables(
 def write_semantic_evaluable_cross_tables(
     evaluable_df: pd.DataFrame,
     output_dir: Path,
-) -> Dict[str, str]:
-    """
-    Write fine-grained semantic-relation cross tables for evaluable rows only.
-
-    The denominator in each row is the number of semantically evaluable cases
-    in the exact cross-tabulated cell. Non-evaluable rows are excluded before
-    any counts or percentages are calculated.
-    """
+) -> dict[str, str]:
+    """Use relation-evaluable rows in each cell as the denominator."""
     specifications = {
         "by_language_semantic_group": [
             "language",
@@ -496,7 +513,7 @@ def write_semantic_evaluable_cross_tables(
         ],
     }
 
-    output_paths: Dict[str, str] = {}
+    output_paths: dict[str, str] = {}
     for name, group_columns in specifications.items():
         table = tidy_distribution_multi(
             df=evaluable_df,
@@ -505,7 +522,7 @@ def write_semantic_evaluable_cross_tables(
             group_columns=group_columns,
         )
         path = output_dir / (f"annotation_semantic_evaluable_{name}.tsv")
-        write_tsv(table, path)
+        write_tsv(path, table)
         output_paths[name] = str(path)
 
     return output_paths
@@ -517,8 +534,8 @@ def write_distribution_family(
     filename_stem: str,
     label_column: str,
     label_order: Sequence[str],
-) -> Dict[str, str]:
-    output_paths: Dict[str, str] = {}
+) -> dict[str, str]:
+    output_paths: dict[str, str] = {}
 
     overall = tidy_distribution(
         df=df,
@@ -528,7 +545,7 @@ def write_distribution_family(
         group_name="scope",
     )
     overall_path = output_dir / f"{filename_stem}_overall.tsv"
-    write_tsv(overall, overall_path)
+    write_tsv(overall_path, overall)
     output_paths["overall"] = str(overall_path)
 
     for dimension_name, column_name in DIMENSIONS.items():
@@ -540,14 +557,10 @@ def write_distribution_family(
             group_name=dimension_name,
         )
         path = output_dir / (f"{filename_stem}_by_{dimension_name}.tsv")
-        write_tsv(table, path)
+        write_tsv(path, table)
         output_paths[f"by_{dimension_name}"] = str(path)
 
     return output_paths
-
-
-def write_tsv(df: pd.DataFrame, path: Path) -> None:
-    df.to_csv(path, sep="\t", index=False, encoding="utf-8-sig")
 
 
 def make_overview_table(df: pd.DataFrame) -> pd.DataFrame:
@@ -632,7 +645,7 @@ def make_two_way_sample_composition(
     row_totals = df.groupby(row_column, dropna=False).size().to_dict()
     column_totals = df.groupby(column_column, dropna=False).size().to_dict()
 
-    rows: List[Dict[str, Any]] = []
+    rows: list[dict[str, Any]] = []
     for row_value, column_value in observed_group_combinations(
         df, [row_column, column_column]
     ):
@@ -679,7 +692,7 @@ def make_three_way_sample_composition(
         df.groupby(["model_key", "language"], dropna=False).size().to_dict()
     )
 
-    rows: List[Dict[str, Any]] = []
+    rows: list[dict[str, Any]] = []
     for model_key, language, semantic_group in observed_group_combinations(
         df,
         ["model_key", "language", "semantic_group"],
@@ -709,21 +722,54 @@ def make_three_way_sample_composition(
 
 def counter_dict(
     series: pd.Series, order: Sequence[str] | None = None
-) -> Dict[str, int]:
+) -> dict[str, int]:
     counts = Counter(series.tolist())
     if order is None:
         return {key: int(counts[key]) for key in sorted(counts)}
     return {label: int(counts.get(label, 0)) for label in order}
 
 
-def main() -> int:
-    args = parse_args()
-    output_dir = (
-        args.output_dir
-        if args.output_dir is not None
-        else args.input_file.parent / "analysis_round1"
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Summarize finalized gold-before-final annotations."
     )
-    output_dir.mkdir(parents=True, exist_ok=True)
+    parser.add_argument(
+        "input_file", nargs="?", type=Path, help="Legacy positional input."
+    )
+    parser.add_argument("--input", type=Path, help="Finalized TSV or CSV annotations.")
+    parser.add_argument(
+        "--output-dir", "--output_dir", type=Path, default=DEFAULT_OUTPUT_DIR
+    )
+    parser.add_argument(
+        "--overwrite", action="store_true", help="Replace existing analysis outputs."
+    )
+    parser.add_argument(
+        "--expected-rows", "--expected_rows", type=int, default=DEFAULT_EXPECTED_ROWS
+    )
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if (args.input is None) == (args.input_file is None):
+        parser.error("Specify exactly one input: --input or the positional path.")
+    args.input_file = args.input if args.input is not None else args.input_file
+    if args.expected_rows <= 0:
+        parser.error("--expected-rows must be positive.")
+    output_dir = args.output_dir
+    if args.expected_rows != DEFAULT_EXPECTED_ROWS and (
+        output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve()
+    ):
+        parser.error("Nonstandard row counts require a separate --output-dir.")
+    existing = [
+        output_dir / name for name in OUTPUT_FILENAMES if (output_dir / name).exists()
+    ]
+    if existing and not args.overwrite:
+        parser.error(
+            "Existing outputs; use --overwrite or a different --output-dir: "
+            + ", ".join(str(path) for path in existing)
+        )
 
     try:
         df = read_input(args.input_file)
@@ -735,14 +781,13 @@ def main() -> int:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
 
+    output_dir.mkdir(parents=True, exist_ok=True)
     validation_path = output_dir / "annotation_analysis_validation.json"
-    validation_path.write_text(
-        json.dumps(validation, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    write_json(validation_path, validation)
 
     if not validation["valid"]:
-        print(json.dumps(validation, ensure_ascii=False, indent=2))
+        for error in validation["errors"]:
+            print(f"ERROR: {error}", file=sys.stderr)
         print(
             "\nAnalysis stopped because input validation failed.",
             file=sys.stderr,
@@ -752,14 +797,14 @@ def main() -> int:
 
     df = add_broad_semantic_class(df)
 
-    output_files: Dict[str, Any] = {
+    output_files: dict[str, Any] = {
         "validation": str(validation_path),
     }
 
     # Overview and sample composition.
     overview = make_overview_table(df)
     overview_path = output_dir / "annotation_overview.tsv"
-    write_tsv(overview, overview_path)
+    write_tsv(overview_path, overview)
     output_files["overview"] = str(overview_path)
 
     for name, columns in {
@@ -769,7 +814,7 @@ def main() -> int:
     }.items():
         table = make_sample_composition(df, columns)
         path = output_dir / f"annotation_sample_composition_{name}.tsv"
-        write_tsv(table, path)
+        write_tsv(path, table)
         output_files[f"sample_composition_{name}"] = str(path)
 
     for name, row_column, column_column in [
@@ -791,14 +836,14 @@ def main() -> int:
             column_column=column_column,
         )
         path = output_dir / f"annotation_sample_composition_{name}.tsv"
-        write_tsv(table, path)
+        write_tsv(path, table)
         output_files[f"sample_composition_{name}"] = str(path)
 
     three_way_composition = make_three_way_sample_composition(df)
     three_way_composition_path = output_dir / (
         "annotation_sample_composition_by_model_language_semantic_group.tsv"
     )
-    write_tsv(three_way_composition, three_way_composition_path)
+    write_tsv(three_way_composition_path, three_way_composition)
     output_files["sample_composition_by_model_language_semantic_group"] = str(
         three_way_composition_path
     )
@@ -885,7 +930,7 @@ def main() -> int:
         ).sum()
     )
 
-    report: Dict[str, Any] = {
+    report: dict[str, Any] = {
         "analysis_scope": (
             "Descriptive composition of manually annotated gold-before-final "
             "trajectories only. These tables do not estimate event incidence "
@@ -952,16 +997,19 @@ def main() -> int:
         }
 
     report_path = output_dir / "annotation_analysis_report.json"
-    report_path.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    write_json(report_path, report)
 
-    print(json.dumps(report, ensure_ascii=False, indent=2))
-    print("\nFirst-round annotation analysis completed.")
-    print(f"Output directory: {output_dir}")
-    print(f"Main report: {report_path}")
-    print(f"Overview table: {overview_path}")
+    print(
+        f"Gold-before-final: {len(df)} annotated, "
+        f"{semantic_evaluable_count} relation-evaluable"
+    )
+    print(
+        f"  Broadly acceptable: {int((evaluable_df['broad_semantic_class'] == 'broadly_acceptable').sum())}"
+    )
+    print(
+        f"  Incompatible or unrelated: {int((evaluable_df['broad_semantic_class'] == 'incompatible_or_unrelated').sum())}"
+    )
+    print(f"Output: {output_dir}")
 
     return 0
 

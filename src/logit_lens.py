@@ -1,24 +1,22 @@
 import argparse
-from pathlib import Path
-import json
 import csv
-import os
+import gc
+import json
 import math
-from collections import defaultdict, Counter
+import os
+import sys
+from collections import Counter, defaultdict
+from pathlib import Path
 
 import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
-# ============================================================
-# Config
-# ============================================================
-
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-BASE_ALIGNMENT_DIR = Path("data/alignment")
-BASE_OUTPUT_DIR = Path("data/logit_lens/full")
+DEFAULT_INPUT_DIR = Path("data/alignment")
+DEFAULT_OUTPUT_DIR = Path("data/logit_lens/full")
 
 MODEL_REGISTRY = {
     "qwen3_0_6b": "Qwen/Qwen3-0.6B",
@@ -26,31 +24,72 @@ MODEL_REGISTRY = {
     "qwen3_14b": "Qwen/Qwen3-14B",
 }
 
-# Configurable runtime selections; defaults match the original active run.
-MODELS = {"qwen3_0_6b": MODEL_REGISTRY["qwen3_0_6b"]}
+MODEL_KEYS = tuple(MODEL_REGISTRY)
+INPUT_FILENAME = "token_alignment.jsonl"
+OUTPUT_FILENAMES = (
+    "logit_lens_by_layer.jsonl",
+    "logit_lens_by_layer_compact.tsv",
+    "logit_lens_summary_by_layer.tsv",
+    "logit_lens_summary.json",
+    "logit_lens.rejected.jsonl",
+)
 
-# Main logit-lens setting.
-# For Qwen/Llama-style models, final logits are computed as:
-#   lm_head(final_norm(hidden_state))
-# We apply the same final norm + lm_head to intermediate hidden states.
 APPLY_FINAL_NORM = True
 
 TOP_K = 10
 COMPUTE_PROB = True
 STORE_TOPK = True
 
-MAX_ALIGNMENT_ROWS = None  # set to a small number for debugging, e.g. 20
-PROGRESS_EVERY = 50
 
-# For large models, keep False first.
-# If 14B does not fit on one GPU and you have accelerate installed,
-# you can try setting this to True.
-USE_DEVICE_MAP_AUTO = False
+COMPACT_FIELDS = (
+    "id",
+    "semantic_group",
+    "subgroup",
+    "relation",
+    "language",
+    "model_key",
+    "layer",
+    "layer_name",
+    "target",
+    "target_token_id",
+    "target_token_surface",
+    "target_rank",
+    "target_prob",
+    "target_in_top1",
+    "target_in_top5",
+    "target_in_top10",
+    "layer_top1_text",
+    "final_prediction_text",
+    "final_prediction_rank_at_layer",
+    "faithful_final_at_1",
+    "faithful_final_at_5",
+    "faithful_final_at_10",
+    "topk_overlap_count_with_final",
+    "topk_jaccard_with_final",
+    "final_prediction_is_target",
+)
 
 
-# ============================================================
-# IO helpers
-# ============================================================
+SUMMARY_FIELDS = (
+    "grouping",
+    "group",
+    "model_key",
+    "layer",
+    "n",
+    "target_at_1",
+    "target_at_5",
+    "target_at_10",
+    "mean_target_rank",
+    "mean_target_logit",
+    "mean_target_prob",
+    "faithful_final_at_1",
+    "faithful_final_at_5",
+    "faithful_final_at_10",
+    "mean_final_prediction_rank_at_layer",
+    "final_prediction_is_target_rate",
+    "mean_topk_overlap_count_with_final",
+    "mean_topk_jaccard_with_final",
+)
 
 
 def read_jsonl(path, max_rows=None):
@@ -68,30 +107,28 @@ def read_jsonl(path, max_rows=None):
     return items
 
 
+def write_json(path, data):
+    with path.open("w", encoding="utf-8") as handle:
+        json.dump(data, handle, ensure_ascii=False, indent=2, allow_nan=False)
+        handle.write("\n")
+
+
 def write_jsonl(path, items):
-    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         for item in items:
-            f.write(json.dumps(item, ensure_ascii=False) + "\n")
+            f.write(json.dumps(item, ensure_ascii=False, allow_nan=False) + "\n")
 
 
 def write_tsv(path, rows, fieldnames):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8", newline="") as f:
+    with path.open("w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter="\t")
         writer.writeheader()
         for row in rows:
             writer.writerow({k: row.get(k, "") for k in fieldnames})
 
 
-# ============================================================
-# Device / model helpers
-# ============================================================
-
-
 def get_device_and_dtype():
     if torch.cuda.is_available():
-        # bfloat16 is usually safer on newer GPUs.
         if torch.cuda.is_bf16_supported():
             return torch.device("cuda"), torch.bfloat16
         return torch.device("cuda"), torch.float16
@@ -102,11 +139,10 @@ def get_device_and_dtype():
     return torch.device("cpu"), torch.float32
 
 
-def load_model_and_tokenizer(model_name):
+def load_model_and_tokenizer(model_name, device_map_auto):
     device, dtype = get_device_and_dtype()
 
-    print(f"Device: {device}")
-    print(f"Dtype: {dtype}")
+    print(f"  Device: {device}, dtype: {dtype}", flush=True)
 
     tokenizer = AutoTokenizer.from_pretrained(
         model_name,
@@ -114,7 +150,7 @@ def load_model_and_tokenizer(model_name):
         trust_remote_code=True,
     )
 
-    if USE_DEVICE_MAP_AUTO:
+    if device_map_auto:
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
             torch_dtype=dtype,
@@ -161,14 +197,7 @@ def project_hidden_to_logits(
     layer_idx,
     last_layer_idx,
 ):
-    """
-    Plain logit lens projection.
-
-    For Qwen/Llama-style models:
-    - embedding layer: no final norm
-    - intermediate layers: apply final norm before lm_head
-    - final layer: should be handled separately using outputs.logits
-    """
+    """Project embeddings directly and intermediate states through final norm and lm_head."""
     h = hidden_state.unsqueeze(0).unsqueeze(0)
 
     should_apply_norm = (
@@ -192,16 +221,8 @@ def project_hidden_to_logits(
     return logits.float()
 
 
-# ============================================================
-# Logit / rank helpers
-# ============================================================
-
-
 def rank_of_token(logits, token_id):
-    """
-    1-based rank.
-    rank = 1 means highest logit.
-    """
+    """Return the 1-based competition rank and token logit."""
     token_logit = logits[token_id]
     rank = int((logits > token_logit).sum().item()) + 1
     return rank, float(token_logit.item())
@@ -237,15 +258,7 @@ def safe_float(x):
 
 
 def topk_jaccard(layer_topk_ids, final_topk_ids):
-    """
-    Jaccard similarity between the layer's top-k token-id set and the
-    final layer's top-k token-id set.
-
-    J(A, B) = |A ∩ B| / |A ∪ B|
-
-    Token IDs are used rather than decoded strings so that distinct tokens
-    with similar-looking text are not accidentally merged.
-    """
+    """Compute Jaccard similarity over token IDs."""
     layer_set = {int(token_id) for token_id in layer_topk_ids}
     final_set = {int(token_id) for token_id in final_topk_ids}
 
@@ -256,219 +269,6 @@ def topk_jaccard(layer_topk_ids, final_topk_ids):
     return len(layer_set & final_set) / len(union)
 
 
-# ============================================================
-# One-example logit lens
-# ============================================================
-
-# @torch.inference_mode()
-# def run_logit_lens_for_alignment(row, model, tokenizer, final_norm, lm_head):
-#     """
-#     One alignment row = one example-language-model item.
-
-#     Uses:
-#         full_input_ids
-#         prediction_position
-#         target_token_id
-
-#     This matches the fullspan alignment setup.
-
-#     Important:
-#     - For intermediate layers, we apply final_norm + lm_head.
-#     - For the final layer, we use outputs.logits directly.
-#       This avoids accidentally applying the final norm twice.
-#     """
-
-#     input_ids_list = row["full_input_ids"]
-#     prediction_position = int(row["prediction_position"])
-#     target_token_id = int(row["target_token_id"])
-
-#     input_device = get_input_device(model)
-
-#     input_ids = torch.tensor(
-#         [input_ids_list],
-#         dtype=torch.long,
-#         device=input_device,
-#     )
-
-#     outputs = model(
-#         input_ids=input_ids,
-#         output_hidden_states=True,
-#         use_cache=False,
-#         return_dict=True,
-#     )
-
-#     hidden_states = outputs.hidden_states
-
-#     # hidden_states includes:
-#     #   hidden_states[0]  = embedding output
-#     #   hidden_states[1:] = transformer layer outputs
-#     # For Qwen3-0.6B, this should be 29 hidden states:
-#     #   0 embedding + 28 transformer layers
-#     last_layer_idx = len(hidden_states) - 1
-#     num_layers = last_layer_idx
-
-#     # ------------------------------------------------------------
-#     # Use the model's actual final logits for final prediction.
-#     # This is the safest final-layer reference.
-#     # ------------------------------------------------------------
-
-#     final_logits = outputs.logits[0, prediction_position, :].float()
-
-#     final_topk = get_topk_info(final_logits, tokenizer, TOP_K)
-#     final_topk_token_ids = [
-#         int(token_id)
-#         for token_id in final_topk["topk_token_ids"]
-#     ]
-
-#     final_prediction_token_id = int(final_topk_token_ids[0])
-#     final_prediction_token = final_topk["topk_tokens"][0]
-#     final_prediction_text = final_topk["topk_texts"][0]
-
-#     final_prediction_is_target = (
-#         final_prediction_token_id == target_token_id
-#     )
-
-#     results = []
-
-#     for layer_idx, layer_hidden_states in enumerate(hidden_states):
-#         # --------------------------------------------------------
-#         # Final layer:
-#         # use outputs.logits directly, not final_norm + lm_head.
-#         # --------------------------------------------------------
-#         if layer_idx == last_layer_idx:
-#             logits = final_logits
-
-#         # --------------------------------------------------------
-#         # Embedding / intermediate layers:
-#         # use logit lens projection.
-#         #
-#         # The helper project_hidden_to_logits should apply final_norm
-#         # only when appropriate. If your project_hidden_to_logits does
-#         # not take layer_idx, use the updated helper below.
-#         # --------------------------------------------------------
-#         else:
-#             hidden = layer_hidden_states[0, prediction_position, :]
-
-#             logits = project_hidden_to_logits(
-#                 hidden_state=hidden,
-#                 final_norm=final_norm,
-#                 lm_head=lm_head,
-#                 layer_idx=layer_idx,
-#                 last_layer_idx=last_layer_idx,
-#             )
-
-#         target_rank, target_logit = rank_of_token(
-#             logits,
-#             target_token_id,
-#         )
-
-#         final_rank, final_logit_at_layer = rank_of_token(
-#             logits,
-#             final_prediction_token_id,
-#         )
-
-#         topk = get_topk_info(logits, tokenizer, TOP_K)
-#         top_ids = [
-#             int(token_id)
-#             for token_id in topk["topk_token_ids"]
-#         ]
-
-#         topk_overlap_count_with_final = len(
-#             set(top_ids) & set(final_topk_token_ids)
-#         )
-#         topk_jaccard_with_final = topk_jaccard(
-#             top_ids,
-#             final_topk_token_ids,
-#         )
-
-#         target_prob = None
-#         final_prediction_prob_at_layer = None
-
-#         if COMPUTE_PROB:
-#             probs = F.softmax(logits, dim=-1)
-#             target_prob = float(probs[target_token_id].item())
-#             final_prediction_prob_at_layer = float(
-#                 probs[final_prediction_token_id].item()
-#             )
-
-#         layer_top1_token_id = int(top_ids[0])
-#         layer_top1_token = topk["topk_tokens"][0]
-#         layer_top1_text = topk["topk_texts"][0]
-#         layer_top1_logit = float(topk["topk_logits"][0])
-
-#         if layer_idx == 0:
-#             layer_name = "embedding"
-#         elif layer_idx == last_layer_idx:
-#             layer_name = "final"
-#         else:
-#             layer_name = f"layer_{layer_idx}"
-
-#         result = {
-#             "id": row["id"],
-#             "semantic_group": row["semantic_group"],
-#             "subgroup": row["subgroup"],
-#             "relation": row["relation"],
-#             "language": row["language"],
-
-#             "model_key": row["model_key"],
-#             "model_name": row["model_name"],
-
-#             "layer": layer_idx,
-#             "layer_name": layer_name,
-#             "num_layers": num_layers,
-#             "layer_fraction": layer_idx / num_layers if num_layers > 0 else None,
-
-#             "target": row["target"],
-#             "target_token_id": target_token_id,
-#             "target_token": row["target_token"],
-#             "target_token_surface": row["target_token_surface"],
-
-#             "prediction_position": prediction_position,
-#             "prediction_token_id": row["prediction_token_id"],
-#             "prediction_token": row["prediction_token"],
-
-#             "target_logit": target_logit,
-#             "target_prob": safe_float(target_prob),
-#             "target_rank": target_rank,
-#             "target_in_top1": target_rank <= 1,
-#             "target_in_top5": target_rank <= 5,
-#             "target_in_top10": target_rank <= 10,
-
-#             "layer_top1_token_id": layer_top1_token_id,
-#             "layer_top1_token": layer_top1_token,
-#             "layer_top1_text": layer_top1_text,
-#             "layer_top1_logit": layer_top1_logit,
-
-#             "final_prediction_token_id": final_prediction_token_id,
-#             "final_prediction_token": final_prediction_token,
-#             "final_prediction_text": final_prediction_text,
-#             "final_prediction_is_target": final_prediction_is_target,
-
-#             "final_prediction_logit_at_layer": final_logit_at_layer,
-#             "final_prediction_prob_at_layer": safe_float(
-#                 final_prediction_prob_at_layer
-#             ),
-#             "final_prediction_rank_at_layer": final_rank,
-#             "faithful_final_at_1": final_rank <= 1,
-#             "faithful_final_at_5": final_rank <= 5,
-#             "faithful_final_at_10": final_rank <= 10,
-
-#             # Set-based overlap between this layer's top-k predictions
-#             # and the true final layer's top-k predictions.
-#             "topk_overlap_count_with_final":
-#                 topk_overlap_count_with_final,
-#             "topk_jaccard_with_final":
-#                 float(topk_jaccard_with_final),
-#         }
-
-#         if STORE_TOPK:
-#             result.update(topk)
-
-#         results.append(result)
-
-#     return results
-
-
 @torch.inference_mode()
 def run_logit_lens_for_alignment(
     row,
@@ -477,35 +277,7 @@ def run_logit_lens_for_alignment(
     final_norm,
     lm_head,
 ):
-    """
-    Run the plain Logit Lens for one aligned example.
-
-    One alignment row corresponds to one
-    example-language-model item.
-
-    Required alignment fields:
-        full_input_ids
-        prediction_position
-        target_token_id
-
-    This function follows the full-span alignment setup.
-
-    Projection rules:
-    - Embedding and intermediate hidden states are projected using
-      final_norm + lm_head.
-    - The final layer uses outputs.logits directly.
-      This avoids applying the model's final normalization twice.
-
-    Metric definitions:
-    - target_rank is retained as a separate rank-based diagnostic.
-    - Target@1/5/10 is determined using membership in the actual
-      torch.topk result, rather than target_rank <= k.
-    - Faithful-to-final@1/5/10 is also determined using actual
-      top-k membership.
-
-    Using actual top-k membership avoids inconsistencies when several
-    tokens have exactly tied logits.
-    """
+    """Use full-span alignment and native final logits; Top-k metrics use actual membership, not rank thresholds."""
 
     if TOP_K < 10:
         raise ValueError(
@@ -533,26 +305,8 @@ def run_logit_lens_for_alignment(
 
     hidden_states = outputs.hidden_states
 
-    # hidden_states contains:
-    #
-    # hidden_states[0]
-    #     embedding output
-    #
-    # hidden_states[1:]
-    #     transformer-layer outputs
-    #
-    # Therefore, if a model has L transformer layers,
-    # len(hidden_states) should normally be L + 1.
     last_layer_idx = len(hidden_states) - 1
     num_layers = last_layer_idx
-
-    # ------------------------------------------------------------
-    # Final-layer reference
-    # ------------------------------------------------------------
-    #
-    # Use the model's actual output logits as the final-layer
-    # reference. Do not project the final hidden state again.
-    # ------------------------------------------------------------
 
     final_logits = outputs.logits[
         0,
@@ -581,27 +335,9 @@ def run_logit_lens_for_alignment(
 
     results = []
 
-    # ------------------------------------------------------------
-    # Layer-wise Logit Lens
-    # ------------------------------------------------------------
-
     for layer_idx, layer_hidden_states in enumerate(hidden_states):
-        # --------------------------------------------------------
-        # Final layer
-        # --------------------------------------------------------
-        #
-        # Use outputs.logits directly.
-        # --------------------------------------------------------
-
         if layer_idx == last_layer_idx:
             logits = final_logits
-
-        # --------------------------------------------------------
-        # Embedding and intermediate layers
-        # --------------------------------------------------------
-        #
-        # Apply the plain Logit Lens projection.
-        # --------------------------------------------------------
 
         else:
             hidden = layer_hidden_states[
@@ -618,18 +354,6 @@ def run_logit_lens_for_alignment(
                 last_layer_idx=last_layer_idx,
             )
 
-        # --------------------------------------------------------
-        # Rank-based diagnostics
-        # --------------------------------------------------------
-        #
-        # These ranks remain useful for mean target rank and
-        # final-prediction rank analyses.
-        #
-        # However, they are not used to define Target@k or
-        # Faithful-to-final@k because tied logits can give multiple
-        # tokens the same numerical rank.
-        # --------------------------------------------------------
-
         target_rank, target_logit = rank_of_token(
             logits,
             target_token_id,
@@ -642,10 +366,6 @@ def run_logit_lens_for_alignment(
             logits,
             final_prediction_token_id,
         )
-
-        # --------------------------------------------------------
-        # Actual top-k predictions
-        # --------------------------------------------------------
 
         topk = get_topk_info(
             logits,
@@ -660,26 +380,11 @@ def run_logit_lens_for_alignment(
                 f"get_topk_info returned fewer than 10 token IDs at layer {layer_idx}."
             )
 
-        # --------------------------------------------------------
-        # Exact Target@k membership
-        # --------------------------------------------------------
-        #
-        # These are based on the actual ordered top-k list.
-        # --------------------------------------------------------
-
         target_in_top1 = target_token_id == top_ids[0]
 
         target_in_top5 = target_token_id in top_ids[:5]
 
         target_in_top10 = target_token_id in top_ids[:10]
-
-        # --------------------------------------------------------
-        # Faithfulness to the final prediction
-        # --------------------------------------------------------
-        #
-        # Check whether the model's actual final Top-1 prediction
-        # is present in this layer's actual top-k list.
-        # --------------------------------------------------------
 
         faithful_final_at_1 = final_prediction_token_id == top_ids[0]
 
@@ -687,20 +392,12 @@ def run_logit_lens_for_alignment(
 
         faithful_final_at_10 = final_prediction_token_id in top_ids[:10]
 
-        # --------------------------------------------------------
-        # Top-k set overlap with final layer
-        # --------------------------------------------------------
-
         topk_overlap_count_with_final = len(set(top_ids) & set(final_topk_token_ids))
 
         topk_jaccard_with_final = topk_jaccard(
             top_ids,
             final_topk_token_ids,
         )
-
-        # --------------------------------------------------------
-        # Token probabilities
-        # --------------------------------------------------------
 
         target_prob = None
         final_prediction_prob_at_layer = None
@@ -717,10 +414,6 @@ def run_logit_lens_for_alignment(
                 probs[final_prediction_token_id].item()
             )
 
-        # --------------------------------------------------------
-        # Layer Top-1 information
-        # --------------------------------------------------------
-
         layer_top1_token_id = int(top_ids[0])
 
         layer_top1_token = topk["topk_tokens"][0]
@@ -728,10 +421,6 @@ def run_logit_lens_for_alignment(
         layer_top1_text = topk["topk_texts"][0]
 
         layer_top1_logit = float(topk["topk_logits"][0])
-
-        # --------------------------------------------------------
-        # Layer name
-        # --------------------------------------------------------
 
         if layer_idx == 0:
             layer_name = "embedding"
@@ -741,18 +430,6 @@ def run_logit_lens_for_alignment(
 
         else:
             layer_name = f"layer_{layer_idx}"
-
-        # --------------------------------------------------------
-        # Final-layer sanity checks
-        # --------------------------------------------------------
-        #
-        # At the final layer:
-        #
-        # 1. The layer Top-1 must equal the stored final prediction.
-        # 2. Target@1 must equal final_prediction_is_target.
-        # 3. Faithfulness@1/5/10 must all equal True.
-        # 4. The final top-k set must completely overlap with itself.
-        # --------------------------------------------------------
 
         if layer_idx == last_layer_idx:
             assert layer_top1_token_id == final_prediction_token_id, (
@@ -795,10 +472,6 @@ def run_logit_lens_for_alignment(
                 abs_tol=1e-12,
             ), "Final-layer top-k Jaccard must equal 1.0."
 
-        # --------------------------------------------------------
-        # Output record
-        # --------------------------------------------------------
-
         result = {
             "id": row["id"],
             "semantic_group": row["semantic_group"],
@@ -818,37 +491,28 @@ def run_logit_lens_for_alignment(
             "prediction_position": prediction_position,
             "prediction_token_id": row["prediction_token_id"],
             "prediction_token": row["prediction_token"],
-            # Gold-target diagnostics
             "target_logit": target_logit,
             "target_prob": safe_float(target_prob),
             "target_rank": target_rank,
-            # Actual top-k membership
             "target_in_top1": target_in_top1,
             "target_in_top5": target_in_top5,
             "target_in_top10": target_in_top10,
-            # Current layer Top-1
             "layer_top1_token_id": layer_top1_token_id,
             "layer_top1_token": layer_top1_token,
             "layer_top1_text": layer_top1_text,
             "layer_top1_logit": layer_top1_logit,
-            # Final prediction
             "final_prediction_token_id": final_prediction_token_id,
             "final_prediction_token": final_prediction_token,
             "final_prediction_text": final_prediction_text,
             "final_prediction_is_target": final_prediction_is_target,
-            # Final prediction at the current layer
             "final_prediction_logit_at_layer": final_logit_at_layer,
             "final_prediction_prob_at_layer": safe_float(
                 final_prediction_prob_at_layer
             ),
             "final_prediction_rank_at_layer": final_rank,
-            # Actual top-k faithfulness membership
             "faithful_final_at_1": faithful_final_at_1,
             "faithful_final_at_5": faithful_final_at_5,
             "faithful_final_at_10": faithful_final_at_10,
-            # Set-based overlap between this layer's
-            # top-k predictions and the true final
-            # layer's top-k predictions.
             "topk_overlap_count_with_final": topk_overlap_count_with_final,
             "topk_jaccard_with_final": float(topk_jaccard_with_final),
         }
@@ -861,22 +525,12 @@ def run_logit_lens_for_alignment(
     return results
 
 
-# ============================================================
-# Aggregation
-# ============================================================
-
-# ============================================================
-# Aggregation
-# ============================================================
-
 FINAL_EXACT_GOLD = "final_exact_gold"
 FINAL_NON_GOLD = "final_non_gold"
 
 
 def mean(values):
-    """
-    Compute the arithmetic mean while ignoring None values.
-    """
+    """Compute the mean, ignoring None."""
     values = [value for value in values if value is not None]
 
     if not values:
@@ -886,12 +540,7 @@ def mean(values):
 
 
 def bool_rate(rows, key):
-    """
-    Compute the proportion of True values for a Boolean field.
-
-    None values are ignored, although the current Logit Lens output
-    should normally contain a Boolean value for all requested fields.
-    """
+    """Compute the proportion of true values, ignoring None."""
     values = [bool(row[key]) for row in rows if row.get(key) is not None]
 
     if not values:
@@ -901,22 +550,7 @@ def bool_rate(rows, key):
 
 
 def get_final_match_status(row):
-    """
-    Assign a neutral exact-match label to one result row.
-
-    Important:
-    - final_exact_gold:
-        the model's final Top-1 token is exactly the predefined
-        gold target token.
-
-    - final_non_gold:
-        the model's final Top-1 token is not the predefined
-        gold target token.
-
-    final_non_gold does not necessarily mean semantically incorrect.
-    It may include translation equivalents, synonyms, direct
-    hypernyms, or other plausible completions.
-    """
+    """Label exact token matches, not semantic correctness."""
     if bool(row["final_prediction_is_target"]):
         return FINAL_EXACT_GOLD
 
@@ -924,17 +558,7 @@ def get_final_match_status(row):
 
 
 def validate_exact_gold_rows(rows):
-    """
-    Sanity check for examples whose final prediction exactly matches
-    the gold target.
-
-    For these examples, the gold target token and the model's final
-    prediction token are identical. Therefore, at every layer:
-
-        Target@k == Faithful-to-final@k
-
-    for k in {1, 5, 10}.
-    """
+    """Check that gold and final-token accessibility agree for exact matches."""
     if not rows:
         return
 
@@ -961,39 +585,8 @@ def validate_exact_gold_rows(rows):
 
 
 def aggregate_results(results):
-    """
-    Aggregate layer-wise Logit Lens results.
+    """Aggregate layer-wise metrics by model and grouping."""
 
-    Existing grouping dimensions:
-        overall
-        language
-        semantic_group
-        language_semantic_group
-        subgroup
-        relation
-
-    New grouping dimensions:
-        final_match_status
-        language_final_match_status
-        semantic_group_final_match_status
-        language_semantic_group_final_match_status
-
-    The final-match grouping distinguishes:
-
-        final_exact_gold
-        final_non_gold
-
-    This is an exact-token distinction, not a semantic correctness
-    judgment.
-    """
-
-    # Each grouping is represented by:
-    #
-    #   grouping name
-    #   function that maps one raw result row to its group label
-    #
-    # Using functions makes it possible to define derived groupings
-    # such as final_match_status without modifying the raw result rows.
     groupings = [
         (
             "overall",
@@ -1019,9 +612,6 @@ def aggregate_results(results):
             "relation",
             lambda row: str(row["relation"]),
         ),
-        # --------------------------------------------------------
-        # New final exact-match groupings
-        # --------------------------------------------------------
         (
             "final_match_status",
             lambda row: get_final_match_status(row),
@@ -1049,10 +639,6 @@ def aggregate_results(results):
     for grouping_name, group_function in groupings:
         buckets = defaultdict(list)
 
-        # --------------------------------------------------------
-        # Assign each layer-wise result row to a bucket
-        # --------------------------------------------------------
-
         for row in results:
             group_value = group_function(row)
 
@@ -1064,10 +650,6 @@ def aggregate_results(results):
             )
 
             buckets[bucket_key].append(row)
-
-        # --------------------------------------------------------
-        # Aggregate each bucket
-        # --------------------------------------------------------
 
         sorted_buckets = sorted(
             buckets.items(),
@@ -1085,8 +667,6 @@ def aggregate_results(results):
             model_key,
             layer,
         ), rows in sorted_buckets:
-            # For an exact-gold subset, Target@k and Faithful@k
-            # must be identical because they refer to the same token.
             validate_exact_gold_rows(rows)
 
             aggregate_row = {
@@ -1095,9 +675,6 @@ def aggregate_results(results):
                 "model_key": model_key,
                 "layer": layer,
                 "n": len(rows),
-                # ------------------------------------------------
-                # Gold-target accessibility
-                # ------------------------------------------------
                 "target_at_1": bool_rate(
                     rows,
                     "target_in_top1",
@@ -1113,9 +690,6 @@ def aggregate_results(results):
                 "mean_target_rank": mean(row["target_rank"] for row in rows),
                 "mean_target_logit": mean(row["target_logit"] for row in rows),
                 "mean_target_prob": mean(row["target_prob"] for row in rows),
-                # ------------------------------------------------
-                # Faithfulness to the model's actual final Top-1
-                # ------------------------------------------------
                 "faithful_final_at_1": bool_rate(
                     rows,
                     "faithful_final_at_1",
@@ -1131,24 +705,10 @@ def aggregate_results(results):
                 "mean_final_prediction_rank_at_layer": mean(
                     row["final_prediction_rank_at_layer"] for row in rows
                 ),
-                # ------------------------------------------------
-                # Final exact-gold match
-                # ------------------------------------------------
-                #
-                # For final_match_status groups, this will be:
-                #
-                #   1.0 for final_exact_gold
-                #   0.0 for final_non_gold
-                #
-                # This is expected and can serve as a sanity check.
-                # ------------------------------------------------
                 "final_prediction_is_target_rate": bool_rate(
                     rows,
                     "final_prediction_is_target",
                 ),
-                # ------------------------------------------------
-                # Top-k convergence toward the final layer
-                # ------------------------------------------------
                 "mean_topk_overlap_count_with_final": mean(
                     row["topk_overlap_count_with_final"] for row in rows
                 ),
@@ -1162,28 +722,21 @@ def aggregate_results(results):
     return aggregate_rows
 
 
-# ============================================================
-# Main per model
-# ============================================================
-
-
-def run_for_model(model_key, model_name):
-    alignment_path = BASE_ALIGNMENT_DIR / model_key / "token_alignment.jsonl"
-    output_dir = BASE_OUTPUT_DIR / model_key
+def run_model(model_key, model_name, args):
+    alignment_path = args.input_dir / model_key / INPUT_FILENAME
+    output_dir = args.output_dir / model_key
 
     raw_jsonl = output_dir / "logit_lens_by_layer.jsonl"
     compact_tsv = output_dir / "logit_lens_by_layer_compact.tsv"
     summary_tsv = output_dir / "logit_lens_summary_by_layer.tsv"
     summary_json = output_dir / "logit_lens_summary.json"
 
-    output_dir.mkdir(parents=True, exist_ok=True)
-
     if not alignment_path.exists():
         raise FileNotFoundError(f"Alignment file not found: {alignment_path}")
 
     alignment_rows = read_jsonl(
         alignment_path,
-        max_rows=MAX_ALIGNMENT_ROWS,
+        max_rows=args.max_rows,
     )
 
     alignment_rows = [r for r in alignment_rows if r.get("model_key") == model_key]
@@ -1193,14 +746,10 @@ def run_for_model(model_key, model_name):
             f"No alignment rows found for model_key={model_key} in {alignment_path}"
         )
 
-    print("\n========================================")
-    print(f"Model: {model_key} -> {model_name}")
-    print(f"Alignment rows: {len(alignment_rows)}")
-    print(f"Alignment path: {alignment_path}")
-    print(f"Output dir: {output_dir}")
-    print("========================================")
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    model, tokenizer = load_model_and_tokenizer(model_name)
+    print(f"{model_key}: processing {len(alignment_rows)} examples", flush=True)
+    model, tokenizer = load_model_and_tokenizer(model_name, args.device_map_auto)
 
     final_norm = get_final_norm(model)
     lm_head = model.get_output_embeddings()
@@ -1209,7 +758,7 @@ def run_for_model(model_key, model_name):
         raise RuntimeError("model.get_output_embeddings() returned None.")
 
     if APPLY_FINAL_NORM and final_norm is None:
-        print("Warning: final norm not found. Using lm_head only.")
+        raise RuntimeError("Final norm not found; refusing to change the readout.")
 
     all_results = []
     rejected = []
@@ -1225,6 +774,8 @@ def run_for_model(model_key, model_name):
             )
             all_results.extend(results)
 
+        except torch.cuda.OutOfMemoryError:
+            raise
         except Exception as e:
             rejected.append(
                 {
@@ -1237,72 +788,23 @@ def run_for_model(model_key, model_name):
                 }
             )
 
-        if idx % PROGRESS_EVERY == 0:
-            print(
-                f"Processed {idx}/{len(alignment_rows)} alignment rows; "
-                f"logit-lens rows so far: {len(all_results)}; "
-                f"rejected: {len(rejected)}"
-            )
+        if args.progress_every and idx % args.progress_every == 0:
+            print(f"  {idx}/{len(alignment_rows)} examples", flush=True)
 
         if torch.cuda.is_available() and idx % 100 == 0:
             torch.cuda.empty_cache()
 
+    if not all_results:
+        write_jsonl(output_dir / "logit_lens.rejected.jsonl", rejected)
+        raise RuntimeError(f"All examples failed for {model_key}.")
+
     write_jsonl(raw_jsonl, all_results)
 
-    compact_fields = [
-        "id",
-        "semantic_group",
-        "subgroup",
-        "relation",
-        "language",
-        "model_key",
-        "layer",
-        "layer_name",
-        "target",
-        "target_token_id",
-        "target_token_surface",
-        "target_rank",
-        "target_prob",
-        "target_in_top1",
-        "target_in_top5",
-        "target_in_top10",
-        "layer_top1_text",
-        "final_prediction_text",
-        "final_prediction_rank_at_layer",
-        "faithful_final_at_1",
-        "faithful_final_at_5",
-        "faithful_final_at_10",
-        "topk_overlap_count_with_final",
-        "topk_jaccard_with_final",
-        "final_prediction_is_target",
-    ]
-
-    write_tsv(compact_tsv, all_results, compact_fields)
+    write_tsv(compact_tsv, all_results, COMPACT_FIELDS)
 
     aggregate_rows = aggregate_results(all_results)
 
-    summary_fields = [
-        "grouping",
-        "group",
-        "model_key",
-        "layer",
-        "n",
-        "target_at_1",
-        "target_at_5",
-        "target_at_10",
-        "mean_target_rank",
-        "mean_target_logit",
-        "mean_target_prob",
-        "faithful_final_at_1",
-        "faithful_final_at_5",
-        "faithful_final_at_10",
-        "mean_final_prediction_rank_at_layer",
-        "final_prediction_is_target_rate",
-        "mean_topk_overlap_count_with_final",
-        "mean_topk_jaccard_with_final",
-    ]
-
-    write_tsv(summary_tsv, aggregate_rows, summary_fields)
+    write_tsv(summary_tsv, aggregate_rows, SUMMARY_FIELDS)
 
     rejected_jsonl = output_dir / "logit_lens.rejected.jsonl"
     write_jsonl(rejected_jsonl, rejected)
@@ -1337,118 +839,123 @@ def run_for_model(model_key, model_name):
         "rejected_jsonl": str(rejected_jsonl),
     }
 
-    with summary_json.open("w", encoding="utf-8") as f:
-        json.dump(summary, f, ensure_ascii=False, indent=2)
+    write_json(summary_json, summary)
 
-    print("\nDone for model:", model_key)
-    print(f"Alignment rows: {len(alignment_rows)}")
-    print(f"Logit-lens rows: {len(all_results)}")
-    print(f"Rejected: {len(rejected)}")
-    print(f"Raw JSONL: {raw_jsonl}")
-    print(f"Compact TSV: {compact_tsv}")
-    print(f"Summary TSV: {summary_tsv}")
-    print(f"Summary JSON: {summary_json}")
-
+    print(
+        f"{model_key}: {len(alignment_rows) - len(rejected)} processed, "
+        f"{len(rejected)} rejected, {len(all_results)} layer rows",
+        flush=True,
+    )
     if rejected:
-        print("\nWarning: some rows failed. Check:")
-        print(rejected_jsonl)
-
-    del model
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
+        print(f"  Rejections: {rejected_jsonl}", file=sys.stderr)
+    return len(alignment_rows) - len(rejected), len(rejected), len(all_results)
 
 
 def build_parser():
-    parser = argparse.ArgumentParser(
-        description="Run the thesis plain Logit Lens on precomputed token alignments."
-    )
+    parser = argparse.ArgumentParser(description="Run the plain Logit Lens.")
     parser.add_argument(
+        "--model",
         "--models",
         nargs="+",
-        choices=tuple(MODEL_REGISTRY),
+        choices=["all", *MODEL_KEYS],
         default=["qwen3_0_6b"],
-        metavar="MODEL",
-        help="Model key(s): qwen3_0_6b, qwen3_4b, qwen3_14b (default: qwen3_0_6b).",
     )
     parser.add_argument(
+        "--input-dir",
         "--alignment-dir",
+        "--alignment_dir",
         type=Path,
-        default=BASE_ALIGNMENT_DIR,
-        help="Directory containing <model_key>/token_alignment.jsonl.",
+        default=DEFAULT_INPUT_DIR,
     )
     parser.add_argument(
-        "--output-dir",
-        type=Path,
-        default=BASE_OUTPUT_DIR,
-        help="Output root; each model writes to <output-dir>/<model_key>/.",
+        "--output-dir", "--output_dir", type=Path, default=DEFAULT_OUTPUT_DIR
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Allow replacing existing output files.",
     )
     parser.add_argument(
         "--max-rows",
         type=int,
         default=None,
-        help="Process at most N alignment rows per model (for smoke tests).",
+        help="Smoke test: limit examples per model.",
     )
-    parser.add_argument(
-        "--top-k",
-        type=int,
-        default=10,
-        help="Number of highest-scoring tokens to store; must be >= 10.",
-    )
-    parser.add_argument(
-        "--no-prob",
-        action="store_true",
-        help="Skip softmax-based token probabilities.",
-    )
-    parser.add_argument(
-        "--no-store-topk",
-        action="store_true",
-        help="Omit full top-k lists from each JSONL record.",
-    )
-    parser.add_argument(
-        "--device-map-auto",
-        action="store_true",
-        help="Use Hugging Face device_map='auto' (requires accelerate).",
-    )
+    parser.add_argument("--top-k", type=int, default=10)
+    parser.add_argument("--no-prob", action="store_true")
+    parser.add_argument("--no-store-topk", action="store_true")
+    parser.add_argument("--device-map-auto", action="store_true")
     parser.add_argument(
         "--progress-every",
         type=int,
-        default=50,
-        help="Print progress every N alignment rows (default: 50).",
+        default=100,
+        help="Progress interval; 0 disables progress messages.",
     )
     return parser
 
 
 def main(argv=None):
-    args = build_parser().parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
     if args.max_rows is not None and args.max_rows < 1:
-        raise SystemExit("--max-rows must be positive")
+        parser.error("--max-rows must be positive")
     if args.top_k < 10:
-        raise SystemExit("--top-k must be >= 10 for Target@10 and Faithful@10")
-    if args.progress_every < 1:
-        raise SystemExit("--progress-every must be positive")
+        parser.error("--top-k must be at least 10")
+    if args.progress_every < 0:
+        parser.error("--progress-every must be nonnegative")
+    if "all" in args.model and len(args.model) != 1:
+        parser.error("Use all alone or specify individual model keys")
+    if (
+        args.max_rows is not None
+        or args.top_k != 10
+        or args.no_prob
+        or args.no_store_topk
+    ) and args.output_dir.resolve() == DEFAULT_OUTPUT_DIR.resolve():
+        parser.error(
+            "Use a separate --output-dir for smoke tests or nonstandard extraction settings"
+        )
 
-    global BASE_ALIGNMENT_DIR, BASE_OUTPUT_DIR, MODELS
     global TOP_K, COMPUTE_PROB, STORE_TOPK
-    global MAX_ALIGNMENT_ROWS, PROGRESS_EVERY, USE_DEVICE_MAP_AUTO
-
-    BASE_ALIGNMENT_DIR = args.alignment_dir
-    BASE_OUTPUT_DIR = args.output_dir
-    MODELS = {key: MODEL_REGISTRY[key] for key in dict.fromkeys(args.models)}
     TOP_K = args.top_k
     COMPUTE_PROB = not args.no_prob
     STORE_TOPK = not args.no_store_topk
-    MAX_ALIGNMENT_ROWS = args.max_rows
-    PROGRESS_EVERY = args.progress_every
-    USE_DEVICE_MAP_AUTO = args.device_map_auto
+    model_keys = (
+        list(MODEL_KEYS)
+        if args.model == ["all"]
+        else [key for key in MODEL_KEYS if key in args.model]
+    )
+    for model_key in model_keys:
+        input_path = args.input_dir / model_key / INPUT_FILENAME
+        if not input_path.is_file():
+            parser.error(f"Alignment file not found: {input_path}")
+        model_dir = args.output_dir / model_key
+        existing = [
+            model_dir / name for name in OUTPUT_FILENAMES if (model_dir / name).exists()
+        ]
+        if existing and not args.overwrite:
+            parser.error(
+                f"Output already exists: {existing[0]}. Use --overwrite or a separate --output-dir."
+            )
 
-    BASE_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    for model_key, model_name in MODELS.items():
-        run_for_model(model_key, model_name)
+    totals = [0, 0, 0]
+    for model_key in model_keys:
+        try:
+            counts = run_model(model_key, MODEL_REGISTRY[model_key], args)
+            totals = [a + b for a, b in zip(totals, counts)]
+        finally:
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            elif torch.backends.mps.is_available():
+                torch.mps.empty_cache()
+    if len(model_keys) > 1:
+        print(
+            f"Total: {totals[0]} processed, {totals[1]} rejected, {totals[2]} layer rows"
+        )
 
-    print("\n================ Overall ================")
-    print(f"Active models: {', '.join(MODELS.keys())}")
-    print(f"Base output dir: {BASE_OUTPUT_DIR}")
+    print(f"Output: {args.output_dir}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
